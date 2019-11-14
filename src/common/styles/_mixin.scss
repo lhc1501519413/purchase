@@ -1,0 +1,84 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+@mixin horizontalCenter($width){
+  width: $width;
+  margin: 0 auto;
+}
+@mixin scrollBar($width) {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
+
+@mixin relative($height:100%, $width:100%) {
+  position: relative;
+  width: $width;
+  height: $height;
+  margin: 0 auto;
+}
+
+@mixin flex($justify-content:space-around, $align-items:center) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+@mixin box($width:100%, $height:100%,$background:#fff,$border:none) {
+  width: $width;
+  height: $height;
+  background: $background;
+  border: $border;
+}
+
+@mixin color($normal:$normal-color, $hover:$hover) {
+  color: $normal;
+
+  &:hover {
+    color: $hover;
+  }
+}
+
+@mixin triangle($width, $height, $color, $direction) {
+  $width: $width/2;
+  $color-border-style: $height solid $color;
+  $transparent-border-style: $width solid transparent;
+  height: 0;
+  width: 0;
+
+  @if $direction==up {
+    border-bottom: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  }
+
+  @else if $direction==right {
+    border-left: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  }
+
+  @else if $direction==down {
+    border-top: $color-border-style;
+    border-left: $transparent-border-style;
+    border-right: $transparent-border-style;
+  }
+
+  @else if $direction==left {
+    border-right: $color-border-style;
+    border-top: $transparent-border-style;
+    border-bottom: $transparent-border-style;
+  }
+}

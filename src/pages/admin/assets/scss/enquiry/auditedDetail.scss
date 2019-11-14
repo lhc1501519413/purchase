@@ -1,0 +1,21 @@
+#auditedDetail{
+  position: relative;  
+  width: calc(100% - 220px);
+  h5{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    @include flex(space-between);
+  }
+  .content{
+    @include box();
+    @extend .radius;
+    @extend .mt;
+    @extend .padding-20;
+    h4{
+      border-left: 4px solid $primary2;
+      @extend .pl;
+      @extend .ml;
+      @extend .mb;
+    }
+  }
+}

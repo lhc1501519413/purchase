@@ -1,0 +1,47 @@
+#addEnquiry{
+  position: relative;  
+  width: calc(100% - 220px);
+  h5{
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+  h3{
+    @extend .padding-20;
+    @extend .radius;
+    background-color:$white;
+  }
+  .button-container{
+    position: absolute;
+    right: 16px;
+    top: 7px;
+  }
+  .content{
+    @include box();
+    @extend .radius;
+    @extend .mt;
+    @extend .padding-20;
+    h4{
+      border-left: 4px solid $primary2;
+      @extend .pl;
+      @extend .ml;
+      @extend .mb;
+    }
+    .ant-input{
+      @extend .pl;
+    }
+    .ant-pagination{
+      @extend .mt;
+      text-align: right;
+    }
+  }
+  .second-area{
+    .ant-row{
+      // margin-left: 35px;
+      margin-bottom: 15px;
+    }
+    .ant-switch{
+      border: 1px solid transparent;
+      border-radius: 15px;
+    }
+  }
+}

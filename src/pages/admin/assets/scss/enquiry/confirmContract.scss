@@ -1,0 +1,8 @@
+@mixin confirmContract{
+  .ant-row{
+    @extend .mb-10;
+    .ant-col-3,.ant-col-4{
+      @extend .text-right;
+    }
+  }
+}

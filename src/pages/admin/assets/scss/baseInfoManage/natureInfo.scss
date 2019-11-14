@@ -1,0 +1,157 @@
+#natureInfo {
+  @extend .radius;
+  margin-top: 10px;
+  background-color: #fff;
+
+  .first-row {
+    padding: 20px;
+    border-bottom: 1px dashed #e5e5e5;
+
+    .title {
+      color: #202020;
+      font-size: 16px;
+    }
+
+    .ant-form-item {
+      margin-bottom: 0;
+      padding: 0;
+
+      .ant-button {
+        border-radius: 8px;
+      }
+
+      .cancel {
+        border: 1px solid #d9d9d9;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .second-row {
+    padding: 20px;
+
+    .choose {
+      padding: 30px;
+      padding-bottom: 0;
+    }
+
+    h3 {
+      padding-left: 10px;
+      border-left: 4px solid $primary2;
+    }
+  }
+
+  h4 {
+    padding-left: 30px;
+    font-size: 16px;
+    border-bottom: 1px dashed #e5e5e5;
+    padding-bottom: 20px;
+
+    span {
+      font-size: 0.9em;
+      padding: 0.9em;
+    }
+  }
+
+  .ant-form-item {
+    .ant-col-6 .ant-input {
+      padding-left: 10px;
+      width: 176%;
+    }
+
+    .ant-input {
+      padding-left: 10px;
+      width: 60%;
+    }
+
+    .upload-img {
+      width: 120px;
+    }
+
+    .ant-cascader-picker,
+    .ant-calendar-picker,
+    .ant-select {
+      width: 60%;
+
+      .ant-input {
+        width: 100%;
+      }
+    }
+
+    .ant-checkbox {
+      margin-left: 10px;
+    }
+  }
+
+  .ant-upload {
+    ul {
+      width: 250px;
+
+      .file-list-item {
+        height: 35px;
+        background-color: #f7f7f7;
+        margin-top: 10px;
+        padding: 8px 6px 6px 10px;
+        position: relative;
+        @extend .radius;
+
+        .svg-icon {
+          width: 17px;
+          height: 17px;
+          position: relative;
+          bottom: 7px;
+        }
+
+        span {
+          display: inline-block;
+          margin-left: 5px;
+          width: 50%;
+          @extend .ellipsis;
+        }
+
+        .del {
+          position: absolute;
+          right: 10px;
+        }
+      }
+    }
+  }
+
+  .register_fund {
+    display: inline-block;
+    width: 200px;
+  }
+
+  /* upload图片 */
+  .avatar-uploader>.ant-upload {
+    width: 128px;
+    height: 128px;
+  }
+
+  .ant-upload-select-picture-card i {
+    font-size: 32px;
+    color: #999;
+  }
+
+  .ant-upload-select-picture-card .ant-upload-text {
+    margin-top: 8px;
+    color: #666;
+  }
+}
+
+/* 提示modal */
+.ant-modal {
+  .svg {
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem 0;
+  }
+
+  .ant-modal-body {
+    padding: 32px 32px 24px;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+}

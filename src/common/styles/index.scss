@@ -1,0 +1,40 @@
+@import './common.scss';
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './btn.scss';
+@import './antd.scss';
+// @import './table.scss';
+$color:#f00;
+
+html,body {
+  height: 100%;
+  width: 100%;
+  min-width: 1366px;
+  background-color: #F4F4F4;
+}
+.color{
+  color: $primary2 !important;
+}
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}

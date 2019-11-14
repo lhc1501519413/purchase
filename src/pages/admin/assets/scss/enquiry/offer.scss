@@ -1,0 +1,33 @@
+#offer{
+  position: relative;  
+  width: calc(100% - 220px);
+  h5{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    @include flex(space-between);
+  }
+  .content{
+    @include box();
+    @extend .radius;
+    @extend .mt;
+    @extend .padding-20;
+    h4{
+      border-left: 4px solid $primary2;
+      @extend .pl;
+      @extend .ml;
+      @extend .mb;
+    }
+    .table{
+      margin: 15px 0;
+      input[type="number"],
+      input[type='text']{
+        border: 1px solid rgba(0, 0, 0, 0.65);
+        padding-left: 5px;
+        @extend .radius;
+        height:25px;
+        line-height: 1.5;
+        width: 80%;
+      }
+    }
+  }
+}

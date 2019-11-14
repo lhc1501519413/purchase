@@ -1,0 +1,11 @@
+@mixin step-item {
+  .step-item {
+    @include flex(space-between, flex-start);
+    .one {
+      width: 22%;
+    }
+    .two {
+      width: 78%;
+    }
+  }
+}

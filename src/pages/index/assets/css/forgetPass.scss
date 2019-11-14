@@ -1,0 +1,59 @@
+#forgetPass {
+  width: 100%;
+  height: 100%;
+  section {
+    width: 100%;
+    height: 96%;
+    background-color: #fff;
+    .logo {
+      @include horizontalCenter(65%);
+      img {
+        width: 346px;
+        height: 39px;
+        margin: 20px auto;
+      }
+    }
+    .login-container {
+      @include flex;
+      width: 100%;
+      height: 500px;
+      background: -webkit-linear-gradient(350deg, rgba(5, 22, 61, 1) 0%, rgba(8, 53, 166, 1) 100%);
+      /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(350deg, rgba(5, 22, 61, 1) 0%, rgba(8, 53, 166, 1) 100%);
+      /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(350deg, rgba(5, 22, 61, 1) 0%, rgba(8, 53, 166, 1) 100%);
+      /* Firefox 3.6 - 15 */
+      background: linear-gradient(350deg, rgba(5, 22, 61, 1) 0%, rgba(8, 53, 166, 1) 100%);
+      /* 标准的语法 */
+      background-image: url(require('@static/images/banner_img.png'));
+      .banner{
+        position: relative;
+        left: 180px;
+        width: 612px;
+        height: 279px;
+      }
+      .ant-form {
+        @extend .radius;
+        width: 390px;
+        height: 420px;
+        padding: 40px;
+        background-color: #fff;
+        h2{
+          letter-spacing: 10px;
+        }
+        .ant-form-item {
+          .ant-btn{
+            width: 100%;
+            height: 40px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+  footer{
+    text-align: center;
+    font-size: 15px;
+    margin-top: 20%;
+  }
+}

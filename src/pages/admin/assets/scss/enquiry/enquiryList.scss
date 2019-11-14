@@ -1,0 +1,19 @@
+#enquiryList{
+  width: calc(100% - 220px);
+  .content{
+    @include box();
+    @extend .radius;
+    @extend .mt;
+    @extend .padding-20;
+    .ant-input{
+      @extend .pl;
+    }
+    .ant-pagination{
+      @extend .mt;
+      text-align: right;
+    }
+    .table{
+      margin:15px 0;
+    }
+  }
+}

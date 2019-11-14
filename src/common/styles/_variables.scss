@@ -1,0 +1,41 @@
+$blue:#324157;
+$light-blue:#3A71A8;
+$red:#C03639;
+$pink: #E65D6E;
+$green: #30B08F;
+$tiffany: #4AB7BD;
+$yellow:#FEC171;
+$panGreen: #30B08F;
+$white: #FFFFFF;
+
+$primary1:#304985;
+$primary2:#f25c19;
+$info:#108ee9;
+$success: #52c41a;
+$warning: #faad14;
+$danger: #ee2e2e;
+
+$color1:#222222;
+$color2:#333333;
+$color3:#666666;
+$color4:#999999;
+
+$borderColor:#dddddd;
+$bg1:#f0f0f0;
+$bg2:#f8f8f9;
+
+:export {
+  primary1: $primary1;
+  primary2: $primary2;
+  info: $info;
+  success: $success;
+  warning: $warning;
+  danger: $danger;
+  color1: $color1;
+  color2: $color2;
+  color3: $color3;
+  color4: $color4;
+  borderColor: $borderColor;
+  bg1: $bg1;
+  bg2: $bg2;
+}

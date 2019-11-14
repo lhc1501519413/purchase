@@ -1,0 +1,46 @@
+#offerDetail{
+  position: relative;  
+  width: calc(100% - 220px);
+  h5{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    @include flex(space-between);
+  }
+  .content{
+    @include box();
+    @extend .radius;
+    @extend .mt;
+    @extend .padding-20;
+    h4{
+      border-left: 4px solid $primary2;
+      @extend .pl;
+      @extend .ml;
+      @extend .mb;
+      @include flex(space-between);
+    }
+    .table{
+      margin: 15px 0;
+    }
+    .ant-row{
+      margin-bottom: 16px;
+    }
+    .ant-input{
+      padding-left: 5px;
+    }
+    .ant-select{
+      width: 150px;
+    }
+    .record{
+      li{
+        height: 200px;
+        @include flex();
+        .left{
+          border-left: 1px solid red;
+          height: 100%;
+          width: 2px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}

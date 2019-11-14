@@ -1,0 +1,30 @@
+@mixin manageDetail{
+  .img_point {
+    width: 6px;
+    height: 6px;
+    position: relative;
+    bottom: 2px;
+  }
+  .red {
+    color: $danger;
+    @extend .ml-10;
+    @extend .mr-10;
+  }
+  .arrow{
+    display: inline-block;
+    width: 10px;
+    height:10px;
+    border-top: 1px solid #333;
+    border-left: 1px solid #333;
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg); 	/* IE 9 */
+    -moz-transform:rotate(45deg); 	/* Firefox */
+    -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+    -o-transform:rotate(45deg); 	/* Opera */
+  }
+  .arrow-up{
+    border: none;
+    border-bottom: 1px solid #333;
+    border-right: 1px solid #333;
+  }
+}
