@@ -1,7 +1,8 @@
 const state = {
   token: '',
   username: '',
-  type:''
+  type:'',
+  supply_info:{}
 }
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   SET_TYPE: (state, type) => {
     state.type = type
+  },
+  SUPPLY_INFO: (state, type) => {
+    state.supply_info = type
   }
 }
 

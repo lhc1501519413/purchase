@@ -14,12 +14,6 @@ Date.prototype.Format = function(fmt) { //author: f
   return fmt;
 }
 
-Array.prototype.indexOf = function(val) {
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] == val) return i;
-  }
-  return -1;
-};
 Array.prototype.remove = function(val) {
   var index = this.indexOf(val);
   if (index > -1) {

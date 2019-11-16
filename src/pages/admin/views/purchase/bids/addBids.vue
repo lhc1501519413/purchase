@@ -13,11 +13,11 @@
         <a-col :span="7">
           <a-form-item label="项目名称" v-bind="formItemLayout">
             <a-input
-              placeholder="请输入询价标题"
+              placeholder="请输入项目标题"
               v-decorator="[
                   'title',
                   { 
-                    rules: [{ required: true, message: '请输入询价标题' }],
+                    rules: [{ required: true, message: '请输入项目标题' }],
                     initialValue:formData.title
                   }
                 ]"
@@ -143,7 +143,7 @@
       </a-row>
     </section>
     <section class="content second-area">
-      <h4>询价商品信息</h4>
+      <h4>项目商品信息</h4>
       <a-row>
         <a-col :span="7">
           <a-form-item label="采购类别" :label-col="{ span: 7 }" :wrapper-col="{ span: 17 }">
@@ -280,6 +280,7 @@
         :columns="columns"
         :dataSource="stock_list_obj.list"
         rowKey="stock_id"
+        :customRow="rowClick"
         :pagination="false"
       >
         <template slot="brand" slot-scope="text">
@@ -366,7 +367,7 @@ export default {
         region_id: "", //价格区域ID
         cat_id: "", //大类ID
         shipping_days: "", //配送时间
-        status: "", //询价单状态
+        status: "", //项目单状态
         stock_list: [],
       },
       region_area: "", // 配送区域
@@ -468,7 +469,7 @@ export default {
     },
     add_stock() {
       if(!this.form.getFieldsValue(['com_id']).com_id){
-        this.$message.warn('请先选择询价单位');
+        this.$message.warn('请先选择项目单位');
         return;
       }
       if(!this.form.getFieldsValue(['cat_id']).cat_id){
@@ -481,11 +482,32 @@ export default {
       });
       this.get_stock_by_con_method();
       var stock_list = this.formData.stock_list;
-      this.formData.stock_list.forEach(elem=>this.selectedRowKeys.push(elem.stock_id));
+      // this.formData.stock_list.forEach(elem=>this.selectedRowKeys.push(elem.stock_id));
       this.ModalVisible = true;
     },
     setModalVisible(ModalVisible) {
       this.ModalVisible = ModalVisible;
+    },
+    paginationChange(page) {
+      this.page = page;
+      this.get_stock_by_con_method();
+    },
+    rowClick(record, index) {
+      return {
+        on: {
+          click: () => {
+            var data = [...this.formData.stock_list];
+            if (this.selectedRowKeys.indexOf(record.stock_id) == -1) {
+              this.selectedRowKeys.push(record.stock_id);
+              data.push(record);
+            } else {
+              this.selectedRowKeys.remove(record.stock_id);
+            }
+            var list = this.selectedRowKeys.merge(data, "stock_id");
+            this.formData.stock_list = list;
+          }
+        }
+      };
     },
     onSelectChange(selectedRowKeys,selectedRows) {
       this.selectedRowKeys = selectedRowKeys;
@@ -594,10 +616,6 @@ export default {
       this.formData.stock_list = this.formData.stock_list.filter(
         item => item.stock_id !== stock_id
       );
-    },
-    paginationChange(page) {
-      this.page = page;
-      this.get_stock_by_con_method();
     }
   }
 };

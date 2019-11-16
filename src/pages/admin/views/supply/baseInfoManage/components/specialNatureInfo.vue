@@ -397,7 +397,7 @@ export default {
               this.father.apply_info2();
             })
             .catch(error => {
-              this.$message.error(error.msg);
+              this.$message.error(error);
             });
         }
       });

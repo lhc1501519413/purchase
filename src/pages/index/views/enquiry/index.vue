@@ -99,7 +99,17 @@ export default {
       page:1,
       total:100,
       enquiryList: [],
-      cat_list: []
+      cat_list: [],
+      endTimeCtrl:{
+        '0':'endTime0',
+        '1':'endTime1',
+        '2':'endTime2',
+        '3':'endTime3',
+        '4':'endTime4',
+        '5':'endTime5',
+        '6':'endTime6',
+        '7':'endTime7',
+      },
     };
   },
   created() {
@@ -138,23 +148,27 @@ export default {
           elem.end_date = this.end_time(elem.end_date,index)
         })
       }).catch(error=>{
-        console.log(error)
+        this.$message.error(error)
       })
     },
     cat_change(value) {
       this.get_inquiry_list_method();
     },
     paginationChange(page) {
+      for(var key in this.endTimeCtrl){
+        clearInterval(this.endTimeCtrl[key])
+      }
       this.page = page;
       this.get_inquiry_list_method();
+      this.$forceUpdate();
     },
     end_time(end_date,index){
       var self,endTime,time,date,hour,minute,second;
       self = this;
-      endTime = setInterval(() => {
+      this.endTimeCtrl[index] = setInterval(() => {
         time = new Date(end_date).getTime()-new Date().getTime();
         if(time<1000){
-          clearInterval(time)
+          clearInterval(this.endTimeCtrl[index])
           this.get_list();
         }
         date = parseInt(time/(3600*24*1000));

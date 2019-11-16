@@ -73,5 +73,8 @@ export default {
 #notice_detail{
   @include component;
   width: 100%;
+  .ant-col-2{
+    text-align: right;
+  }
 }
 </style>

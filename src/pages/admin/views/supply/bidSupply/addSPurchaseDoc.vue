@@ -484,7 +484,6 @@ export default {
         self.ws.onmessage = function(e) {
           var result,controls,code,msg;
           result = JSON.parse(e.data);
-          console.log(result)
           controls = result.c;
           code = result.m.code;
           msg = result.m.msg;

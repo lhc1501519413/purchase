@@ -303,7 +303,7 @@ export default {
           @extend .mb-10;
         }
         .ant-col-3 {
-          @extend .text-center;
+          @extend .text-right;
         }
       }
     }

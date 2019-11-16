@@ -62,7 +62,7 @@
 
 <script>
 import { get_inquiry_base_info } from "@indexApi/common";
-import {base_info} from '@indexApi/user';
+import {base_info,judge_supply_report} from '@indexApi/user';
 
 const columns = [
   {
@@ -135,6 +135,9 @@ export default {
     },
     type(){
       return this.$store.getters.type
+    },
+    supply_info(){
+      return this.$store.getters.supply_info
     }
   },
   filters: {
@@ -186,7 +189,7 @@ export default {
           onCancel() {},
         });
       }else{
-        if(this.type==1){
+        if(this.type==1 || (this.type==0&& this.supply_info.is_audit==0)){
           this.$confirm({
             title: '温馨提示',
             content: '您不满足供应商询价要求不能报价',
@@ -194,7 +197,16 @@ export default {
             cancelText: false,
           });
         }else{
-          open(this.global.host+"/admin.html#/offer?inquiry_code="+this.formData.code)
+          judge_supply_report(this.formData.code).then(res=>{
+            open(this.global.host+"/admin.html#/offer?inquiry_code="+this.formData.code)
+          }).catch(error=>{
+            this.$confirm({
+              title: '温馨提示',
+              content: error,
+              okText: '确认',
+              cancelText: false,
+            });
+          })
         }
       }
     }
@@ -240,7 +252,7 @@ export default {
           @extend .mb-10;
         }
         .ant-col-3{
-          @extend .text-center;
+          @extend .text-right;
         }
       }
       .enquiry-btn{

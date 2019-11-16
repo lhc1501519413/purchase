@@ -96,4 +96,10 @@ export function re_back() {
     params:{c:'Apply',a:'re_back',token:global.token}
   })
 }
-
+/* 判断供应商是否符合报价要求 */
+export function judge_supply_report(inquiry_code) {
+  return request({
+    method: 'GET',
+    params:{c:'Supplyinquiry',a:'judge_supply_report',token:global.token,inquiry_code}
+  })
+}

@@ -108,7 +108,7 @@
               </ul>
             </a-col>
           </a-row>
-          <div>
+          <div v-if="supply_info.status==2">
             <h4 class="mb-10">报名审核</h4>
             <a-row class="mb-10">
               <a-col :span="4" class="text-right">
@@ -386,7 +386,6 @@ export default {
       return {
         on: {
           click: () => {
-            console.log(record)
             this.modalIndex = index;
             this.supply_id = record.supply_id;
             purchase_supply_info(this.bid_code,this.supply_id)

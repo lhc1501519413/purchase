@@ -38,7 +38,7 @@
         <span>
           消息公告提醒
         </span>
-        <router-link to="message">
+        <router-link to="messageSupply">
           所有消息>>
         </router-link>
       </h3>

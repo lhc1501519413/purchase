@@ -123,7 +123,7 @@ export default {
         this.noticeList = res.data.list || [];
         this.total = +res.data.total_count;
       }).catch(error=>{
-        console.log(error)
+        this.$message.error(error)
       })
     },
     cat_change(value) {

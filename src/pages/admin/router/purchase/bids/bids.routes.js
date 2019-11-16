@@ -90,6 +90,16 @@ export default [
     }
   },
   {
+    path: '/Expert/expert_list',
+    name: '/Expert/expert_list',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/expert_list'),
+    meta: {
+      title: '专家列表',
+      permission: true
+    }
+  },
+  {
     path: '/Bid/experts_draw_list',
     name: '/Bid/experts_draw_list',
     component: () =>
@@ -100,10 +110,10 @@ export default [
     }
   },
   {
-    path: '/Expert/expert_list',
-    name: '/Expert/expert_list',
+    path: '/Bid/experts_draw',
+    name: '/Bid/experts_draw',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/expert_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/experts_draw'),
     meta: {
       title: '专家抽取',
       permission: true

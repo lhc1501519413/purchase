@@ -495,7 +495,7 @@ export default {
               item => item.key !== key
             );
           }).catch(error=>{
-            self.$message.error(error.msg);
+            self.$message.error(error);
           });
         },
         onCancel() {},
@@ -562,7 +562,7 @@ export default {
           this.formData.file_path.push(img_obj);
         })
         .catch(error => {
-          this.$message.error(error.msg);
+          this.$message.error(error);
         });
     },
     del(e) {

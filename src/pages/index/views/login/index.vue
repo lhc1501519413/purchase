@@ -146,6 +146,7 @@ export default {
               this.$store.commit('SET_TYPE',res.data.type);
               this.$store.commit('SET_USERNAME',res.data.username);
               this.$store.commit('SET_PRIV',res.data.priv);
+              this.$store.commit('SUPPLY_INFO',res.data.supply_info);
               /* 不同的页面间跳转 */
               if(res.data.type==0 && res.data.supply_info.is_audit==0){
                 switch (res.data.supply_info.step) {

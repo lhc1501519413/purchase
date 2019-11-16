@@ -470,7 +470,7 @@ export default {
               this.spurchase_list_method();
             })
             .catch(error => {
-              this.$message.error(error.msg);
+              this.$message.error(error);
             });
         }
       });

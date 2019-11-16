@@ -1,5 +1,5 @@
 // const host = window.location.protocol+"//"+window.location.host + '/bid';
-// const baseUrl = 'http://smart.acuit.net/bid/index.php'
+// const baseUrl = 'http://smart.acuit.net/bid/cloud.php'
 // const host = window.location.protocol+"//"+window.location.host + '/purchases';
 // const baseUrl = 'http://demo.acuit.net/cloud.php';
 // const host = window.location.protocol+"//"+window.location.host + '/purchase';

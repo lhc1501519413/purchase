@@ -130,3 +130,10 @@ export function upload_one(file) {
     data:{file}
   })
 }
+/* 抽取类型列表 */
+export function get_draw_type() {
+  return request({
+    method: 'GET',
+    params: { c: 'Public', a: 'get_draw_type' }
+  })
+}

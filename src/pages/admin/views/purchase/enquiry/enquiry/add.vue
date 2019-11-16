@@ -331,6 +331,7 @@
         :columns="columns"
         :dataSource="stock_list_obj.list"
         rowKey="stock_id"
+        :customRow="rowClick"
         :pagination="false"
       >
         <template slot="brand" slot-scope="text">
@@ -440,7 +441,7 @@ export default {
       kw_code: "", // 关键字
       page: 1,
       stock_list_obj: {}, // 商品列表
-      columns: columns,
+      columns,
       ModalVisible: false,
       selectedRowKeys: []
     };
@@ -541,11 +542,32 @@ export default {
       });
       this.get_stock_by_con_method();
       var stock_list = this.formData.stock_list;
-      this.formData.stock_list.forEach(elem=>this.selectedRowKeys.push(elem.stock_id));
+      // this.formData.stock_list.forEach(elem=>this.selectedRowKeys.push(elem.stock_id));
       this.ModalVisible = true;
     },
     setModalVisible(ModalVisible) {
       this.ModalVisible = ModalVisible;
+    },
+    paginationChange(page) {
+      this.page = page;
+      this.get_stock_by_con_method();
+    },
+    rowClick(record, index) {
+      return {
+        on: {
+          click: () => {
+            var data = [...this.formData.stock_list];
+            if (this.selectedRowKeys.indexOf(record.stock_id) == -1) {
+              this.selectedRowKeys.push(record.stock_id);
+              data.push(record);
+            } else {
+              this.selectedRowKeys.remove(record.stock_id);
+            }
+            var list = this.selectedRowKeys.merge(data, "stock_id");
+            this.formData.stock_list = list;
+          }
+        }
+      };
     },
     onSelectChange(selectedRowKeys,selectedRows) {
       this.selectedRowKeys = selectedRowKeys;
@@ -642,10 +664,6 @@ export default {
       this.formData.stock_list = this.formData.stock_list.filter(
         item => item.stock_id !== stock_id
       );
-    },
-    paginationChange(page) {
-      this.page = page;
-      this.get_stock_by_con_method();
     }
   }
 };

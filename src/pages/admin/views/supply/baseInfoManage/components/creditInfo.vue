@@ -445,7 +445,7 @@ export default {
               this.father.apply_info2();
             })
             .catch(error => {
-              this.$message.error(error.msg);
+              this.$message.error(error);
             });
         }
       });
@@ -461,7 +461,7 @@ export default {
           this.formData.file_path.push(img_obj);
         })
         .catch(error => {
-          this.$message.error(error.msg);
+          this.$message.error(error);
         });
     },
     del(e) {
