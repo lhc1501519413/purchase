@@ -18,15 +18,15 @@
           </span>
         </template>
         <template slot="operation" slot-scope="text">
-          <div v-if="text.status==2">
-            <router-link :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
+          <div v-if="text.status==5">
+            <router-link v-if="priv.tender_list.edit" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
               制作
             </router-link>
-            <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
+            <router-link v-if="priv.tender_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
               查看项目
             </router-link>
           </div>
-          <div v-if="text.status==4||text.status==5">
+          <div v-if="priv.tender_list.view&&text.status==8">
             <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
               查看项目
             </router-link>
@@ -64,9 +64,8 @@ export default {
       status:'0',
       statusList:[
         {value:'0',label:'全部'},
-        {value:'2',label:'待制作'},
-        {value:'4',label:'已投标'},
-        {value:'5',label:'已解密'}
+        {value:'5',label:'待制作'},
+        {value:'8',label:'已制作'},
       ],
       bid_type:'',
       bid_type_list:[
@@ -118,14 +117,11 @@ export default {
   filters:{
     status:(key)=>{
       switch (key) {
-        case '2':
+        case '5':
           return '待制作'
           break;
-        case '4':
-          return '已投标'
-          break;
-        case '5':
-          return '已解密'
+        case '8':
+          return '已制作'
           break;
         default:
           return '未知状态'

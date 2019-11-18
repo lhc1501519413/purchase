@@ -33,16 +33,16 @@
         <a-col class="gutter-row" :span="6" v-for="item of enquiryList.slice(0,4)" :key="item.id">
           <div class="gutter-box enquiry-item">
             <h4 class="status">{{item.status|status}}</h4>
-            <h3>{{item.title}}</h3>
+            <h3 :title="item.title">{{item.title}}</h3>
             <p class="time">
               结束询价倒计时：
               <span class="red">{{item.end_date}}</span>
             </p>
             <div class="line"></div>
             <div class="content">
-              <p>发布时间：{{item.start_date}}</p>
-              <p>采购类别：{{item.cat_name}}</p>
-              <p>采购单位：{{item.com_name}}</p>
+              <p :title="item.start_date">发布时间：{{item.start_date}}</p>
+              <p :title="item.cat_name">采购类别：{{item.cat_name}}</p>
+              <p :title="item.com_name">采购单位：{{item.com_name}}</p>
               <p>
                 已报价
                 <span class="red">{{item.supply_count}}</span>条
@@ -59,16 +59,16 @@
         <a-col class="gutter-row" :span="6" v-for="item of enquiryList.slice(4,8)" :key="item.id">
           <div class="gutter-box enquiry-item">
             <h4 class="status">{{item.status|status}}</h4>
-            <h3>{{item.title}}</h3>
+            <h3 :title="item.title">{{item.title}}</h3>
             <p class="time">
               结束询价倒计时：
               <span class="red">{{item.end_date}}</span>
             </p>
             <div class="line"></div>
             <div class="content">
-              <p>发布时间：{{item.start_date}}</p>
-              <p>采购类别：{{item.cat_name}}</p>
-              <p>采购单位：{{item.com_name}}</p>
+              <p :title="item.start_date">发布时间：{{item.start_date}}</p>
+              <p :title="item.cat_name">采购类别：{{item.cat_name}}</p>
+              <p :title="item.com_name">采购单位：{{item.com_name}}</p>
               <p>
                 已报价
                 <span class="red">{{item.supply_count}}</span>条
@@ -358,7 +358,7 @@ export default {
     width: 100%;
     padding: 0 17.5%;
     margin-top: 45px;
-    h3 {
+    >h3 {
       @include flex(space-between);
       margin: 8px 0;
     }
@@ -369,12 +369,16 @@ export default {
       background-color: $white;
       padding: 10px 16px;
       h3 {
+        margin: 5px 0;
         font-weight: bold;
+        width: 100%;
+        height: 44px;
+        @extend .mult-line-ellipsis;
+        -webkit-line-clamp: 2;
       }
       .status {
         @extend .text-center;
         color: #f00;
-        // padding-left: 10px;
         width: 76px;
         height: 24px;
         line-height: 24px;
@@ -390,6 +394,7 @@ export default {
       }
       .content {
         p {
+          @extend .ellipsis;
           margin-bottom: 10px;
           span {
             margin: 0 5px;

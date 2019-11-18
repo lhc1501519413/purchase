@@ -20,8 +20,8 @@
         <template slot="show_status" slot-scope="value">
           <span>{{value|show_status}}</span>
         </template>
-        <template slot="operation" slot-scope="text,reord,index">
-          <a href="javascript:;" @click="showModel(text.id,index,text.code)">查看获取信息</a>
+        <template slot="operation" slot-scope="text,record,index">
+          <a v-if="record.supply_count!=0" href="javascript:;" @click="showModel(text.id,index,text.code)">查看获取信息</a>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -367,6 +367,10 @@ export default {
       this.formData = this.dataSource[index];
       purchase_supply_list(bid_id)
         .then(res => {
+          if(!res.data){
+            this.$message.warn('暂无供应商申请获取');
+            return;
+          }
           this.dataSource2 = res.data || [];
           this.supply_id = res.data[0].supply_id;
           purchase_supply_info(bid_code,res.data[0].supply_id)

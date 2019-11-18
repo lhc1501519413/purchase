@@ -44,7 +44,7 @@
         </a-col>
       </a-row>
       <a-row>
-        <a-col :span='7' :offset='1'>理由说明：{{formData.memo}}</a-col>
+        <a-col :span='8' :offset='1'>理由说明：{{formData.memo}}</a-col>
       </a-row>
     </section>
     <section class="content">

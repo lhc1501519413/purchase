@@ -2,7 +2,7 @@
   <div id="notice_detail">
     <h3>
       <span>
-        公告标题：关于{{formData.title}}{{formData.status==8?'询价的在线询价成交公告':'询价的在线询价中止公告'}}
+        公告标题：关于{{formData.title}}{{formData.status==8?'询价的在线询价成交公告':'询价的在线询价终止公告'}}
       </span>
       <span></span>
     </h3>

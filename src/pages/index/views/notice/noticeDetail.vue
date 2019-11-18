@@ -3,7 +3,7 @@
     <section class="noticeDetail mt-20">
       <h4>在线询价 / 询价结果 / 询价结果详情</h4>
       <div class="bigcontent">
-        <h3 class="text-center">关于{{formData.title}}{{formData.status==8?'询价的在线询价成交公告':'询价的在线询价中止公告'}}</h3>
+        <h3 class="text-center">关于{{formData.title}}{{formData.status==8?'询价的在线询价成交公告':'询价的在线询价终止公告'}}</h3>
         <section class="content">
           <h4>询价基本信息</h4>
           <a-row>
@@ -79,7 +79,7 @@
             </a-col>
           </a-row>
           <a-row>
-            <a-col :span='7' :offset='1'>理由说明：{{formData.memo}}</a-col>
+            <a-col :span='8' :offset='1'>理由说明：{{formData.memo}}</a-col>
           </a-row>
         </section>
         <section class="content">

@@ -180,6 +180,14 @@ textarea {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.mult-line-ellipsis {
+  /*兼容性好，多行文本溢出*/
+  // -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
 .center {
   text-align: center;
 }

@@ -119,5 +119,44 @@ export default [
       permission: true
     }
   },
-
+  {
+    path: '/Bid/open_bid_list',
+    name: '/Bid/open_bid_list',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid_list'),
+    meta: {
+      title: '开标评标管理',
+      permission: true
+    }
+  },
+  {
+    path: '/Bid/open_bid',
+    name: '/Bid/open_bid',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/purchase/bids/open_bid/open_bid'),
+    meta: {
+      title: '开标评标管理',
+      permission: true
+    }
+  },
+  {
+    path: '/Bid/tender_file_decode',
+    name: '/Bid/tender_file_decode',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/purchase/bids/open_bid/tender_file_decode'),
+    meta: {
+      title: '投标文件解密',
+      permission: true
+    }
+  },
+  {
+    path: '/Bid/judge_group',
+    name: '/Bid/judge_group',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/purchase/bids/open_bid/judge_group'),
+    meta: {
+      title: '专家小组',
+      permission: true
+    }
+  }
 ]

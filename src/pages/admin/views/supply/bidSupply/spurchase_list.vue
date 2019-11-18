@@ -22,15 +22,15 @@
         </template>
         <template slot="operation" slot-scope="text">
           <div v-if="text.status==1||text.status==3"><!-- 待获取，已驳回 -->
-            <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
-            <a @click="get_supply_purchase_info(text.bid_code)" href="javascript:;">获取</a>
+            <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
+            <a v-if="priv.spurchase_list.acquire==0" @click="get_supply_purchase_info(text.bid_code)" href="javascript:;">获取</a>
           </div>
           <div v-if="text.status==2||text.status==4||text.status==20"><!-- 待审核，待采购方发送，已流标 -->
-            <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
+            <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
           </div>
           <div v-if="text.status==5"><!-- 已获取 -->
-            <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
-            <a @click="download(text.bid_id)" href="javascript:;">下载采购文件</a>
+            <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
+            <a v-if="priv.spurchase_list.acquire" @click="download(text.bid_id)" href="javascript:;">下载采购文件</a>
           </div>
         </template>
       </a-table>
@@ -234,6 +234,7 @@ export default {
   },
   data() {
     return {
+      priv:this.$store.getters.priv,
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },

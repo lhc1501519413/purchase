@@ -48,5 +48,16 @@ export default [
       title: '投标文件详情',
       permission: true
     }
-  }
+  },
+  {
+    path: '/Sbid/open_bid_list',
+    name: '/Sbid/open_bid_list',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/open_bid_list'),
+    meta: {
+      title: '开标评标管理',
+      permission: true
+    }
+  },
+  
 ]
