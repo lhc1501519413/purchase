@@ -2,9 +2,17 @@
   <div id="tender_file_decode">
     <h5>
       招标管理 / 投标文件解密
-      <a-button type="primary" style="right:200px;" @click="failure">流标</a-button>
-      <a-button type="primary" style="right:120px;" @click="refresh">刷新</a-button>
-      <a-button type="primary" @click="start_decode">开始解密</a-button>
+      <div class="btn-container">
+        <a-button type="primary" class="ml-10" :disabled='status<3' @click="failure">流标</a-button>
+        <a-button type="primary" class="ml-10" :disabled='status<3' @click="get_open_supply_list">刷新</a-button>
+        <a-button
+         :disabled='status<3'
+          type="primary"
+          class="ml-10"
+          @click="start_decode"
+        >开始解密</a-button>
+        <a-button :disabled='status<3' type="primary" class="ml-10" @click="open_bid_file">开启标书</a-button>
+      </div>
     </h5>
     <section class="content">
       <a-table
@@ -15,7 +23,7 @@
         rowKey="id"
       >
         <template slot="status" slot-scope="text">
-          <a href="javascript:;" @click="showModel">{{text|status}}</a>
+          <a href="javascript:;">{{text|status}}</a>
         </template>
       </a-table>
     </section>
@@ -35,15 +43,15 @@
         <h4>项目基本信息</h4>
         <a-row class="mb-10">
           <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
-          <a-col :span="6">{{formData.custom_code}}</a-col>
+          <a-col :span="4">{{judge_info.custom_code}}</a-col>
           <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
-          <a-col :span="6">{{formData.bid_type_name}}</a-col>
+          <a-col :span="4">{{judge_info.title}}</a-col>
         </a-row>
         <a-row class="mb-10">
-          <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
-          <a-col :span="6">{{formData.custom_code}}</a-col>
-          <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
-          <a-col :span="6">{{formData.bid_type_name}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">采购单位：</a-col>
+          <a-col :span="4">{{judge_info.com_name}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">采购方式：</a-col>
+          <a-col :span="4">{{judge_info.bid_type_name}}</a-col>
         </a-row>
         <a-form-item label="流标原因" v-bind="formItemLayout">
           <a-textarea
@@ -62,10 +70,10 @@
             :customRequest="customRequest"
             :beforeUpload="beforeUpload"
             v-decorator="[
-              'file_path',
-              { rules: [{ required: true, message: '请选择附件' }],initialValue:formData.file_path }
+              'file_list',
+              { rules: [{ required: true, message: '请选择附件' }],initialValue:formData.file_list }
             ]"
-            >
+          >
             <a-button>
               <a-icon type="upload" />上传
             </a-button>
@@ -73,7 +81,7 @@
               <li
                 @click.stop="del"
                 class="file-list-item"
-                v-for="(item,index) of formData.file_path"
+                v-for="(item,index) of formData.file_list"
                 :key="index"
               >
                 <svg-icon class="wenjian" icon-class="wenjian" />
@@ -94,6 +102,13 @@
 
 <script>
 import { POST } from "@common/js/apis";
+import {
+  get_judge_info, // 获取项目评审中的状态
+  get_open_supply_list, // 获取待解密供应商
+  open_decrypt, // 开启解密
+  open_bid_file // 开启标书
+} from "@admin/api/open_bid";
+import { save_bid_fail } from "@admin/api/bids";
 export default {
   props: {
     father: {
@@ -104,74 +119,20 @@ export default {
   data() {
     return {
       priv: this.$store.getters.priv,
+      status: this.$store.getters.status,
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },
         wrapperCol: { span: 18 }
       },
-      bid_code: "",
+      code: "",
       del_icon: require("@static/icon/icon_close.png"),
       formData: {
-        custom_code: "1234465464",
-        buy_type_name: "公开招标",
-        reason: "流标原因",
-        file_path: [
-          {
-            file_name: "emila.jpg",
-            file_path: "",
-            full_path: ""
-          },
-          {
-            file_name: "emila.jpg",
-            file_path: "",
-            full_path: ""
-          },
-          {
-            file_name: "emila.jpg",
-            file_path: "",
-            full_path: ""
-          },
-          {
-            file_name: "emila.jpg",
-            file_path: "",
-            full_path: ""
-          }
-        ]
+        reason: "",
+        file_list: []
       },
-      dataSource: [
-        {
-          id: "2",
-          supply_name: "供应商1",
-          people: "贾克斯",
-          status: "1",
-          contact_number: "13312345678",
-          decode_time: "2019-05-10 10:00:00"
-        },
-        {
-          id: "3",
-          supply_name: "供应商1",
-          people: "贾克斯",
-          status: "1",
-          contact_number: "13312345678",
-          decode_time: "2019-05-10 10:00:00"
-        },
-        {
-          id: "4",
-          supply_name: "供应商1",
-          people: "贾克斯",
-          contact_number: "13312345678",
-          status: "1",
-          decode_time: "2019-05-10 10:00:00"
-        },
-        {
-          id: "5",
-          supply_name: "供应商1",
-          people: "贾克斯",
-          contact_number: "13312345678",
-          status: "1",
-          decode_time: "2019-05-10 10:00:00"
-        }
-      ],
+      judge_info: {},
+      dataSource: [],
       columns: [
         {
           title: "序号",
@@ -185,18 +146,18 @@ export default {
           width: "10%"
         },
         {
-          title: "法定代表人或授权委托人",
-          dataIndex: "people",
+          title: "法定代表人",
+          dataIndex: "legal_user_name",
           width: "10%"
         },
         {
           title: "联系手机",
-          dataIndex: "contact_number",
+          dataIndex: "mobile",
           width: "10%"
         },
         {
           title: "解密时间",
-          dataIndex: "decode_time",
+          dataIndex: "decrypt_time",
           width: "10%"
         },
         {
@@ -206,26 +167,20 @@ export default {
           width: "10%"
         }
       ],
-      ModalVisible: true
+      ModalVisible: false
     };
   },
   filters: {
     status: key => {
       switch (key) {
-        case "15":
-          return "待开标";
+        case "8":
+          return "待解密";
           break;
-        case "16":
-          return "评标中";
+        case "9":
+          return "待解密";
           break;
-        case "18":
-          return "已确认";
-          break;
-        case "20":
-          return "已流标";
-          break;
-        case "21":
-          return "已流标";
+        case "12":
+          return "已解密";
           break;
         default:
           return "未知状态";
@@ -234,27 +189,66 @@ export default {
     }
   },
   created() {
+    this.code = this.$route.query.code;
     this.father.selectedKeys = ["/Bid/open_bid_list"];
+    this.get_open_supply_list();
+    this.get_judge_info();
   },
   methods: {
-    showModel() {
-      this.ModalVisible = true;
+    get_open_supply_list() {
+      get_open_supply_list(this.code)
+        .then(res => {
+          this.dataSource = res.data.list || [];
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
-    failure() {},
-    refresh() {
-      console.log("刷新");
+    get_judge_info() {
+      // 获取项目评审中的状态
+      get_judge_info(this.code)
+        .then(res => {
+          this.judge_info = res.data;
+        })
+        .catch(error => this.$message.error(error));
+    },
+    failure() {
+      this.ModalVisible = true;
     },
     start_decode() {
       var self = this;
       this.$confirm({
         title: "温馨提示",
+        content: "确定要开始解密吗？",
+        onOk() {
+          open_decrypt(self.code)
+            .then(res => {
+              self.$message.success(res.msg);
+            })
+            .catch(error => {
+              self.$message.error(error);
+            });
+        },
+        onCancel() {}
+      });
+    },
+    open_bid_file() {
+      var self = this;
+      this.$confirm({
+        title: "温馨提示",
         content: "确定要开启标书信息吗？",
         onOk() {
-          self.$message.success("开启标书成功");
+          open_bid_file(self.code)
+            .then(res => {
+              self.$message.success(res.msg);
+              let time = setTimeout(() => {
+                clearTimeout(time);
+                self.$router.go(-1);
+              }, 1000);
+            })
+            .catch(error => self.$message.error(error));
         },
-        onCancel() {
-          console.log("开启标书失败");
-        }
+        onCancel() {}
       });
     },
     handleSubmit(e) {
@@ -263,9 +257,18 @@ export default {
         if (!err) {
           const values = {
             ...fieldsValue,
-            bid_code: this.bid_code
+            bid_code: this.code
           };
-          console.log(values);
+          save_bid_fail(values)
+            .then(res => {
+              this.$message.success(res.msg);
+              let time = setTimeout(() => {
+                this.$router.go(-1);
+              }, 1000);
+            })
+            .catch(error => {
+              this.$message.error(error);
+            });
         }
       });
     },
@@ -277,30 +280,33 @@ export default {
           let img_obj = {};
           img_obj.file_name = res.data.name;
           img_obj.file_path = res.data.savepath;
-          this.formData.file_path.push(img_obj);
+          this.formData.file_list.push(img_obj);
         })
         .catch(error => {
           this.$message.error(error);
         });
     },
     beforeUpload(file) {
-      const isJPGPDF = file.type === "image/jpeg" || file.type === "image/png" || file.type === "application/pdf";
+      const isJPGPDF =
+        file.type === "image/jpeg" ||
+        file.type === "image/png" ||
+        file.type === "application/pdf";
       if (!isJPGPDF) {
         this.$message.error("您只可以上传JPG,PNG,PDF格式的文件");
       }
       var isPicLt100KB;
       var isPdfLt2M;
-      if(file.type === "image/jpeg" || file.type === "image/png"){
-        if(file.size / 1024 / 1024 < 0.8){
+      if (file.type === "image/jpeg" || file.type === "image/png") {
+        if (file.size / 1024 / 1024 < 0.8) {
           isPicLt100KB = true;
-        }else{
+        } else {
           this.$message.error("图片大小必须小于 800KB!");
           isPicLt100KB = false;
         }
-      }else if(file.type === "application/pdf"){
-        if(file.size / 1024 / 1024 < 8){
+      } else if (file.type === "application/pdf") {
+        if (file.size / 1024 / 1024 < 8) {
           isPdfLt2M = true;
-        }else{
+        } else {
           this.$message.error("文件大小必须小于 8MB!");
           isPdfLt2M = false;
         }
@@ -310,9 +316,9 @@ export default {
     del(e) {
       let index = e.target.dataset.key;
       if (index !== undefined) {
-        this.formData.file_path.splice(index, 1);
+        this.formData.file_list.splice(index, 1);
       }
-    },
+    }
   }
 };
 </script>
@@ -320,14 +326,6 @@ export default {
 @import "~@admin/assets/scss/common";
 #tender_file_decode {
   @include component;
-  h5 {
-    position: relative;
-    button {
-      position: absolute;
-      right: 15px;
-      top: -9px;
-    }
-  }
 }
 </style>
 <style lang="scss">
@@ -343,9 +341,9 @@ export default {
     height: 17px;
   }
   .ant-input {
-    @extend .pl-10;
+    padding: 5px;
   }
-  .file-list-item{
+  .file-list-item {
     margin-top: 5px;
   }
 }

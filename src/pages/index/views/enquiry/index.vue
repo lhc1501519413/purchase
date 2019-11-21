@@ -31,10 +31,10 @@
               <p>发布时间：{{item.start_date}}</p>
               <p>采购类别：{{item.cat_name}}</p>
               <p>采购单位：{{item.com_name}}</p>
-              <p>
+              <!-- <p>
                 已报价
                 <span class="red">{{item.supply_count}}</span>条
-              </p>
+              </p> -->
             </div>
             <div class="line"></div>
             <div class="text-center">
@@ -57,10 +57,10 @@
               <p>发布时间：{{item.start_date}}</p>
               <p>采购类别：{{item.cat_name}}</p>
               <p>采购单位：{{item.com_name}}</p>
-              <p>
+              <!-- <p>
                 已报价
                 <span class="red">{{item.supply_count}}</span>条
-              </p>
+              </p> -->
             </div>
             <div class="line"></div>
             <div class="text-center">

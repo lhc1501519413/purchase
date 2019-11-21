@@ -95,8 +95,7 @@
                 'contact_number',
                 { 
                   rules: [
-                    { required: true, message: '请输入联系方式' },
-                    {validator:(rule, value, callback) => this.vali_mobile(rule, value, callback)}
+                    { required: true, message: '请输入联系方式' }
                   ],
                   initialValue:formData.contact_number                 
                 }

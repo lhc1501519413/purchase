@@ -1,0 +1,34 @@
+@mixin content {
+  @include box();
+  @extend .radius;
+  @extend .mt-10;
+  @extend .padding-20;
+  h4{
+    border-left: 4px solid $primary2;
+    @extend .pl-10;
+    @extend .ml-10;
+    @extend .mb-10;
+  }
+  .img_point {
+    width: 8px;
+    height: 8px;
+    margin-bottom: 3px;
+  }
+  .wenjian {
+    width: 17px;
+    height: 17px;
+  }
+  .cat-time{
+    margin-left: 15px;
+  }
+  .ant-input{
+    @extend .pl-10;
+  }
+  .ant-pagination{
+    @extend .mt-10;
+    text-align: right;
+  }
+  .table{
+    margin:15px 0;
+  }
+}

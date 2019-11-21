@@ -1,0 +1,52 @@
+@mixin steps {
+  .ant-steps-item:last-child {
+    -webkit-box-flex: 1;
+    flex: 1;
+  }
+
+  .ant-steps-item-content {
+    text-align: left !important;
+    @extend .pl-10;
+
+    .ant-steps-item-title {
+      @extend .text-center;
+
+      div {
+        @extend .relative;
+        padding-right: 18px;
+      }
+
+      span {
+        font-size: 12px;
+      }
+
+      span.open,
+      span.judge {
+        @extend .absolute;
+        right: 0;
+        top: 6px;
+        font-size: 12px;
+      }
+
+      .open {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        background-color: $info;
+        color: $white;
+        @extend .inline-block;
+        @extend .radius;
+      }
+
+      .judge {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        background-color: $warning;
+        color: $white;
+        @extend .inline-block;
+        @extend .radius;
+      }
+    }
+  }
+}

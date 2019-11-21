@@ -61,9 +61,9 @@
         </template>
         <template slot="operation" slot-scope="text,record">
           <a
-            v-if="priv.open_sbid_list.decrypt&&record.status==17"
+            v-if="priv.open_sbid_list.decrypt&&record.status==9"
             href="javascript:;"
-            @click="get_supply_purchase_info(record.bid_code)"
+            @click="showModal(record.bid_code)"
           >解密</a>
         </template>
       </a-table>
@@ -72,37 +72,53 @@
     <a-modal
       class="supply-purchase-info"
       width="60%"
+      :afterClose="afterClose"
       :destroyOnClose="false"
       :visible="ModalVisible"
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
       :footer="null"
     >
-      <div slot="title" class="text-center">解密</div>
-      <h4>项目基本信息</h4>
-      <a-row class="mb-10">
-        <a-col :span="4">项目编号：</a-col>
-        <a-col :span="7">{{supply_purchase_info.base_info.custom_code}}</a-col>
-        <a-col :span="4">项目名称：</a-col>
-        <a-col :span="7">{{supply_purchase_info.base_info.title}}</a-col>
-      </a-row>
-      <a-row class="mb-10">
-        <a-col :span="4">采购单位：</a-col>
-        <a-col :span="7">{{supply_purchase_info.base_info.bid_type_name}}</a-col>
-        <a-col :span="4">采购方式：</a-col>
-        <a-col :span="7">{{supply_purchase_info.base_info.bid_type_name}}</a-col>
-      </a-row>
-      <h4>解密信息</h4>
+      <h3 slot="title" class="text-center">解密</h3>
+      <div class="decrypt_time text-right">
+        解密倒计时：{{decrypt_time}}
+      </div>
       <a-form :form="form" @submit="handleSubmit">
+        <h4>项目基本信息</h4>
+        <a-row>
+          <a-col :span="10" :offset="1">
+            <a-form-item label="项目编号" v-bind="formItemLayout">
+              <span>{{decrypt_info.base_info.custom_code}}</span>
+            </a-form-item>
+          </a-col>
+          <a-col :span="11">
+            <a-form-item label="项目名称" v-bind="formItemLayout">
+              <span>{{decrypt_info.base_info.title}}</span>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row class="mb-10">
+          <a-col :span="10" :offset="1">
+            <a-form-item label="采购单位" v-bind="formItemLayout">
+              <span>{{decrypt_info.base_info.com_name}}</span>
+            </a-form-item>
+          </a-col>
+          <a-col :span="11">
+            <a-form-item label="采购方式" v-bind="formItemLayout">
+              <span>{{decrypt_info.base_info.bid_type_name}}</span>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <h4>解密信息</h4>
         <a-row>
           <a-col :span="10" :offset="1">
             <a-form-item label="单位名称" v-bind="formItemLayout">
-              <span>{{supply_purchase_info.supply_info.supply_name}}</span>
+              <span>{{decrypt_info.supply_info.supply_name}}</span>
             </a-form-item>
           </a-col>
           <a-col :span="11">
             <a-form-item label="法定代表人" v-bind="formItemLayout">
-              <span>{{supply_purchase_info.supply_info.legal_user_name}}</span>
+              <span>{{decrypt_info.supply_info.legal_user_name}}</span>
             </a-form-item>
           </a-col>
         </a-row>
@@ -113,7 +129,7 @@
                 placeholder="请输入联系人姓名"
                 v-decorator="[
               'contact_name',
-              { rules: [{ required: true, message: '请输入证件编号' }],initialValue:supply_purchase_info.supply_info.contact_name}
+              { rules: [{ required: true, message: '请输入入联系人姓名' }],initialValue:decrypt_info.supply_info.contact_name}
             ]"
               />
             </a-form-item>
@@ -124,7 +140,7 @@
                 placeholder="请输入手机号"
                 v-decorator="[
               'contact_phone',
-              { rules: [{ required: true, message: '请输入手机号' }],initialValue:supply_purchase_info.supply_info.contact_phone}
+              { rules: [{ required: true, message: '请输入手机号' }],initialValue:decrypt_info.supply_info.contact_phone}
             ]"
               />
             </a-form-item>
@@ -132,19 +148,20 @@
         </a-row>
         <a-row>
           <a-col :span="10" :offset="1">
-            <a-form-item label="投标上传时间" v-bind="formItemLayout">
-              {{supply_purchase_info.supply_info.email}}
-            </a-form-item>
+            <a-form-item
+              label="投标上传时间"
+              v-bind="formItemLayout"
+            >{{decrypt_info.supply_info.submit_file_time}}</a-form-item>
           </a-col>
-          <a-col :span="11">
+          <!-- <a-col :span="11">
             <a-form-item label="CA序列表" v-bind="formItemLayout">
-              {{supply_purchase_info.supply_info.email}}
+              {{decrypt_info.supply_info.email}}
             </a-form-item>
-          </a-col>
+          </a-col>-->
         </a-row>
-        <a-form-item class="text-center" v-if="supply_purchase_info.supply_info.status!=3">
+        <a-form-item class="text-center" v-if="decrypt_info.supply_info.status!=3">
           <a-button class="mr-10" @click="ModalVisible = false">取消</a-button>
-          <a-button class="ml-10" type="primary" html-type="submit">确定</a-button>
+          <a-button class="ml-10" :disabled='decrypt_btn_ctrl' type="primary" html-type="submit">解密</a-button>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -156,11 +173,12 @@ import {
   get_bid_type // 采购方式
 } from "@common/js/apis";
 import {
-  open_bid_list // 开标评标列表
+  open_bid_list, // 开标评标列表
+  get_decrypt_file, // 获取待解密文件列表
+  decrypt_bid, // 解密文件
+  get_decrypt_info // 获取解密详情
 } from "@admin/api/open_bid_supply";
-import {
-  get_supply_purchase_info // 获取获取采购文件信息
-} from "@admin/api/bidsSupply";
+import { encryption } from "@/common/js/ESign";
 export default {
   props: {
     father: {
@@ -179,101 +197,16 @@ export default {
       status: "",
       statusList: [
         { value: "0", label: "全部" },
-        { value: "15", label: "待开标" },
-        { value: "16", label: "评标中" },
-        { value: "17", label: "待解密" },
-        { value: "18", label: "已确认" },
+        { value: "8", label: "待开标" },
+        { value: "9", label: "待解密" },
+        { value: "12", label: "评标中" },
+        { value: "14", label: "已确认" },
         { value: "20,21", label: "已流标" }
       ],
       bid_type: "0",
       bid_type_list: [{ value: "0", title: "全部" }],
       page: "",
-      dataSource: [
-        {
-          id: "2",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "191118103955699124", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "15", // 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标
-          cat_id: "36", //大类ID
-          cat_name: "果蔬类", //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "3",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "191118103955699124", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "16", // 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标
-          cat_id: "36", //大类ID
-          cat_name: "果蔬类", //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "4",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "191118103955699124", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "18", // 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标
-          cat_id: "36", //大类ID
-          cat_name: "果蔬类", //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "5",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "191118103955699124", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "20", // 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标
-          cat_id: "36", //大类ID
-          cat_name: "果蔬类", //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "6",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "191118103955699124", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "21", // 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标
-          cat_id: "36", //大类ID
-          cat_name: "果蔬类", //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "7",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "191118103955699124", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "17", // 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标
-          cat_id: "36", //大类ID
-          cat_name: "果蔬类", //大类名称
-          open_time: "2019-11-11" //开标时间
-        }
-      ],
+      dataSource: [],
       columns: [
         {
           title: "序号",
@@ -299,7 +232,7 @@ export default {
         {
           title: "采购方式",
           dataIndex: "bid_type_name",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "采购类别",
@@ -326,68 +259,50 @@ export default {
       total: 0,
       ModalVisible: false,
       bid_code: "",
-      supply_purchase_info: {
+      decrypt_info: {
         base_info: {
-          bid_code: "191118103955699124",
-          custom_code: "111801",
-          title: "20191118\u5927\u7c73\u6d4b\u8bd5",
-          end_time: "2019-11-19 11:09:13",
-          open_time: "2019-11-19 11:09:27"
+          bid_code: "", //单号
+          custom_code: "",
+          code: "", //单号
+          title: "", //项目标题
+          end_time: "", //获取截止时间
+          open_time: "", //投标截止时间
+          com_name: "", //项目单位
+          bid_type_name: "" //公开招标方式
         },
         supply_info: {
-          remark: null,
-          supply_name:
-            "\u4e1c\u80dc\u795e\u6d32\u50b2\u6765\u56fd\u82b1\u679c\u5c71\u6c34\u5e18\u6d1e\u662f\u592a\u767d\u91d1\u661f\u7684",
-          legal_user_name: "\u674e\u957f\u5e9a",
-          email: "1333@qq.com",
-          address: "\u5317\u4eac\u5e02 \u5e02\u8f96\u533a \u4e1c\u57ce\u533a",
-          fax: "",
-          contact_name: "\u674e\u661f\u4e91",
-          contact_phone: "13126717156",
-          file_list: [
-            {
-              id: "111",
-              ukey: "5451",
-              type: "supply_bid_ask_purchase",
-              file_name: "emilia.jpg",
-              file_path: "upload/common/20191114/5dcd09b0ea4db.jpg",
-              status: "2",
-              secret: null,
-              create_time: "1573719258",
-              full_path:
-                "http://192.168.2.134/upload/common/20191114/5dcd09b0ea4db.jpg"
-            },
-            {
-              id: "112",
-              ukey: "5451",
-              type: "supply_bid_ask_purchase",
-              file_name: "faces.jpg",
-              file_path: "upload/common/20191114/5dcd09b2a5ada.jpg",
-              status: "2",
-              secret: null,
-              create_time: "1573719258",
-              full_path:
-                "http://192.168.2.134/upload/common/20191114/5dcd09b2a5ada.jpg"
-            }
-          ],
-          log_list: null
+          supply_name: "", //供应商名称
+          legal_user_name: "", //法定代表人姓名
+          contact_name: "", //采购人联系人
+          contact_phone: "", //联系方式
+          submit_file_time: "", //投标时间
+          start_decrypt_time: "" //开始解密时间
         }
-      }
+      },
+      decrypt_time:null,
+      decrypt_time_interval:null,
+      decrypt_btn_ctrl:false,
+      decrypt_file: [],
+      decrypted_file: [],
+      webSocketUrl: this.global.webSocketUrl,
+      ws: null,
+      heart_beat_interval: null,
+      ping: null
     };
   },
   filters: {
     status: key => {
       switch (key) {
-        case "15":
+        case "8":
           return "待开标";
           break;
-        case "16":
-          return "评标中";
-          break;
-        case "17":
+        case "9":
           return "待解密";
           break;
-        case "18":
+        case "12":
+          return "评标中";
+          break;
+        case "14":
           return "已确认";
           break;
         case "20":
@@ -406,7 +321,7 @@ export default {
     this.father.selectedKeys = ["/Sbid/open_bid_list"];
     this.status = this.$route.params.status || "0";
     this.get_tree_data();
-    // this.open_bid_list_method();
+    this.open_bid_list_method();
   },
   methods: {
     get_tree_data() {
@@ -440,16 +355,35 @@ export default {
       this.page = page;
       this.open_bid_list_method();
     },
-    get_supply_purchase_info(bid_code) {
+    showModal(bid_code) {
       this.bid_code = bid_code;
-      get_supply_purchase_info(bid_code)
+      get_decrypt_info(bid_code)
         .then(res => {
-          this.supply_purchase_info = res.data;
-          this.ModalVisible = true;
+          this.decrypt_info = res.data;
+          this.decrypt_time_interval = setInterval((() => {
+            var now_start = new Date().getTime() - new Date(this.decrypt_info.supply_info.start_decrypt_time).getTime();
+            var decrypt_time = 30*60*1000 - now_start;
+            var minute = parseInt(decrypt_time/(60*1000));
+            var second = parseInt((decrypt_time-minute*(60*1000))/1000);
+            if(minute>0||second>0){
+              this.decrypt_time = `${minute}分${second}秒`
+            }else{
+              // this.decrypt_btn_ctrl = true;
+              this.decrypt_time = `0分0秒`
+              clearInterval(this.decrypt_time_interval)
+            }
+          })(), 5000);
         })
         .catch(error => this.$message.error(error));
+      get_decrypt_file(bid_code)
+        .then(res => {
+          this.decrypt_file = res.data || [];
+        })
+        .catch(error => this.$message.error(error));
+      this.ModalVisible = true;
     },
     handleSubmit(e) {
+      var self = this;
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, fieldsValue) => {
         if (!err) {
@@ -457,9 +391,63 @@ export default {
             ...fieldsValue,
             bid_code: this.bid_code
           };
-          console.log(values);
+          var formData = {
+            serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+            funcName: "DecryptDigitalEnvelope",
+            param: `{"digitalEnvelopeB64":"${self.decrypt_file[0].secret}"}`
+          };
+          encryption(formData)
+            .then(res => {
+              if (res.data.result != "") {
+                let obj = {
+                  id: self.decrypt_file[0].id,
+                  secret_key: res.data.result
+                };
+                self.decrypted_file = [...self.decrypted_file, obj];
+                self.decrypt_file.forEach((elem, i, arr) => {
+                  if (i > 0) {
+                    let formData = {
+                      serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+                      funcName: "DecryptDigitalEnvelope",
+                      param: `{"digitalEnvelopeB64":"${elem.secret}"}`
+                    };
+                    encryption(formData)
+                      .then(res => {
+                        let obj = {
+                          id: elem.id,
+                          secret_key: res.data.result
+                        };
+                        self.decrypted_file = [...self.decrypted_file, obj];
+                        if (self.decrypted_file.length == arr.length) {
+                          decrypt_bid({
+                            bid_code: self.bid_code,
+                            file_list: self.decrypted_file
+                          })
+                            .then(res => {
+                              self.$message.success(res.msg);
+                              let time = setTimeout(() => {
+                                self.ModalVisible = false;
+                                self.open_bid_list_method2();
+                              }, 1500);
+                            })
+                            .catch(error => self.$message.warn(error));
+                        }
+                      })
+                      .catch(error => self.$message.error(error));
+                  }
+                });
+              } else {
+                self.$message.error("请检查是否插入U盾");
+              }
+            })
+            .catch(error => self.$message.error("请输入口令后再次执行解密"));
         }
       });
+    },
+    afterClose() {
+      this.decrypt_btn_ctrl = true;
+      this.decrypted_file = [];
+      clearInterval(this.decrypt_time_interval);
     }
   }
 };
@@ -472,6 +460,10 @@ export default {
 </style>
 <style lang="scss">
 .supply-purchase-info {
+  .decrypt_time{
+    color: $danger;
+    font-size: 20px;
+  }
   h4 {
     border-left: 4px solid $primary2;
     @extend .pl-10;

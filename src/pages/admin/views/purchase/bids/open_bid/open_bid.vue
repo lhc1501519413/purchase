@@ -6,34 +6,32 @@
     </h5>
     <section class="content">
       <h4>项目基本信息</h4>
-      <div>
-        <a-row>
-          <a-col :span="2" :offset="1">项目编号：</a-col>
-          <a-col :span="6">{{formData.custom_code}}</a-col>
-          <a-col :span="2" :offset="1">项目名称：</a-col>
-          <a-col :span="6">{{formData.bid_type_name}}</a-col>
-        </a-row>
-        <a-row>
-          <a-col :span="2" :offset="1">采购单位：</a-col>
-          <a-col :span="6">{{formData.com_name}}</a-col>
-          <a-col :span="2" :offset="1">采购方式：</a-col>
-          <a-col :span="6">{{formData.bid_type_name}}</a-col>
-        </a-row>
-      </div>
+      <a-row>
+        <a-col :span="2" class="text-right" :offset="1">项目编号：</a-col>
+        <a-col :span="6">{{judge_info.custom_code}}</a-col>
+        <a-col :span="2" class="text-right" :offset="1">项目名称：</a-col>
+        <a-col :span="6">{{judge_info.title}}</a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="2" class="text-right" :offset="1">采购单位：</a-col>
+        <a-col :span="6">{{judge_info.com_name}}</a-col>
+        <a-col :span="2" class="text-right" :offset="1">采购方式：</a-col>
+        <a-col :span="6">{{judge_info.bid_type_name}}</a-col>
+      </a-row>
     </section>
     <section class="content">
       <h4>评前准备</h4>
       <ul class="prepare">
-        <li @click="$router.push({path:'/Bid/tender_file_decode'})">
+        <li @click="$router.push({path:'/Bid/tender_file_decode',query:{code}})">
           <div>
-            <p :class="{bg:prepare.first}">1</p>
+            <p class="bg">1</p>
             <span>投标（响应）文件签收、解密</span>
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="$router.push({path:'/Bid/judge_group'})">
+        <li @click="judge_info.status>=2&&$router.push({path:'/Bid/judge_group',query:{code}})">
           <div>
-            <p :class="{bg:prepare.second}">2</p>
+            <p :class="{bg:judge_info.status>=2}">2</p>
             <span>评审小组设置</span>
           </div>
           <a-icon type="right"/>
@@ -41,9 +39,9 @@
       </ul>
       <h4>开标评标</h4>
       <ul class="prepare">
-        <li @click="preparekey">
+        <li @click="judge_info.status>=3&&$router.push({path:'/Bid/open_record',query:{code}})">
           <div>
-            <p :class="{bg:prepare.first}">1</p>
+            <p :class="{bg:judge_info.status>=3}">1</p>
             <span>
               <span>
                 开标记录（资格商务技术）
@@ -55,9 +53,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=4&&$router.push({path:'/Bid/judge_quality',query:{code}})">
           <div>
-            <p :class="{bg:prepare.second}">2</p>
+            <p :class="{bg:judge_info.status>=4}">2</p>
             <span>
               <span>
                 资格审查
@@ -71,7 +69,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">3</p>
+            <p :class="{bg:judge_info.status>=5}">3</p>
             <span>
               <span>
                 符合性审查
@@ -85,7 +83,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">4</p>
+            <p :class="{bg:judge_info.status>=6}">4</p>
             <span>
               <span>
                 商务技术评分
@@ -99,7 +97,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">5</p>
+            <p :class="{bg:judge_info.status>=7}">5</p>
             <span>
               <span>
                 商务技术评分汇总
@@ -113,7 +111,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">6</p>
+            <p :class="{bg:judge_info.status>=8}">6</p>
             <span>
               <span>
                 商务技术结果公布
@@ -127,7 +125,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">7</p>
+            <p :class="{bg:judge_info.status>=10}">7</p>
             <span>
               <span>
                 开标记录（报价）
@@ -141,7 +139,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">8</p>
+            <p :class="{bg:judge_info.status>=11}">8</p>
             <span>
               <span>
                 报价评审
@@ -155,7 +153,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">9</p>
+            <p :class="{bg:judge_info.status>=12}">9</p>
             <span>
               <span>
                 得分汇总
@@ -169,7 +167,7 @@
         </li>
         <li @click="preparekey">
           <div>
-            <p :class="{bg:prepare.second}">10</p>
+            <p :class="{bg:judge_info.status>=13}">10</p>
             <span>
               <span>
                 结果公布
@@ -237,6 +235,9 @@
 
 <script>
 import { POST } from "@common/js/apis";
+import { 
+  get_judge_info, // 获取项目评审中的状态
+} from '@admin/api/open_bid'
 
 export default {
   components: {
@@ -250,11 +251,11 @@ export default {
   },
   data() {
     return {
-      bid_code: "",
+      code: "",
       del_icon: require("@static/icon/icon_close.png"),
       point: require("@static/images/icon_point.png"),
       result_list: [],
-      formData: {},
+      judge_info: {},
       pagination: {
         showQuickJumper: true,
         showSizeChanger: true,
@@ -271,12 +272,19 @@ export default {
     };
   },
   created() {
-    this.bid_code = this.$route.query.code;
+    this.code = this.$route.query.code;
     this.father.selectedKeys = ["/Bid/open_bid_list"];
+    this.get_judge_info();
   },
   methods: {
     preparekey() {
       console.log(event);
+    },
+    get_judge_info(){ // 获取项目评审中的状态
+      get_judge_info(this.code).then(res=>{
+        this.judge_info = res.data;
+        this.$store.commit('SET_STATUS',res.data.status)
+      }).catch(error=>this.$message.error(error))
     },
     quality_grade_change() {
       // 添加资格评分要求文件
@@ -319,7 +327,7 @@ export default {
       this.$confirm({
         title: "确认提交投标文件吗？",
         onOk() {
-          submit_tender(self.bid_code)
+          submit_tender(self.code)
             .then(res => {
               self.$message.success(res.msg);
               let time = setTimeout(() => {

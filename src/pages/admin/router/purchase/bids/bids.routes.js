@@ -133,7 +133,7 @@ export default [
     path: '/Bid/open_bid',
     name: '/Bid/open_bid',
     component: () =>
-      import( /*webpackChunkName:supply*/ '@admin/views/purchase/bids/open_bid/open_bid'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/open_bid'),
     meta: {
       title: '开标评标管理',
       permission: true
@@ -143,7 +143,7 @@ export default [
     path: '/Bid/tender_file_decode',
     name: '/Bid/tender_file_decode',
     component: () =>
-      import( /*webpackChunkName:supply*/ '@admin/views/purchase/bids/open_bid/tender_file_decode'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/tender_file_decode'),
     meta: {
       title: '投标文件解密',
       permission: true
@@ -153,10 +153,63 @@ export default [
     path: '/Bid/judge_group',
     name: '/Bid/judge_group',
     component: () =>
-      import( /*webpackChunkName:supply*/ '@admin/views/purchase/bids/open_bid/judge_group'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/judge_group'),
     meta: {
       title: '专家小组',
       permission: true
     }
+  },
+  {
+    path: '/Bid/open_steps',
+    name: '/Bid/open_steps',
+    redirect:'/Bid/open_record',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/open_steps'),
+    meta: {
+      title: '开始评审',
+      permission: true
+    },
+    children: [
+      {
+        path: '/Bid/open_record',
+        name: '/Bid/open_record',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/open_record'),
+        meta: {
+          title: '开标记录',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_quality',
+        name: '/Bid/judge_quality',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_quality'),
+        meta: {
+          title: '资格审查',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_match',
+        name: '/Bid/judge_match',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_match'),
+        meta: {
+          title: '符合性审查',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_quality_grade',
+        name: '/Bid/judge_quality_grade',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_quality_grade'),
+        meta: {
+          title: '商务技术评分',
+          permission: true
+        },
+      }
+    ]
   }
 ]

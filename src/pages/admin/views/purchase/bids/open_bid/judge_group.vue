@@ -2,7 +2,7 @@
   <div id="judge_group">
     <h5>
       招标管理 / 评审小组设置
-      <a-button type="primary" @click="submit">提交</a-button>
+      <a-button type="primary" @click="save">保存</a-button>
     </h5>
     <a-table
       class="content"
@@ -12,16 +12,20 @@
       rowKey="id"
     >
       <template slot="operation" slot-scope="text,record">
-        <a-checkbox @change="onChange">参与</a-checkbox>
-        <a-radio @change="onChange(record.id)">组长</a-radio>
+        <a-checkbox v-model="record.is_join">参与</a-checkbox>
+        <a-checkbox v-model="record.group_leader" @change="leader_change(record.id)">组长</a-checkbox>
       </template>
     </a-table>
   </div>
 </template>
 
 <script>
+import {
+  get_bid_judge_expert, // 获取参与评审专家列表
+  set_bid_expert // 设置参与评审专家列表
+} from "@admin/api/open_bid";
+
 export default {
-  components: {},
   props: {
     father: {
       type: Object,
@@ -30,28 +34,10 @@ export default {
   },
   data() {
     return {
-      dataSource: [
-        {
-          id: "1",
-          name: "jax",
-          contact_number: "15012234567"
-        },
-        {
-          id: "2",
-          name: "jax",
-          contact_number: "15012234567"
-        },
-        {
-          id: "3",
-          name: "jax",
-          contact_number: "15012234567"
-        },
-        {
-          id: "4",
-          name: "jax",
-          contact_number: "15012234567"
-        }
-      ],
+      group_leader: false,
+      priv: this.$store.getters.priv,
+      code: "",
+      dataSource: [],
       columns: [
         {
           title: "序号",
@@ -61,31 +47,70 @@ export default {
         },
         {
           title: "专家姓名",
-          dataIndex: "name",
+          dataIndex: "username",
           width: "18%"
         },
         {
           title: "专家手机号",
-          dataIndex: "contact_number",
+          dataIndex: "mobile",
           width: "18%"
         },
         {
           title: "是否参与",
           dataIndex: "operation",
           width: "18%",
-          scopedSlots:{customRender:'operation'}
+          scopedSlots: { customRender: "operation" }
         }
       ]
     };
   },
   created() {
+    this.code = this.$route.query.code;
     this.father.selectedKeys = ["/Bid/open_bid_list"];
+    this.get_bid_judge_expert();
   },
   methods: {
-    submit(){},
-    onChange(e) {
-        console.log(`checked = ${e.target.checked}`);
-      },
+    get_bid_judge_expert() {
+      get_bid_judge_expert(this.code)
+        .then(res => {
+          let dataSource = res.data || [];
+          dataSource.forEach(elem => {
+            elem.is_join = !!+elem.is_join;
+            elem.group_leader = !!+elem.group_leader;
+          });
+          this.dataSource = dataSource;
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
+    },
+    leader_change(id) {
+      this.dataSource.forEach(elem => {
+        elem.group_leader = elem.id == id;
+      });
+    },
+    save() {
+      var expert_list = JSON.parse(JSON.stringify(this.dataSource));
+      var obj = {
+        bid_code: this.code,
+        expert_list
+      };
+      obj.expert_list.forEach(elem=>{
+        elem.is_join = +elem.is_join;
+        elem.group_leader = +elem.group_leader;
+      })
+      set_bid_expert(obj)
+        .then(res => {
+          let time = setTimeout(()=>{
+            this.$router.go(-1);
+            clearTimeout(time)
+          },1500)
+          this.$message.success(res.msg);
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
+    }
   }
 };
 </script>

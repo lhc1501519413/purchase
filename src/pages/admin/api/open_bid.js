@@ -11,7 +11,7 @@ export function open_bid_list(params) {
 export function get_judge_info(bid_code) {
   return request({
     method: 'GET',
-    params: { c: 'Bid', a: 'open_bid_list', token: global.token, bid_code },
+    params: { c: 'Bid', a: 'get_judge_info', token: global.token, bid_code },
   })
 }
 /* 获取参与评审专家列表 */

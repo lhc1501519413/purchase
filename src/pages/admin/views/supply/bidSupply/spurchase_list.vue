@@ -23,7 +23,7 @@
         <template slot="operation" slot-scope="text">
           <div v-if="text.status==1||text.status==3"><!-- 待获取，已驳回 -->
             <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
-            <a v-if="priv.spurchase_list.acquire==0" @click="get_supply_purchase_info(text.bid_code)" href="javascript:;">获取</a>
+            <a v-if="priv.spurchase_list.acquire" @click="get_supply_purchase_info(text.bid_code)" href="javascript:;">获取</a>
           </div>
           <div v-if="text.status==2||text.status==4||text.status==20"><!-- 待审核，待采购方发送，已流标 -->
             <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>

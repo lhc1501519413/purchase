@@ -566,7 +566,7 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <h4>社会保险登记证</h4>
+      <h4>社会保险参保证明</h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
           <a-form-item label="社会保险号码" v-bind="formItemLayout">
@@ -727,7 +727,7 @@
       </a-row>
       <a-row>
         <a-col :span="12">
-          <a-form-item label="社会保险登记扫描件" :help="!edit_read?'请上传社会保险登记扫描件':''" v-bind="formItemLayout">
+          <a-form-item label="社会保险参保证明" :help="!edit_read?'请上传社会保险参保证明扫描件':''" v-bind="formItemLayout">
             <ul class="accessory" v-show="edit_read">
               <li v-for="item of formData.social_cert_path" :key='item.id'>{{item.file_name}}</li>
             </ul>
@@ -1000,7 +1000,7 @@
         <a-col :span="12"></a-col>
       </a-row>
       <h4>
-        社会保险登记证
+        社会保险参保证明
         <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span>
       </h4>
       <a-row style="margin-top:20px;">
@@ -1046,7 +1046,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="12">
-          <a-form-item label="社会保险登记扫描件" :help="!edit_read?'请上传社会保险登记扫描件':''" v-bind="formItemLayout">
+          <a-form-item label="社会保险参保证明" :help="!edit_read?'请上传社会保险参保证明扫描件':''" v-bind="formItemLayout">
             <ul class="accessory" v-show="edit_read">
               <li v-for="item of formData.social_cert_path" :key='item.id'>{{item.file_name}}</li>
             </ul>

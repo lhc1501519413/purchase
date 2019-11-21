@@ -24,7 +24,7 @@
         @nextClick="callback"
         @tabClick="callback($event)"
         :tabBarGutter="10"
-      >
+        >
         <a-tab-pane key="1">
           <div slot="tab">报价</div>
           <h4 class="relative">
@@ -451,6 +451,7 @@ export default {
           return `共${length}条数据`;
         }
       },
+      webSocketUrl:this.global.webSocketUrl,
       ws:null,
       heart_beat_interval:null,
       ping:null,
@@ -479,7 +480,8 @@ export default {
     connect_webSocket(){
       var self = this;
       if ("WebSocket" in window) {
-        self.ws = new WebSocket(`ws://192.168.2.139:9797/ws`);
+        // self.ws = new WebSocket(`ws://192.168.2.144:9797/ws`);
+        self.ws = new WebSocket(self.webSocketUrl);
         self.ws.onopen = function(e) {};
         self.ws.onmessage = function(e) {
           var result,controls,code,msg;
@@ -520,6 +522,8 @@ export default {
                     self.$message.error(error);
                   });
                 break;
+              case 'ping':
+                self.ping = 0;
               default:
                 // self.ws.close();
                 break;
@@ -531,7 +535,7 @@ export default {
         self.ws.onclose = function() {
           clearInterval(self.heart_beat_interval);
         };
-        // self.heart_beat();
+        self.heart_beat();
       }else{
         self.$message.info("您的浏览器不支持webSocket链接");
       }
@@ -697,6 +701,14 @@ export default {
         let file = this.result;
         self.file_obj.file = file;
         obj.m.file = file.split(',')[1];
+        if(self.ws.readyState==0||self.ws.readyState==3){
+          self.$info({
+            title: '温馨提示',
+            content: '加密程序连接失败，请先开启加密程序，再刷新此页面',
+            onOk() {},
+          });
+          return;
+        }
         self.ws.send(JSON.stringify(obj));
       }
     },

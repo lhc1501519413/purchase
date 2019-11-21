@@ -165,6 +165,8 @@
         <a-menu-item v-if="JSON.stringify(item.children)==='[]'" :key="item.key">
           <svg-icon v-if="item.key==='/supply/get_apply_list'" icon-class="icon_sidenav_supplier_h" />
           <svg-icon v-if="item.key==='/Apply/get_supply_list'" icon-class="icon_sidenav_list_h" />
+          <svg-icon v-if="item.key==='//bid_mangge'" icon-class="icon_sidenav_Entering_h" />
+          <svg-icon v-if="item.key==='//project_eval'" icon-class="icon_sidenav_Entering_h" />
           <!-- <svg-icon v-else icon-class="icon_sidenav_Entering_h" /> -->
           <span v-show="!collapsed">{{item.title}}</span>
         </a-menu-item>

@@ -93,8 +93,10 @@ export default {
       }else{
         if(this.global.type==1){
           window.open(this.global.host+"/admin.html#/panel");
-        }else{
+        }else if(this.global.type==0){
           window.open(this.global.host+"/admin.html#/panelSupply");
+        }else if(this.global.type==2){
+          window.open(this.global.host+"/admin.html#/Judge/bid_list");
         }
       }
     },

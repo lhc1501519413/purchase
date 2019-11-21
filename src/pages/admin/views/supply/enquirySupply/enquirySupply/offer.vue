@@ -318,12 +318,12 @@ export default {
         if (!elem.price) {
           key1 = true;
         }
-        if (!elem.response_brand) {
-          key2 = true;
-        }
-        if (!elem.response_standard) {
-          key3 = true;
-        }
+        // if (!elem.response_brand) {
+        //   key2 = true;
+        // }
+        // if (!elem.response_standard) {
+        //   key3 = true;
+        // }
         if (!elem.is_match) {
           key4 = true;
         }

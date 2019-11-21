@@ -361,7 +361,7 @@
                 ]"
                 >
                 <a-radio
-                  class="radioStyle"
+                  class="radioStyle block mb-10"
                   v-for="item of eval_method_info.eval_standard_type"
                   :value="item.value"
                   :key="item.value"

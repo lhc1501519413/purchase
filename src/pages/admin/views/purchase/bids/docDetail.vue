@@ -45,6 +45,19 @@
           </a-input>
         </a-col>
       </a-row>
+      <h4>招标供应商数量</h4>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right vertical-middle">需求数量：</a-col>
+        <a-col :span="10">
+          <a-input 
+            class="mr-10"
+            style="width:195px"
+            readOnly
+            :value="formData.notice_info.min_supply"
+            >
+          </a-input>
+        </a-col>
+      </a-row>
       <h4>开标评标时间地址</h4>
       <a-row class="mb-10">
         <a-col :span="5" class="text-right vertical-middle">

@@ -24,6 +24,14 @@ export function login(data) {
     data
   })
 }
+/* 手机验证码登录 */
+export function login_by_mobile(data) {
+  return request({
+    method: 'POST',
+    params:{c:'Login',a:'login_by_mobile'},
+    data
+  })
+}
 /* 登出 */
 export function logout() {
   return request({

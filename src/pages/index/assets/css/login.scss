@@ -22,9 +22,10 @@
     }
 
     .login-container {
-      @include flex;
+      @include flex(space-around,top);
       width: 100%;
-      height: 500px;
+      height: 580px;
+      @extend .pt-50;
       background: -webkit-linear-gradient(350deg, rgba(5, 22, 61, 1) 0%, rgba(8, 53, 166, 1) 100%);
       /* Safari 5.1 - 6.0 */
       background: -o-linear-gradient(350deg, rgba(5, 22, 61, 1) 0%, rgba(8, 53, 166, 1) 100%);
@@ -36,24 +37,30 @@
       background-image: url(require('@static/images/banner_img.png'));
       .banner{
         position: relative;
-        left: 180px;
-        width: 612px;
-        height: 279px;
+        left: 110px;
+        width: 728px;
+        height: 328px;
+        margin-top: 53px;
+      }
+      .ant-form2{
+        height: 380px !important;
       }
       .ant-form {
         @extend .radius;
         width: 390px;
-        height: 420px;
+        height: 460px;
         padding: 40px;
         background-color: #fff;
         .ant-form-item {
           position: relative;
           .img_container{
             border-left: 1px solid #7a7979;
-            padding-left: 22px;
+            padding-left: 20px;
             position: absolute;
             width: 100px;
             height: 30px;
+            line-height: 30px;
+            font-size: 15px;
             right: 15px;
             top: -6px;
           }

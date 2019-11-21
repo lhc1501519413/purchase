@@ -2,7 +2,9 @@
   <div id="forgetPass">
     <section>
       <div class="logo">
-        <img :src="logoUrl" alt="logo" />
+        <router-link to='/index'>
+          <svg-icon class="svg pointer logo2" icon-class="logo" />
+        </router-link>
       </div>
       <div class="login-container">
         <img class="banner" :src="bannerUrl" alt="logo" />
@@ -191,9 +193,9 @@ export default {
 </style>
 <style lang="scss">
 #forgetPass {
-  .ant-input-prefix svg{
-    width: 18px;
-    height: 18px;
+  .logo2{
+    width: 273px !important;
+    height: 74px !important;
   }
   .ant-input {
     padding-left: 40px !important;

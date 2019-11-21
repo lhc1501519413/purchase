@@ -22,3 +22,10 @@ export function decrypt_bid(data) {
     data
   })
 }
+/* 获取解密详情 */
+export function get_decrypt_info(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Sbid', a: 'get_decrypt_info', token: global.token, bid_code},
+  })
+}

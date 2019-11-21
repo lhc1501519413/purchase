@@ -6,6 +6,7 @@
 // const baseUrl = 'http://192.168.2.134/cloud.php';
 const host = window.location.protocol+"//"+window.location.host;
 const baseUrl = process.env.API;
+const webSocketUrl = 'ws://127.0.0.1:9797/ws';
 var token,realname,username,type,supplyInfo,comInfo,com_info,supply_info;
 token=localStorage.getItem('token')||'';
 realname=localStorage.getItem('realname')||'';
@@ -32,6 +33,7 @@ import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
 export default{
   baseUrl,
   host,
+  webSocketUrl,
   RexConfig,
   token,
   realname,

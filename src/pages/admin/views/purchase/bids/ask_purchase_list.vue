@@ -294,6 +294,7 @@ export default {
       auditInfo: "",
       modalIndex: 0,
       bid_code:'',
+      bid_id:'',
       supply_id:''
     };
   },
@@ -363,9 +364,13 @@ export default {
         .catch(error => this.$message.error(error));
     },
     showModel(bid_id, index, bid_code) {
+      this.bid_id = bid_id;
       this.bid_code = bid_code;
       this.formData = this.dataSource[index];
-      purchase_supply_list(bid_id)
+      this.purchase_supply_list();
+    },
+    purchase_supply_list(){
+      purchase_supply_list(this.bid_id)
         .then(res => {
           if(!res.data){
             this.$message.warn('暂无供应商申请获取');
@@ -373,7 +378,7 @@ export default {
           }
           this.dataSource2 = res.data || [];
           this.supply_id = res.data[0].supply_id;
-          purchase_supply_info(bid_code,res.data[0].supply_id)
+          purchase_supply_info(this.bid_code,res.data[0].supply_id)
             .then(res2 => {
               this.supply_info = res2.data.supply_info;
               this.ModalVisible = true;
@@ -417,16 +422,24 @@ export default {
       }
       audit_purchase_supply(obj).then(res => {
         this.$message.success(res.msg);
+        this.purchase_supply_list();
       })
       .catch(error => this.$message.error(error));
     },
     give_up(){
-      console.log('流标')
+      save_bid_fail(this.bid_code).then(res => {
+        this.ModalVisible = false;
+        this.$message.success(res.msg);
+      })
+      .catch(error => this.$message.error(error));
     },
     sendFile(){
       send_purchase_file(this.bid_code).then(res => {
-        this.ModalVisible = false;
         this.$message.success(res.msg);
+        let time = setTimeout(()=>{
+          this.ModalVisible = false;
+          clearTimeout(time)
+        },1000)
       })
       .catch(error => this.$message.error(error));
     },

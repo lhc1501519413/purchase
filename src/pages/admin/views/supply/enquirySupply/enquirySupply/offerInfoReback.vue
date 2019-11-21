@@ -38,12 +38,12 @@
       </template>
       </a-table>
     </section>
-    <section class="content">
-    <h4>询价结果</h4>
+    <!-- <section class="content">
+      <h4>询价结果</h4>
       <a-row>
         <a-col :span='10' :offset='1'>参与报价的供应商：{{formData.supply_count}}家</a-col>
       </a-row>
-    </section>
+    </section> -->
     <a-modal
       :destroyOnClose="true"
       style="top: 10%"

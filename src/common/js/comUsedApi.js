@@ -28,7 +28,7 @@ export function get_shipping_region(price_region_id) {
 export function get_notice_list(params) {
   return request({
     method: 'GET',
-    params:  Object.assign({ c: 'Pinquiry', a: 'get_notice_list' },params)
+    params:  Object.assign({ c: 'Pinquiry', a: 'get_notice_list' },params,{key:'value'})
   })
 }
 /* 公告详情 */

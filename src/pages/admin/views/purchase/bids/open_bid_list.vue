@@ -60,26 +60,31 @@
           <span>{{value|status}}</span>
         </template>
         <template slot="operation" slot-scope="text,record">
-          <router-link
-            v-if="priv.open_bid_list.open&&(text.status==15||text.status==16)"
-            :to="{path:'/Bid/open_bid',query:{status:record.status,bid_code:record.bid_code}}"
-          >开标评标</router-link>
-          <router-link
-            v-if="priv.open_bid_list.view&&(text.status==18||text.status==20||text.status==21)"
-            :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}"
-          >查看</router-link>
-          <router-link
-            v-if="priv.open_bid_list.view&&text.status==20"
-            :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}"
-          >流标信息</router-link>
-          <router-link
-            v-if="priv.open_bid_list.view&&text.status==21"
-            :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}"
-          >开标中流标信息</router-link>
-          <router-link
-            v-if="priv.open_bid_list.view&&text.status==21"
-            :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}"
-          >开标中废标信息</router-link>
+          <!-- <div v-if="$moment()>$moment(record.open_time)"> -->
+            <router-link
+              v-if="priv.open_bid_list.open&&(record.status==15||record.status==16)"
+              :to="{path:'/Bid/open_bid',query:{status:record.status,code:record.code}}"
+            >开标评标</router-link>
+            <router-link
+              v-if="priv.open_bid_list.view&&(record.status==18||record.status==20||record.status==21)"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+            >查看</router-link>
+            <router-link
+              v-if="priv.open_bid_list.view&&record.status==20"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+            >流标信息</router-link>
+            <router-link
+              v-if="priv.open_bid_list.view&&record.status==21"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+            >开标中流标信息</router-link>
+            <router-link
+              v-if="priv.open_bid_list.view&&record.status==21"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+            >开标中废标信息</router-link>
+          <!-- </div>
+          <a v-else>
+            未到开标时间
+          </a> -->
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -115,78 +120,7 @@ export default {
       bid_type: "0",
       bid_type_list: [{ value: "0", title: "全部" }],
       page: "",
-      dataSource: [
-        {
-          id: "2",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          code: "190920182116941657", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "15", //状态 8(待制作)采购文件待制作 9(待审核)采购文件待审核 10驳回 11【（>=11已审核）11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标】
-          cat_id: "36", //大类ID
-          cat_name: '果蔬类', //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "3",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          code: "190920182116941657", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "16", //状态 8(待制作)采购文件待制作 9(待审核)采购文件待审核 10驳回 11【（>=11已审核）11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标】
-          cat_id: "36", //大类ID
-          cat_name: '果蔬类', //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "4",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          code: "190920182116941657", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "18", //状态 8(待制作)采购文件待制作 9(待审核)采购文件待审核 10驳回 11【（>=11已审核）11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标】
-          cat_id: "36", //大类ID
-          cat_name: '果蔬类', //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "5",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          code: "190920182116941657", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "20", //状态 8(待制作)采购文件待制作 9(待审核)采购文件待审核 10驳回 11【（>=11已审核）11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标】
-          cat_id: "36", //大类ID
-          cat_name: '果蔬类', //大类名称
-          open_time: "2019-11-11" //开标时间
-        },
-        {
-          id: "6",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          code: "190920182116941657", //单号
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          status: "21", //状态 8(待制作)采购文件待制作 9(待审核)采购文件待审核 10驳回 11【（>=11已审核）11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布 20流标】
-          cat_id: "36", //大类ID
-          cat_name: '果蔬类', //大类名称
-          open_time: "2019-11-11" //开标时间
-        }
-      ],
+      dataSource: [],
       columns: [
         {
           title: "序号",
@@ -212,7 +146,7 @@ export default {
         {
           title: "采购方式",
           dataIndex: "bid_type_name",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "采购类别",
@@ -267,7 +201,7 @@ export default {
     this.father.selectedKeys = ["/Bid/open_bid_list"];
     this.status = this.$route.params.status || "0";
     this.get_tree_data();
-    // this.open_bid_list_method();
+    this.open_bid_list_method();
   },
   methods: {
     get_tree_data() {

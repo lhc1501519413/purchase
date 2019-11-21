@@ -11,25 +11,25 @@
     <section class="content">
       <h4>项目基本信息</h4>
       <a-row class="mb-10">
-        <a-col :span='2' :offset='1'>项目名称：</a-col>
-        <a-col :span='6'>{{formData.title}}</a-col>
-        <a-col :span='2' :offset='1'>项目编号：</a-col>
-        <a-col :span='6'>{{formData.custom_code}}</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>项目名称：</a-col>
+        <a-col :span='5'>{{formData.title}}</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>项目编号：</a-col>
+        <a-col :span='5'>{{formData.custom_code}}</a-col>
       </a-row>
       <a-row class="mb-10">
-        <a-col :span='2' :offset='1'>采购单位：</a-col>
-        <a-col :span='6'>{{formData.com_name}}</a-col>
-        <a-col :span='2' :offset='1'>采购方式：</a-col>
-        <a-col :span='6'>{{formData.com_name}}</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>采购单位：</a-col>
+        <a-col :span='5'>{{formData.com_name}}</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>采购方式：</a-col>
+        <a-col :span='5'>{{formData.com_name}}</a-col>
       </a-row>
       <a-row class="mb-10">
-        <a-col :span='2' :offset='1'>采购联系人：</a-col>
-        <a-col :span='6'>{{formData.contact_name}}</a-col>
-        <a-col :span='2' :offset='1'>联系方式：</a-col>
-        <a-col :span='6'>{{formData.contact_number}}</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>采购联系人：</a-col>
+        <a-col :span='5'>{{formData.contact_name}}</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>联系方式：</a-col>
+        <a-col :span='5'>{{formData.contact_number}}</a-col>
       </a-row>
       <a-row class="mb-10">
-        <a-col :span='2' :offset='1'>配送区域：</a-col>
+        <a-col class="text-right" :span='2' :offset='1'>配送区域：</a-col>
         <a-col :span='8'>{{formData.region_name}}</a-col>
       </a-row>
       <a-row>
@@ -39,7 +39,7 @@
     <section class="content">
       <h4>商品信息</h4>
       <a-row>
-        <a-col :span='6' :offset='1'>采购类别：{{formData.cat_name}}</a-col>
+        <a-col :span='5' :offset='1'>采购类别：{{formData.cat_name}}</a-col>
         <a-col :span='8'>预计配送时间：{{formData.shipping_days}}天</a-col>
       </a-row>
       <a-table 
