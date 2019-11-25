@@ -1,7 +1,6 @@
 <template>
   <div id="judge_match">
     <section class="content">
-      <h4>符合性评审</h4>
       <a-tabs
         tabPosition="top"
         :activeKey="activeKey"
@@ -11,6 +10,7 @@
         :tabBarGutter="10"
       >
         <a-tab-pane v-for="item of judge_match" :key='item.user_id'>
+          <h4>符合性评审</h4>
           <div slot="tab">{{item.username}}</div>
           <a-table class="table" :dataSource="item.match_info" :columns="columns" rowKey="supply_id">
             <template slot="status" slot-scope="text">

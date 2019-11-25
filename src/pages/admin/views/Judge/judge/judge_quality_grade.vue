@@ -2,18 +2,7 @@
   <div class="judge_quality_grade">
     <section class="content">
       <h4>专家评分</h4>
-      <a-table class="table" :dataSource="judge_quality_grade" :columns="columns" rowKey="id">
-        <template slot="status" slot-scope="text,record">
-          <a-select disabled v-model="record.status" style="width: 120px">
-            <a-select-option disabled value>---请选择---</a-select-option>
-            <a-select-option value="1">符合</a-select-option>
-            <a-select-option value="2">不符合</a-select-option>
-          </a-select>
-        </template>
-        <template slot="supply_score" slot-scope="text">
-          {{text}}
-        </template>
-      </a-table>
+      <a-table class="table" :dataSource="judge_quality_grade" :columns="columns" rowKey="id"></a-table>
       <h4>评审意见</h4>
       <a-row>
         <a-col :span="3" class="text-right">【{{user_name}}】评审意见：</a-col>
@@ -79,7 +68,7 @@
           </ul>
         </template>
         <template slot="score" slot-scope="text,record">
-          <a-input class='pl-10' v-model="record.score" />
+          <a-input type='number' class='pl-10' v-model.number="record.score" />
         </template>
       </a-table>
     </a-modal>
@@ -194,15 +183,12 @@ export default {
           this.supply_list = res.data.supply_list;
           this.supply_id = res.data.supply_list[0].supply_id;
           var supply_list = res.data.supply_list;
-          supply_list.forEach((elem,index,arr) => {
+          supply_list.forEach(elem=> {
             let obj = {
               title: elem.supply_name,
               dataIndex:`score_${elem.supply_id}`,
               width: "10%"
             };
-            // quality_grade_list.forEach(elem2 => {
-            //   elem2[`score_${elem.supply_id}`] = elem.supply_id;
-            // });
             if (this.columns.length != 4 + supply_list.length) this.columns.push(obj);
           });
           this.judge_quality_grade = res.data.quality_grade_list;
@@ -223,11 +209,8 @@ export default {
     },
     save_judge_quality_grade_detail() {
       var key1 = this.judge_quality_grade_list.some(elem => elem.score == "");
-      console.log(this.judge_quality_grade_list)
       if (key1) {
         this.$message.info("供应商分数评审未完全，请评审完全后保存");
-      } else if(this.opinion){
-        this.$message.info("请填写意见");
       } else {
         var formData = {
           bid_code: this.bid_code,
@@ -255,6 +238,10 @@ export default {
         bid_code: this.bid_code,
         opinion: this.opinion
       };
+      if(formData.opinion==''){
+        this.$message.info("请填写意见");
+        return
+      }
       if (submit) {
         self.$confirm({
           title: "温馨提示",

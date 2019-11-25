@@ -33,7 +33,7 @@ export default {
     return {
       status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
-      code:this.$route.query.code,
+      bid_code:this.$route.query.bid_code,
       dataSource: [],
       columns: [
         {
@@ -57,21 +57,18 @@ export default {
   },
   created() {
     this.father.current = 0;
-    get_judge_supply_list(this.code)
-      .then(res => {
-        this.dataSource = res.data.list || [];
-      })
+    get_judge_supply_list(this.bid_code)
+      .then(res => this.dataSource = res.data.list || [])
       .catch(error => this.$message.error(error));
   },
   methods: {
     handleChange() {},
     next(){
-      console.log(this.status)
       if(this.status>3){
-        this.$router.push({path:'/Bid/judge_quality',query:{code:this.code}})
+        this.$router.push({path:'/Bid/judge_quality',query:{bid_code:this.bid_code}})
       }else{
-        start_judge(this.code).then(res => {
-          this.$router.push({path:'/Bid/judge_quality',query:{code:this.code}})
+        start_judge(this.bid_code).then(res => {
+          this.$router.push({path:'/Bid/judge_quality',query:{bid_code:this.bid_code}})
         }).catch(error => this.$message.error(error));
       }
     }

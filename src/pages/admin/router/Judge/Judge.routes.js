@@ -60,6 +60,26 @@ export default [
           permission: true
         },
       },
+      {
+        path: '/judge/judge_report',
+        name: '/judge/judge_report',
+        component: () =>
+        import( /*webpackChunkName:Judge*/ '@admin/views/Judge/judge/judge_report'),
+        meta: {
+          title: '报价评审',
+          permission: true
+        },
+      },
+      {
+        path: '/judge/judge_result',
+        name: '/judge/judge_result',
+        component: () =>
+        import( /*webpackChunkName:Judge*/ '@admin/views/Judge/judge/judge_result'),
+        meta: {
+          title: '得分汇总',
+          permission: true
+        },
+      }
     ]
   },
   {

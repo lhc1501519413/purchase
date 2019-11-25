@@ -1,12 +1,16 @@
 <template>
   <div id="open_steps">
     <h5>
-      招标管理 / 开标评标管理 / 评审小组设置
-      <a-button type="primary" @click="next">下一步</a-button>
+      招标管理 / 开标评标管理 / 评标
+      <div>
+        <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
+        <a-button type="primary" @click="get_judge_info">刷新</a-button>
+        <a-button type="primary" @click="next">下一步</a-button>
+      </div>
     </h5>
     <section class="content">
       <a-steps :current="current" labelPlacement="vertical">
-        <a-step @click="$router.push({path:'/Bid/open_record',query:{bid_code}})">
+        <a-step @click="judge_info.status>=3&&$router.push({path:'/Bid/open_record',query:{bid_code}})">
           <div slot="title" class="pointer">
             开标记录
             <br />
@@ -14,37 +18,37 @@
             <span class="open">开</span>
           </div>
         </a-step>
-        <a-step @click="$router.push({path:'/Bid/judge_quality',query:{bid_code}})">
+        <a-step @click="judge_info.status>=4&&$router.push({path:'/Bid/judge_quality',query:{bid_code}})">
           <div slot="title" class="pointer">
             资格审查
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="$router.push({path:'/Bid/judge_match',query:{bid_code}})">
+        <a-step @click="judge_info.status>=5&&$router.push({path:'/Bid/judge_match',query:{bid_code}})">
           <div slot="title" class="pointer">
             符合性评审
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}})">
+        <a-step @click="judge_info.status>=6&&$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}})">
           <div slot="title" class="pointer">
             商务技术评分
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})">
+        <a-step @click="judge_info.status>=7&&$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})">
           <div slot="title" class="pointer">
             商务技术评分汇总
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step>
+        <a-step @click="judge_info.status>=8&&$router.push({path:'/Bid/business_result',query:{bid_code}})">
           <div slot="title" class="pointer">
             商务技术结果公布
             <span class="open">开</span>
           </div>
         </a-step>
-        <a-step>
+        <a-step @click="judge_info.status>=9&&$router.push({path:'/Bid/supply_report',query:{bid_code}})">
           <div slot="title" class="pointer">
             开标记录
             <br />
@@ -52,19 +56,19 @@
             <span class="open">开</span>
           </div>
         </a-step>
-        <a-step>
+        <a-step @click="judge_info.status>=11&&$router.push({path:'/Bid/judge_report',query:{bid_code}})">
           <div slot="title" class="pointer">
             报价评审
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step>
+        <a-step @click="judge_info.status>=12&&$router.push({path:'/Bid/judge_result',query:{bid_code}})">
           <div slot="title" class="pointer">
             得分汇总
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step>
+        <a-step @click="judge_info.status>=13&&$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}})||$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             结果公布
             <span class="open">开</span>
@@ -72,11 +76,14 @@
         </a-step>
       </a-steps>
     </section>
-    <router-view :father="this" ref='child'></router-view>
+    <router-view :father="this" ref="child"></router-view>
   </div>
 </template>
 
 <script>
+import {
+  get_judge_info // 获取项目评审中的状态
+} from "@admin/api/open_bid";
 export default {
   props: {
     father: {
@@ -85,16 +92,27 @@ export default {
   },
   data() {
     return {
-      bid_code:this.$route.query.bid_code,
-      current: 0
+      bid_code: this.$route.query.bid_code,
+      current: 0,
+      judge_info: {}
     };
   },
   created() {
     this.father.selectedKeys = ["/Bid/open_bid_list"];
+    this.get_judge_info();
   },
   methods: {
+    open_report_file(){
+      this.$refs.child.open_report_file();
+    },
+    get_judge_info(){ // 获取项目评审中的状态
+      get_judge_info(this.bid_code).then(res=>{
+        this.judge_info = res.data;
+        this.$store.commit('SET_STATUS',res.data.status)
+      }).catch(error=>this.$message.error(error))
+    },
     next() {
-      this.$refs.child.next()
+      this.$refs.child.next();
     }
   }
 };
@@ -106,7 +124,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@import '~@admin/assets/scss/steps';
+@import "~@admin/assets/scss/steps";
 #open_steps {
   @include steps;
 }

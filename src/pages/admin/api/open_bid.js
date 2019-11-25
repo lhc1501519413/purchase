@@ -88,6 +88,78 @@ export function get_judge_quality_grade(bid_code) {
     params: { c: 'Bid', a: 'get_judge_quality_grade', token: global.token, bid_code }
   })
 }
-
-
+/* 获取商务技术评分汇总 */
+export function get_judge_total_quality_grade(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_judge_total_quality_grade', token: global.token, bid_code }
+  })
+}
+/* 获取商务技术结果公布 */
+export function get_business_result(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_business_result', token: global.token, bid_code }
+  })
+}
+/* 获取开标记录供应商报价 */
+export function get_supply_report(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_supply_report', token: global.token, bid_code }
+  })
+}
+/* 获取报价评审 */
+export function get_judge_report(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_judge_report', token: global.token, bid_code }
+  })
+}
+/* 开启报价文件 */
+export function open_report_file(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'open_report_file', token: global.token },
+    data
+  })
+}
+/* 开启报价评审 */
+export function open_report_judge(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'open_report_judge', token: global.token },
+    data
+  })
+}
+/* 获取得分汇总 */
+export function get_judge_result(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_judge_result', token: global.token, bid_code }
+  })
+}
+/* 获取推荐供应商 */
+export function get_judge_elect_supply(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_judge_elect_supply', token: global.token, bid_code }
+  })
+}
+/* 商务技术评分汇总下一步 */
+export function publish_business_result(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'publish_business_result', token: global.token },
+    data
+  })
+}
+/* 商务技术结果公布下一步 */
+export function open_report(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'open_report', token: global.token },
+    data
+  })
+}
 

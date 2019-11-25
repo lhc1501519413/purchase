@@ -1,7 +1,6 @@
 <template>
   <div id="judge_quality_grade">
     <section class="content">
-      <h4>专家评分</h4>
       <a-tabs
         tabPosition="top"
         :activeKey="activeKey"
@@ -10,19 +9,26 @@
         @tabClick="callback($event)"
         :tabBarGutter="10"
       >
-        <a-tab-pane v-for="item of judge_quality_grade" :key='item.user_id'>
+        <a-tab-pane v-for="item of judge_quality_grade" :key="item.user_id">
+          <h4>专家评分</h4>
           <div slot="tab">{{item.username}}</div>
-          <a-table class="table" :dataSource="item.quality_info" :columns="columns" rowKey="supply_id">
-            <template slot="status" slot-scope="text">
-              <a-select :defaultValue="text" disabled style="width: 120px" @change="handleChange">
-                <a-select-option value="1">符合</a-select-option>
-                <a-select-option value="2">不符合</a-select-option>
-              </a-select>
-            </template>
+          <a-table
+            class="table"
+            :dataSource="item.quality_grade_list"
+            :columns="columns"
+            rowKey="supply_id"
+          >
             <template slot="desc" slot-scope="text">
               <a-input :value="text" disabled></a-input>
             </template>
           </a-table>
+          <h4>评审意见</h4>
+          <a-row v-for="item of judge_quality_grade" :key="item.user_id" class="mb-10">
+            <a-col :span="3" class="text-right">【{{item.username}}】评审意见：</a-col>
+            <a-col :span="13">
+              {{item.opinion}}
+            </a-col>
+          </a-row>
         </a-tab-pane>
       </a-tabs>
     </section>
@@ -44,95 +50,8 @@ export default {
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
       activeKey: "1",
-      judge_quality_grade: [
-        {
-          id: "2",
-          user_id: "1", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名1",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        },
-        {
-          id: "2",
-          user_id: "2", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名2",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        },
-        {
-          id: "2",
-          user_id: "3", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名3",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        }
-      ],
+      supply_list: [],
+      judge_quality_grade: [],
       columns: [
         {
           title: "序号",
@@ -142,24 +61,18 @@ export default {
         },
         {
           title: "评分项目",
-          dataIndex: "supply_name",
+          dataIndex: "name",
           width: "10%"
         },
         {
           title: "评分标准",
-          dataIndex: "bid_code",
+          dataIndex: "judge_standard",
           width: "10%"
         },
         {
           title: "最高得分",
-          dataIndex: "supply_id",
+          dataIndex: "max_score",
           width: "10%"
-        },
-        {
-          title: "说明",
-          dataIndex: "desc",
-          scopedSlots: { customRender: "desc" },
-          width: "20%"
         }
       ]
     };
@@ -168,13 +81,28 @@ export default {
     this.father.current = 3;
     get_judge_quality_grade(this.bid_code)
       .then(res => {
-        // this.judge_quality_grade = res.data || [];
+        this.judge_quality_grade = res.data.expert_list || [];
+        this.activeKey = res.data.expert_list[0].user_id;
+        this.supply_list = res.data.supply_list;
+        var supply_list = res.data.supply_list;
+        supply_list.forEach(elem => {
+          let obj = {
+            title: elem.supply_name,
+            dataIndex: `score_${elem.supply_id}`,
+            width: "10%"
+          };
+          if (this.columns.length != 4 + supply_list.length)
+            this.columns.push(obj);
+        });
       })
       .catch(error => this.$message.error(error));
   },
   methods: {
     next() {
-      this.$router.push({ path: "/Bid/judge_quality_grade", query:{bid_code: this.bid_code }});
+      this.$router.push({
+        path: "/Bid/judge_quality_grade",
+        query: { bid_code: this.bid_code }
+      });
     },
     callback(name) {
       this.activeKey = name;

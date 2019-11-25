@@ -229,7 +229,57 @@ export default [
           title: '商务技术评分汇总',
           permission: true
         },
-      }
+      },
+      {
+        path: '/Bid/business_result',
+        name: '/Bid/business_result',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/business_result'),
+        meta: {
+          title: '商务技术结果公布',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/supply_report',
+        name: '/Bid/supply_report',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/supply_report'),
+        meta: {
+          title: '获取开标记录供应商报价',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_report',
+        name: '/Bid/judge_report',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_report'),
+        meta: {
+          title: '获取开标记录供应商报价',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_result',
+        name: '/Bid/judge_result',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_result'),
+        meta: {
+          title: '得分汇总',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_elect_supply',
+        name: '/Bid/judge_elect_supply',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_elect_supply'),
+        meta: {
+          title: '获取推荐供应商',
+          permission: true
+        },
+      },
     ]
   }
 ]

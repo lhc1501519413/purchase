@@ -1,5 +1,5 @@
 <template>
-  <div id="judge_quality">
+  <div id="judge_report">
     <section class="content">
       <a-tabs
         tabPosition="top"
@@ -9,10 +9,15 @@
         @tabClick="callback($event)"
         :tabBarGutter="10"
       >
-        <a-tab-pane v-for="item of judge_quality" :key='item.user_id'>
+        <a-tab-pane v-for="item of judge_report" :key="item.user_id">
           <h4>资格审查</h4>
           <div slot="tab">{{item.username}}</div>
-          <a-table class="table" :dataSource="item.quality_info" :columns="columns" rowKey="supply_id">
+          <a-table
+            class="table"
+            :dataSource="item.quality_info"
+            :columns="columns"
+            rowKey="supply_id"
+          >
             <template slot="status" slot-scope="text">
               <a-select :defaultValue="text" disabled style="width: 120px" @change="handleChange">
                 <a-select-option value="1">符合</a-select-option>
@@ -31,7 +36,7 @@
 
 <script>
 import {
-  get_judge_quality // 获取参与评审供应商
+  get_judge_report // 获取报价评审
 } from "@admin/api/open_bid";
 export default {
   props: {
@@ -44,7 +49,7 @@ export default {
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
       activeKey: "",
-      judge_quality: [],
+      judge_report: [],
       columns: [
         {
           title: "序号",
@@ -58,32 +63,34 @@ export default {
           width: "10%"
         },
         {
-          title: "资格审查情况",
+          title: "最终报价（万元）",
+          dataIndex: "report_money",
+          width: "20%"
+        },
+        {
+          title: "报价是否有效",
           dataIndex: "status",
           scopedSlots: { customRender: "status" },
           width: "10%"
-        },
-        {
-          title: "说明",
-          dataIndex: "desc",
-          scopedSlots: { customRender: "desc" },
-          width: "20%"
         }
       ]
     };
   },
   created() {
-    this.father.current = 1;
-    get_judge_quality(this.bid_code)
+    this.father.current = 7;
+    get_judge_report(this.bid_code)
       .then(res => {
-        this.judge_quality = res.data || [];
+        this.judge_report = res.data || [];
         this.activeKey = res.data[0].user_id;
       })
       .catch(error => this.$message.error(error));
   },
   methods: {
     next() {
-      this.$router.push({ path: "/Bid/judge_match", query:{bid_code: this.bid_code }});
+      this.$router.push({
+        path: "/Bid/judge_match",
+        query: { bid_code: this.bid_code }
+      });
     },
     callback(name) {
       this.activeKey = name;
@@ -94,7 +101,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@admin/assets/scss/content";
-#judge_quality {
+#judge_report {
   @include content;
 }
 </style>

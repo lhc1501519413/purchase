@@ -1,29 +1,14 @@
 <template>
-  <div class="judge_match">
+  <div class="judge_total_quality_grade">
     <section class="content">
       <h4>专家评分汇总</h4>
-      <a-button @click="reback">退回专家打分</a-button>
-      <a-table class="table" :dataSource="judge_match" :columns="columns" rowKey="supply_id">
-        <template slot="status" slot-scope="text,record">
-          <a-select v-model="record.status" style="width: 120px">
-            <a-select-option disabled value=''>---请选择---</a-select-option>
-            <a-select-option value="1">符合</a-select-option>
-            <a-select-option value="2">不符合</a-select-option>
-          </a-select>
-        </template>
-        <template slot="desc" slot-scope="text,record">
-          <a-input v-model="record.desc"></a-input>
-        </template>
-      </a-table>
+      <a-button class="ml-10" v-if='father.group_leader==1' @click="back_expert_judge_score">退回专家打分</a-button>
+      <a-table class="table" :dataSource="judge_total_quality_grade" :columns="columns" rowKey="user_id"></a-table>
       <h4>评审意见</h4>
-      <a-row>
-        <a-col :span="3" class="text-right">【{{user_name}}】评审意见：</a-col>
+      <a-row v-for="item of opinion_list" :key='item.user_id' class="mb-10">
+        <a-col :span="3" class="text-right">【{{item.realname}}】评审意见：</a-col>
         <a-col :span="13">
-          <a-textarea
-            v-model="opinion"
-            placeholder="请输入评审意见"
-            :autosize="{ minRows: 3, maxRows: 6 }"
-          />
+          {{item.opinion}}
         </a-col>
       </a-row>
     </section>
@@ -32,8 +17,10 @@
 
 <script>
 import {
-  get_judge_total_quality_grade, // 获取符合性审查列表数据
-  check_judge_next // 评审下一步操作
+  get_judge_total_quality_grade, // 获取商务技术评分汇总
+  submit_judge_total_quality_grade, // 保存商务技术评分汇总
+  check_judge_next, // 评审下一步操作
+  back_expert_judge_score // 退回专家打分
 } from "@admin/api/judge";
 export default {
   props: {
@@ -48,9 +35,8 @@ export default {
     return {
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
-      user_name: this.global.username,
-      opinion:'',
-      judge_match: [],
+      judge_total_quality_grade: [],
+      opinion_list:[],
       columns: [
         {
           title: "序号",
@@ -59,58 +45,93 @@ export default {
           align: "center"
         },
         {
-          title: "供应商名称",
-          dataIndex: "supply_name",
-          width: "10%"
-        },
-        {
-          title: "符合性评审",
-          dataIndex: "status",
-          scopedSlots: { customRender: "status" },
-          width: "10%"
-        },
-        {
-          title: "说明",
-          dataIndex: "desc",
-          scopedSlots: { customRender: "desc" },
-          width: "20%"
+          title: "专家名称",
+          dataIndex:'realname',
+          width: "10%",
         }
       ],
     };
   },
   created() {
-    this.father.current = 1;
+    this.father.current = 3;
     this.get_judge_total_quality_grade();
   },
   methods: {
     get_judge_total_quality_grade() {
       get_judge_total_quality_grade(this.bid_code)
         .then(res => {
-          this.judge_match = res.data.match_list || [];
-          this.opinion = res.data.opinion || '';
+          var expert_list = res.data.expert_list || [];
+          var index = expert_list.indexOfObj('user_id',0);
+          var last_item = expert_list.splice(index,1);
+          this.judge_total_quality_grade = [...expert_list,...last_item];
+          this.opinion_list = res.data.opinion_list || [];
+          var supply_list = res.data.supply_list || [];
+          supply_list.forEach(elem => {
+            let obj = {
+              title: elem.supply_name,
+              dataIndex:`score_${elem.supply_id}`,
+              width: "10%"
+            };
+            if (this.columns.length != 2 + supply_list.length) this.columns.push(obj);
+          });
         })
         .catch(error => this.$message.error(error));
     },
-    reback(){
-      console.log('退回专家打分')
+    back_expert_judge_score(){
+      back_expert_judge_score({bid_code:this.bid_code}).then(res=>{
+        this.$router.replace({path:'/judge/judge_quality_grade',query:{bid_code:this.bid_code}});
+        this.father.get_judge_info();
+        this.$message.success(res.msg);
+      }).catch(error => this.$message.error(error));
+    },
+    save(submit) {
+      var self = this;
+      var formData = {
+        bid_code: this.bid_code
+      };
+      self.$confirm({
+        title: "温馨提示",
+        content: "提交后不可修改，是否确认提交",
+        okText: "确认",
+        cancelText: "取消",
+        onOk() {
+          save_fn();
+        }
+      });
+      function save_fn() {
+        submit_judge_total_quality_grade(formData)
+          .then(res => {
+            self.$message.success(res.msg);
+          })
+          .catch(error => self.$message.error(error));
+      }
     },
     next() {
+      var self = this;
       if (this.status >= 8) {
         this.$router.push({
-          path: "/judge/judge_quality_grade",
+          path: "/judge/judge_report",
           query: { bid_code: this.bid_code }
         });
       } else {
-        check_judge_next(this.bid_code, 8)
-          .then(res => {
-            this.$message.success(res.msg);
-            this.father.get_judge_info();
-            this.$router.push({
-              path: "/judge/judge_quality_grade",
-              query: { bid_code: this.bid_code }
-            });
-          })
-          .catch(error => this.$message.error(error));
+        self.$confirm({
+          title: "温馨提示",
+          content: "是否开启报价标？需要报价标开启完后才可进入下一步。",
+          okText: "确认",
+          cancelText: "取消",
+          onOk() {
+            check_judge_next(self.bid_code, 8)
+              .then(res => {
+                self.$message.success(res.msg);
+                self.father.get_judge_info();
+                self.$router.push({
+                  path: "/judge/judge_quality_grade",
+                  query: { bid_code: self.bid_code }
+                });
+              })
+              .catch(error => self.$message.error(error));
+          }
+        });
       }
     }
   }
@@ -118,7 +139,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@admin/assets/scss/content";
-.judge_match {
+.judge_total_quality_grade {
   @include content;
 }
 </style>

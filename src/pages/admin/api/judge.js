@@ -127,6 +127,14 @@ export function get_judge_total_quality_grade(bid_code) {
     params: { c: 'Judge', a: 'get_judge_total_quality_grade', token: global.token,bid_code }
   })
 }
+/* 提交商务技术评分汇总 */
+export function submit_judge_total_quality_grade(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'submit_judge_total_quality_grade', token: global.token },
+    data
+  })
+}
 /* 获取报价评审列表 */
 export function get_judge_report(bid_code) {
   return request({
@@ -198,6 +206,22 @@ export function submit_scrap(data) {
   return request({
     method: 'POST',
     params: { c: 'Judge', a: 'submit_scrap', token: global.token },
+    data
+  })
+}
+/* 重新计算报价得分 */
+export function redo_report_score(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'redo_report_score', token: global.token },
+    data
+  })
+}
+/* 退回专家打分 */
+export function back_expert_judge_score(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'back_expert_judge_score', token: global.token },
     data
   })
 }

@@ -72,7 +72,7 @@
             <p :class="{bg:judge_info.status>=5}">3</p>
             <span>
               <span>
-                符合性审查
+                符合性评审
               </span>
               <span class="warning">
                 评标
@@ -109,7 +109,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=8&&$router.push({path:'/Bid/business_result',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=8}">6</p>
             <span>
@@ -123,9 +123,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=9&&$router.push({path:'/Bid/supply_report',query:{bid_code}})">
           <div>
-            <p :class="{bg:judge_info.status>=10}">7</p>
+            <p :class="{bg:judge_info.status>=9}">7</p>
             <span>
               <span>
                 开标记录（报价）
@@ -137,7 +137,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=11&&$router.push({path:'/Bid/judge_report',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=11}">8</p>
             <span>
@@ -151,7 +151,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=12&&$router.push({path:'/Bid/judge_result',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=12}">9</p>
             <span>
@@ -165,7 +165,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=13&&$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=13}">10</p>
             <span>
@@ -277,9 +277,6 @@ export default {
     this.get_judge_info();
   },
   methods: {
-    preparekey() {
-      console.log(event);
-    },
     get_judge_info(){ // 获取项目评审中的状态
       get_judge_info(this.bid_code).then(res=>{
         this.judge_info = res.data;
