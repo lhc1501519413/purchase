@@ -21,8 +21,10 @@
           <span>{{value|status}}</span>
         </template>
         <template slot="operation" slot-scope="text,record,index">
-          <router-link v-if="record.status!=1" :to="{path:'/judge'}">评审</router-link>
+          <span v-if="record.status==0">待开标</span>
           <a @click="sign(index)" v-if="record.status==1" href="javascript:;">签到</a>
+          <a @click="check_judge(record.bid_code)" v-if="record.status==2" href="javascript:;">评审</a>
+          <router-link v-if="record.status==3" :to="{path:'/judge',query:{bid_code:record.bid_code}}">评审</router-link>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -35,36 +37,40 @@
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
       :footer="null"
-      >
+    >
       <div slot="title" class="text-center">专家签到</div>
-      <h4>项目基本信息</h4>
-      <a-row class="mb-10">
-        <a-col :span="4">项目编号：</a-col>
-        <a-col :span="7">{{judge_info.custom_code}}</a-col>
-        <a-col :span="4">项目名称：</a-col>
-        <a-col :span="7">{{judge_info.title}}</a-col>
-      </a-row>
-      <a-row class="mb-10">
-        <a-col :span="4">采购单位：</a-col>
-        <a-col :span="7">{{judge_info.com_name}}</a-col>
-        <a-col :span="4">采购方式：</a-col>
-        <a-col :span="7">{{judge_info.bid_type_name}}</a-col>
-      </a-row>
-      <h4>专家基本信息</h4>
       <a-form :form="form" @submit="handleSubmit">
+        <h4>项目基本信息</h4>
         <a-row>
           <a-col :span="10" :offset="1">
-            <a-form-item label="专家名称" v-bind="formItemLayout">
-              <span>{{judge_info.name}}</span>
+            <a-form-item label="项目编号" v-bind="formItemLayout">{{judge_info.custom_code}}</a-form-item>
+          </a-col>
+          <a-col :span="11">
+            <a-form-item label="项目名称" v-bind="formItemLayout">{{judge_info.title}}</a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="10" :offset="1">
+            <a-form-item label="采购单位" v-bind="formItemLayout">{{judge_info.com_name}}</a-form-item>
+          </a-col>
+          <a-col :span="11">
+            <a-form-item label="采购方式" v-bind="formItemLayout">{{judge_info.bid_type_name}}</a-form-item>
+          </a-col>
+        </a-row>
+        <h4>专家基本信息</h4>
+        <a-row>
+          <a-col :span="10" :offset="1">
+            <a-form-item label="专家姓名" v-bind="formItemLayout">
+              {{user_name}}
             </a-form-item>
           </a-col>
           <a-col :span="11">
-            <a-form-item label="单位" v-bind="formItemLayout">
+            <a-form-item label="专家单位" v-bind="formItemLayout">
               <a-input
-                placeholder="请输入单位名称"
+                placeholder="请输入专家单位"
                 v-decorator="[
-                  'com',
-                  { rules: [{ required: true, message: '请输入单位名称' }],initialValue:judge_info.com}
+                  'org',
+                  { rules: [{ required: true, message: '请输入专家单位' }],initialValue:sign_info.org}
                 ]"
               />
             </a-form-item>
@@ -72,12 +78,12 @@
         </a-row>
         <a-row>
           <a-col :span="10" :offset="1">
-            <a-form-item label="联系人姓名" v-bind="formItemLayout">
+            <a-form-item label="专家职称" v-bind="formItemLayout">
               <a-input
-                placeholder="请输入联系人姓名"
+                placeholder="请输入专家职称"
                 v-decorator="[
-                  'contact_name',
-                  { rules: [{ required: true, message: '请输入联系人姓名' }],initialValue:judge_info.contact_name}
+                  'situation',
+                  { rules: [{ required: true, message: '请输入专家职称' }],initialValue:sign_info.situation}
                 ]"
               />
             </a-form-item>
@@ -87,8 +93,8 @@
               <a-input
                 placeholder="请输入联系电话"
                 v-decorator="[
-                  'contact_phone',
-                  { rules: [{ required: true, message: '请输入联系电话' }],initialValue:judge_info.contact_phone}
+                  'contact_number',
+                  { rules: [{ required: true, message: '请输入联系电话' }],initialValue:sign_info.contact_number}
                 ]"
               />
             </a-form-item>
@@ -104,7 +110,12 @@
 </template>
 
 <script>
-import { bid_list, sign_judge, get_sign_info } from "@admin/api/judge";
+import { 
+  bid_list, // 招标列表
+  sign_judge,  // 签到
+  get_sign_info,  // 签到信息
+  open_judge // 专家开启评审
+} from "@admin/api/judge";
 import {
   get_bid_type // 采购方式
 } from "@common/js/apis";
@@ -126,52 +137,20 @@ export default {
       },
       priv: this.$store.getters.priv,
       keyword: "",
-      status: "0",
+      status: "",
       statusList: [
-        { value: "0", label: "全部" },
-        { value: "1", label: "待开标" },
-        { value: "2", label: "待签到" },
-        { value: "3", label: "待评审" },
-        { value: "4", label: "已流标" },
-        { value: "5", label: "评审结束" }
+        { value: "", label: "全部" },
+        { value: "0", label: "待开标" },
+        { value: "1", label: "待签到" },
+        { value: "2", label: "待评审" },
+        { value: "3", label: "评审中" },
+        { value: "20", label: "已流标" },
+        { value: "14", label: "评审结束" }
       ],
       bid_type: "",
       bid_type_list: [{ value: "0", title: "全部" }],
       page: "",
-      dataSource: [
-        {
-          id: "2",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "190920182116941657", //单号
-          com_code: "zdyszx",
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          status: "1", //status 1未签到2已签到
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          bid_status: "1", //状态 1 待提交（编辑）2待审核 3项目驳回 8(审核通过)采购文件待制作 9采购文件待审核 10采购文件已驳回 11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布
-          cat_id: "36", //大类ID
-          cat_name: '果蔬类', //大类名称
-          open_time: "2019-11-110 :15:20:00" //实际开标时间
-        },
-        {
-          id: "3",
-          title: "require", //标题
-          custom_code: "用户自定义单号", //
-          bid_code: "190920182116941657", //单号
-          com_code: "zdyszx",
-          com_name: "浙大饮食中心", //采购单位名称
-          com_id: "1",
-          status: "2",
-          bid_type: "1", //采购方式类型
-          bid_type_name: "公开招标", //采购方式类型
-          bid_status: "1", //状态 1 待提交（编辑）2待审核 3项目驳回 8(审核通过)采购文件待制作 9采购文件待审核 10采购文件已驳回 11采购公告已发布 15待开标 16评审中 17采购人确认中 18采购结果公告已发布
-          cat_id: "36", //大类ID
-          cat_name: '鲜肉类', //大类名称
-          open_time: "2019-11-110 :15:20:00" //实际开标时间
-        }
-      ],
+      dataSource: [],
       columns: [
         {
           title: "序号",
@@ -222,26 +201,31 @@ export default {
         }
       ],
       total: 10,
-      judge_info:{},
-      ModalVisible:false,
+      user_name: this.global.username,
+      judge_info: {},
+      sign_info: {},
+      ModalVisible: false
     };
   },
   filters: {
     status: key => {
       switch (key) {
-        case "1":
+        case "0":
           return "待开标";
           break;
-        case "2":
+        case "1":
           return "待签到";
           break;
-        case "3":
+        case "2":
           return "待评审";
           break;
-        case "4":
+        case "3":
+          return "评审中";
+          break;
+        case "20":
           return "已流标";
           break;
-        case "5":
+        case "14":
           return "评审结束";
           break;
         default:
@@ -252,7 +236,7 @@ export default {
   },
   created() {
     this.father.selectedKeys = ["/Judge/bid_list"];
-    this.status = this.$route.params.status || "0";
+    this.status = this.$route.params.status || "";
     this.bid_list_method();
     this.get_tree_data();
   },
@@ -282,20 +266,10 @@ export default {
       params.bid_type = this.bid_type;
       bid_list(params)
         .then(res => {
-          // this.dataSource = res.data.list||[];
-          // this.total = +res.data.total_count;
+          this.dataSource = res.data.list || [];
+          this.total = +res.data.total_count;
         })
         .catch(error => this.$message.error(error));
-    },
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFieldsAndScroll((err, fieldsValue) => {
-        if (!err) {
-          const values = {
-            ...fieldsValue,
-          };
-        }
-      });
     },
     paginationChange(page) {
       this.page = page;
@@ -303,11 +277,30 @@ export default {
     },
     sign(index) {
       this.judge_info = this.dataSource[index];
-      this.judge_info.name='lilith';
-      this.judge_info.com='特斯拉是爱迪生坑毁了';
-      this.judge_info.contact_name='adam';
-      this.judge_info.contact_phone='13312345678';
-      this.ModalVisible = true;
+      get_sign_info(this.judge_info.bid_code).then(res=>{
+        this.sign_info = res.data;
+        this.ModalVisible = true;
+      }).catch(error => this.$message.error(error));
+    },
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFieldsAndScroll((err, fieldsValue) => {
+        if (!err) {
+          const values = {
+            ...fieldsValue,
+            bid_code:this.judge_info.bid_code
+          };
+          sign_judge(values).then(res=>{
+            this.bid_list_method2();
+            this.ModalVisible = false;
+          }).catch(error => this.$message.error(error));
+        }
+      });
+    },
+    check_judge(bid_code){
+      open_judge(bid_code).then(res=>{
+        this.$router.push({path:'/judge',query:{bid_code}})
+      }).catch(error => this.$message.error(error));
     }
   }
 };

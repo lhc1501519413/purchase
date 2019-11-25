@@ -6,46 +6,46 @@
     </h5>
     <section class="content">
       <a-steps :current="current" labelPlacement="vertical">
-        <a-step>
-          <div slot="title">
+        <a-step @click="$router.push({path:'/Bid/open_record',query:{bid_code}})">
+          <div slot="title" class="pointer">
             开标记录
             <br />
             <span>(资格商务审查)</span>
             <span class="open">开</span>
           </div>
         </a-step>
-        <a-step>
-          <div slot="title">
+        <a-step @click="$router.push({path:'/Bid/judge_quality',query:{bid_code}})">
+          <div slot="title" class="pointer">
             资格审查
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step>
-          <div slot="title">
+        <a-step @click="$router.push({path:'/Bid/judge_match',query:{bid_code}})">
+          <div slot="title" class="pointer">
             符合性评审
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step>
-          <div slot="title">
+        <a-step @click="$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}})">
+          <div slot="title" class="pointer">
             商务技术评分
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step>
-          <div slot="title">
+        <a-step @click="$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})">
+          <div slot="title" class="pointer">
             商务技术评分汇总
             <span class="judge">评</span>
           </div>
         </a-step>
         <a-step>
-          <div slot="title">
+          <div slot="title" class="pointer">
             商务技术结果公布
             <span class="open">开</span>
           </div>
         </a-step>
         <a-step>
-          <div slot="title">
+          <div slot="title" class="pointer">
             开标记录
             <br />
             <span>(报价)</span>
@@ -53,19 +53,19 @@
           </div>
         </a-step>
         <a-step>
-          <div slot="title">
+          <div slot="title" class="pointer">
             报价评审
             <span class="judge">评</span>
           </div>
         </a-step>
         <a-step>
-          <div slot="title">
+          <div slot="title" class="pointer">
             得分汇总
             <span class="judge">评</span>
           </div>
         </a-step>
         <a-step>
-          <div slot="title">
+          <div slot="title" class="pointer">
             结果公布
             <span class="open">开</span>
           </div>
@@ -85,6 +85,7 @@ export default {
   },
   data() {
     return {
+      bid_code:this.$route.query.bid_code,
       current: 0
     };
   },

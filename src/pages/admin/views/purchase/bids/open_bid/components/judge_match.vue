@@ -12,7 +12,7 @@
       >
         <a-tab-pane v-for="item of judge_match" :key='item.user_id'>
           <div slot="tab">{{item.username}}</div>
-          <a-table class="table" :dataSource="item.quality_info" :columns="columns" rowKey="supply_id">
+          <a-table class="table" :dataSource="item.match_info" :columns="columns" rowKey="supply_id">
             <template slot="status" slot-scope="text">
               <a-select :defaultValue="text" disabled style="width: 120px" @change="handleChange">
                 <a-select-option value="1">符合</a-select-option>
@@ -23,6 +23,13 @@
               <a-input :value="text" disabled></a-input>
             </template>
           </a-table>
+          <h4>评审意见</h4>
+          <a-row>
+            <a-col :span="3" class="text-right" >【{{item.username}}】评审意见：</a-col>
+            <a-col :span="13">
+              {{item.opinion}}
+            </a-col>
+          </a-row>
         </a-tab-pane>
       </a-tabs>
     </section>
@@ -42,97 +49,9 @@ export default {
   data() {
     return {
       priv: this.$store.getters.priv,
-      code: this.$route.query.code,
+      bid_code: this.$route.query.bid_code,
       activeKey: "1",
-      judge_match: [
-        {
-          id: "2",
-          user_id: "1", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名1",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        },
-        {
-          id: "2",
-          user_id: "2", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名2",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        },
-        {
-          id: "2",
-          user_id: "3", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名3",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        }
-      ],
+      judge_match: [],
       columns: [
         {
           title: "序号",
@@ -162,15 +81,16 @@ export default {
   },
   created() {
     this.father.current = 2;
-    get_judge_match(this.code)
+    get_judge_match(this.bid_code)
       .then(res => {
-        // this.judge_match = res.data || [];
+        this.judge_match = res.data || [];
+        this.activeKey = res.data[0].user_id;
       })
       .catch(error => this.$message.error(error));
   },
   methods: {
     next() {
-      this.$router.push({ path: "/Bid/judge_quality_grade", query:{code: this.code }});
+      this.$router.push({ path: "/Bid/judge_quality_grade", query:{bid_code: this.bid_code }});
     },
     callback(name) {
       this.activeKey = name;

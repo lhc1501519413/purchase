@@ -373,6 +373,9 @@ export default {
               clearInterval(this.decrypt_time_interval)
             }
           })(), 5000);
+          this.$once('hook:beforeDestroy',() => {
+            clearInterval(this.decrypt_time_interval);
+          })
         })
         .catch(error => this.$message.error(error));
       get_decrypt_file(bid_code)

@@ -20,8 +20,9 @@
         <template slot="show_status" slot-scope="value">
           <span>{{value|show_status}}</span>
         </template>
-        <template slot="operation" slot-scope="text,record,index">
-          <a v-if="record.supply_count!=0" href="javascript:;" @click="showModel(text.id,index,text.code)">查看获取信息</a>
+        <template slot="operation" slot-scope="text,record">
+          <!-- <a v-if="record.supply_count!=0" href="javascript:;" @click="showModel(text.id,index,text.code)">查看Modal</a> -->
+          <router-link :to="{path:'/Bid/check_purchase_info',query:{id:text.id,code:text.code}}" v-if="record.supply_count!=0">查看获取信息</router-link>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -37,7 +38,7 @@
       :footer="null"
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
-    >
+      >
       <h3>项目信息</h3>
       <div class="send-file-btn">
         <a-button type="primary" class="mr-10" @click="give_up">流标</a-button>
@@ -427,7 +428,7 @@ export default {
       .catch(error => this.$message.error(error));
     },
     give_up(){
-      save_bid_fail(this.bid_code).then(res => {
+      save_bid_fail({bid_code:this.bid_code}).then(res => {
         this.ModalVisible = false;
         this.$message.success(res.msg);
       })

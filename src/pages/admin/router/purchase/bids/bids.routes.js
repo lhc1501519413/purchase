@@ -50,6 +50,16 @@ export default [
     }
   },
   {
+    path: '/Bid/check_purchase_info',
+    name: '/Bid/check_purchase_info',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/check_purchase_info'),
+    meta: {
+      title: '查看获取信息',
+      permission: true
+    }
+  },
+  {
     path: '/Bid/purchase_list',
     name: '/Bid/purchase_list',
     component: () =>
@@ -207,6 +217,16 @@ export default [
           import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_quality_grade'),
         meta: {
           title: '商务技术评分',
+          permission: true
+        },
+      },
+      {
+        path: '/Bid/judge_total_quality_grade',
+        name: '/Bid/judge_total_quality_grade',
+        component: () =>
+          import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/judge_total_quality_grade'),
+        meta: {
+          title: '商务技术评分汇总',
           permission: true
         },
       }

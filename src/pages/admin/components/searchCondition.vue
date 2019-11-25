@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       keyword:'',
-      status:this.statusKey||'0',
+      status:this.statusKey,
       bid_type:'0',
     };
   },

@@ -36,7 +36,7 @@ export default {
     return {
       group_leader: false,
       priv: this.$store.getters.priv,
-      code: "",
+      bid_code: "",
       dataSource: [],
       columns: [
         {
@@ -65,13 +65,13 @@ export default {
     };
   },
   created() {
-    this.code = this.$route.query.code;
+    this.bid_code = this.$route.query.bid_code;
     this.father.selectedKeys = ["/Bid/open_bid_list"];
     this.get_bid_judge_expert();
   },
   methods: {
     get_bid_judge_expert() {
-      get_bid_judge_expert(this.code)
+      get_bid_judge_expert(this.bid_code)
         .then(res => {
           let dataSource = res.data || [];
           dataSource.forEach(elem => {
@@ -92,7 +92,7 @@ export default {
     save() {
       var expert_list = JSON.parse(JSON.stringify(this.dataSource));
       var obj = {
-        bid_code: this.code,
+        bid_code: this.bid_code,
         expert_list
       };
       obj.expert_list.forEach(elem=>{

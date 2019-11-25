@@ -42,97 +42,9 @@ export default {
   data() {
     return {
       priv: this.$store.getters.priv,
-      code: this.$route.query.code,
-      activeKey: "1",
-      judge_quality: [
-        {
-          id: "2",
-          user_id: "1", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名1",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        },
-        {
-          id: "2",
-          user_id: "2", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名2",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        },
-        {
-          id: "2",
-          user_id: "3", //用户ID
-          mobile: "15155115022", //手机号
-          username: "专家姓名3",
-          quality_info: [
-            {
-              bid_code: "招标单号",
-              supply_id: "1",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "2",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            },
-            {
-              bid_code: "招标单号",
-              supply_id: "3",
-              supply_name: "供应商名字",
-              status: "1", //状态 1符合 2不符合
-              desc: "说明" //说明
-            }
-          ]
-        }
-      ],
+      bid_code: this.$route.query.bid_code,
+      activeKey: "",
+      judge_quality: [],
       columns: [
         {
           title: "序号",
@@ -162,15 +74,16 @@ export default {
   },
   created() {
     this.father.current = 1;
-    get_judge_quality(this.code)
+    get_judge_quality(this.bid_code)
       .then(res => {
-        // this.judge_quality = res.data || [];
+        this.judge_quality = res.data || [];
+        this.activeKey = res.data[0].user_id;
       })
       .catch(error => this.$message.error(error));
   },
   methods: {
     next() {
-      this.$router.push({ path: "/Bid/judge_match", query:{code: this.code }});
+      this.$router.push({ path: "/Bid/judge_match", query:{bid_code: this.bid_code }});
     },
     callback(name) {
       this.activeKey = name;

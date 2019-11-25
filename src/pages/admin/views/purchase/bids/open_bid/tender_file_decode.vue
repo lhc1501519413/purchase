@@ -37,7 +37,7 @@
       :footer="null"
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
-    >
+      >
       <h3 class="text-center">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
         <h4>项目基本信息</h4>
@@ -91,7 +91,7 @@
             </ul>
           </a-upload>
         </a-form-item>
-        <a-form-item class="text-right">
+        <a-form-item class="text-center">
           <a-button class="mr-10" @click="ModalVisible = false">取消</a-button>
           <a-button class="ml-10" type="primary" html-type="submit">确定</a-button>
         </a-form-item>
@@ -125,7 +125,7 @@ export default {
         labelCol: { span: 6 },
         wrapperCol: { span: 18 }
       },
-      code: "",
+      bid_code: "",
       del_icon: require("@static/icon/icon_close.png"),
       formData: {
         reason: "",
@@ -189,14 +189,14 @@ export default {
     }
   },
   created() {
-    this.code = this.$route.query.code;
+    this.bid_code = this.$route.query.bid_code;
     this.father.selectedKeys = ["/Bid/open_bid_list"];
     this.get_open_supply_list();
     this.get_judge_info();
   },
   methods: {
     get_open_supply_list() {
-      get_open_supply_list(this.code)
+      get_open_supply_list(this.bid_code)
         .then(res => {
           this.dataSource = res.data.list || [];
         })
@@ -206,7 +206,7 @@ export default {
     },
     get_judge_info() {
       // 获取项目评审中的状态
-      get_judge_info(this.code)
+      get_judge_info(this.bid_code)
         .then(res => {
           this.judge_info = res.data;
         })
@@ -221,7 +221,7 @@ export default {
         title: "温馨提示",
         content: "确定要开始解密吗？",
         onOk() {
-          open_decrypt(self.code)
+          open_decrypt(self.bid_code)
             .then(res => {
               self.$message.success(res.msg);
             })
@@ -238,7 +238,7 @@ export default {
         title: "温馨提示",
         content: "确定要开启标书信息吗？",
         onOk() {
-          open_bid_file(self.code)
+          open_bid_file(self.bid_code)
             .then(res => {
               self.$message.success(res.msg);
               let time = setTimeout(() => {
@@ -257,7 +257,8 @@ export default {
         if (!err) {
           const values = {
             ...fieldsValue,
-            bid_code: this.code
+            bid_code: this.bid_code,
+            file_list: this.formData.file_list
           };
           save_bid_fail(values)
             .then(res => {

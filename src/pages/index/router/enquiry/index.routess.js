@@ -1,7 +1,7 @@
 export default [
   {
-    path: '/enquiry',
-    name: 'enquiry',
+    path: '/enquiries',
+    name: 'enquiries',
     component: () => import( /*webpackChunkName:enquiry*/ '@indexViews/enquiry/index'),
     meta: { 
       title: '在线询价', 

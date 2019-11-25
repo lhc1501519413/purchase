@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       priv: this.$store.getters.priv,
-      code: this.$route.query.code,
+      bid_code: this.$route.query.bid_code,
       activeKey: "1",
       judge_quality_grade: [
         {
@@ -147,12 +147,12 @@ export default {
         },
         {
           title: "评分标准",
-          dataIndex: "status",
+          dataIndex: "bid_code",
           width: "10%"
         },
         {
           title: "最高得分",
-          dataIndex: "status",
+          dataIndex: "supply_id",
           width: "10%"
         },
         {
@@ -166,7 +166,7 @@ export default {
   },
   created() {
     this.father.current = 3;
-    get_judge_quality_grade(this.code)
+    get_judge_quality_grade(this.bid_code)
       .then(res => {
         // this.judge_quality_grade = res.data || [];
       })
@@ -174,7 +174,7 @@ export default {
   },
   methods: {
     next() {
-      this.$router.push({ path: "/Bid/judge_quality_grade", query:{code: this.code }});
+      this.$router.push({ path: "/Bid/judge_quality_grade", query:{bid_code: this.bid_code }});
     },
     callback(name) {
       this.activeKey = name;

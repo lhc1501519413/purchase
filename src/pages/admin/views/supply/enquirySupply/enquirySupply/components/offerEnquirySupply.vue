@@ -92,7 +92,7 @@ export default {
       endTime = setInterval(() => {
         time = new Date(end_date).getTime()-new Date().getTime();
         if(time<1000){
-          clearInterval(time)
+          clearInterval(endTime)
         }
         date = parseInt(time/(3600*24*1000));
         hour = parseInt((time-date*(3600*24*1000))/(3600*1000));
@@ -100,6 +100,9 @@ export default {
         second = parseInt((time-date*(3600*24*1000)-hour*(3600*1000)-minute*(60*1000))/1000);
         this.end_date = date+'天'+getZero(hour)+'时'+ getZero(minute) +'分'+getZero(second)+'秒'
       },1000);
+      self.$once('hook:beforeDestroy',() => {
+        clearInterval(endTime);
+      })
       function getZero(value){
         return value<10?'0'+value:value
       }

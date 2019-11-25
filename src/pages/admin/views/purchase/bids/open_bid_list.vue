@@ -63,23 +63,23 @@
           <!-- <div v-if="$moment()>$moment(record.open_time)"> -->
             <router-link
               v-if="priv.open_bid_list.open&&(record.status==15||record.status==16)"
-              :to="{path:'/Bid/open_bid',query:{status:record.status,code:record.code}}"
+              :to="{path:'/Bid/open_bid',query:{status:record.status,bid_code:record.code}}"
             >开标评标</router-link>
             <router-link
               v-if="priv.open_bid_list.view&&(record.status==18||record.status==20||record.status==21)"
-              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.code}}"
             >查看</router-link>
             <router-link
               v-if="priv.open_bid_list.view&&record.status==20"
-              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.code}}"
             >流标信息</router-link>
             <router-link
               v-if="priv.open_bid_list.view&&record.status==21"
-              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.code}}"
             >开标中流标信息</router-link>
             <router-link
               v-if="priv.open_bid_list.view&&record.status==21"
-              :to="{path:'/Bid/experts_draw',query:{status:record.status,code:record.code}}"
+              :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.code}}"
             >开标中废标信息</router-link>
           <!-- </div>
           <a v-else>

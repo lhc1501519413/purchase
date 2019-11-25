@@ -188,6 +188,9 @@ export default {
         case '18':
           return '采购结果公告已发布'
           break;
+        case '20':
+          return '已流标'
+          break;
         default:
           return '未知状态'
           break;

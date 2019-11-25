@@ -22,14 +22,14 @@
     <section class="content">
       <h4>评前准备</h4>
       <ul class="prepare">
-        <li @click="$router.push({path:'/Bid/tender_file_decode',query:{code}})">
+        <li @click="$router.push({path:'/Bid/tender_file_decode',query:{bid_code}})">
           <div>
             <p class="bg">1</p>
             <span>投标（响应）文件签收、解密</span>
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=2&&$router.push({path:'/Bid/judge_group',query:{code}})">
+        <li @click="judge_info.status>=2&&$router.push({path:'/Bid/judge_group',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=2}">2</p>
             <span>评审小组设置</span>
@@ -39,7 +39,7 @@
       </ul>
       <h4>开标评标</h4>
       <ul class="prepare">
-        <li @click="judge_info.status>=3&&$router.push({path:'/Bid/open_record',query:{code}})">
+        <li @click="judge_info.status>=3&&$router.push({path:'/Bid/open_record',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=3}">1</p>
             <span>
@@ -53,7 +53,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=4&&$router.push({path:'/Bid/judge_quality',query:{code}})">
+        <li @click="judge_info.status>=4&&$router.push({path:'/Bid/judge_quality',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=4}">2</p>
             <span>
@@ -67,7 +67,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=5&&$router.push({path:'/Bid/judge_match',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=5}">3</p>
             <span>
@@ -81,7 +81,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=6&&$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=6}">4</p>
             <span>
@@ -95,7 +95,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="preparekey">
+        <li @click="judge_info.status>=7&&$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})">
           <div>
             <p :class="{bg:judge_info.status>=7}">5</p>
             <span>
@@ -251,7 +251,7 @@ export default {
   },
   data() {
     return {
-      code: "",
+      bid_code: "",
       del_icon: require("@static/icon/icon_close.png"),
       point: require("@static/images/icon_point.png"),
       result_list: [],
@@ -272,7 +272,7 @@ export default {
     };
   },
   created() {
-    this.code = this.$route.query.code;
+    this.bid_code = this.$route.query.bid_code;
     this.father.selectedKeys = ["/Bid/open_bid_list"];
     this.get_judge_info();
   },
@@ -281,7 +281,7 @@ export default {
       console.log(event);
     },
     get_judge_info(){ // 获取项目评审中的状态
-      get_judge_info(this.code).then(res=>{
+      get_judge_info(this.bid_code).then(res=>{
         this.judge_info = res.data;
         this.$store.commit('SET_STATUS',res.data.status)
       }).catch(error=>this.$message.error(error))
@@ -327,7 +327,7 @@ export default {
       this.$confirm({
         title: "确认提交投标文件吗？",
         onOk() {
-          submit_tender(self.code)
+          submit_tender(self.bid_code)
             .then(res => {
               self.$message.success(res.msg);
               let time = setTimeout(() => {

@@ -169,6 +169,9 @@ export default {
           this.yzm_btn = `发送验证码`;
         }
       }, 1000);
+      this.$once('hook:beforeDestroy',() => {
+        clearInterval(time);
+      })
     },
     handleSubmit(e) {
       e.preventDefault();

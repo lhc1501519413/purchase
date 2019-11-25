@@ -59,7 +59,7 @@ export default {
     },
     onSearch(value) {
       switch (this.$route.name) {
-        case 'enquiry':
+        case 'enquiries':
           if(this.tab){
             this.$refs.myChild.get_inquiry_list_method();
           }else{
@@ -70,12 +70,12 @@ export default {
           if(!this.tab){
             this.$refs.myChild.get_notice_list_method();
           }else{
-            this.$router.push({name:'enquiry'})
+            this.$router.push({name:'enquiries'})
           }
           break;
         default:
           if(this.tab){
-            this.$router.push({name:'enquiry'})
+            this.$router.push({name:'enquiries'})
           }else{
             this.$router.push({name:'notice'})
           }

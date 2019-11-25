@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
       code:this.$route.query.code,
       dataSource: [],
@@ -65,10 +66,14 @@ export default {
   methods: {
     handleChange() {},
     next(){
-      start_judge(this.code).then(res => {
+      console.log(this.status)
+      if(this.status>3){
         this.$router.push({path:'/Bid/judge_quality',query:{code:this.code}})
-      })
-      .catch(error => this.$message.error(error));
+      }else{
+        start_judge(this.code).then(res => {
+          this.$router.push({path:'/Bid/judge_quality',query:{code:this.code}})
+        }).catch(error => this.$message.error(error));
+      }
     }
   }
 };

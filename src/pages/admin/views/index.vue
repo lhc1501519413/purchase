@@ -11,7 +11,7 @@
         <a href="javascript:;" class="mr-10" title="返回前台" @click="toFront">
           <svg-icon icon-class="icon_topnav_store_n" />
         </a>
-        <a-dropdown placement="bottomCenter">
+        <a-dropdown placement="bottomCenter" v-if="type!=2">
           <span class="ant-dropdown-link mr-10">
             <a-badge :count="panelCount">
               <svg-icon class="pointer" icon-class="icon_topnav_task" />
@@ -75,7 +75,7 @@
             <a-menu-item :key="com_info?'panel-1':'panelSupply-1'" class="text-center color">所有任务</a-menu-item>
           </a-menu>
         </a-dropdown>
-        <a-dropdown placement="bottomCenter">
+        <a-dropdown placement="bottomCenter" v-if="type!=2">
           <span class="ant-dropdown-link mr-10">
             <a-badge :count="messageCount">
               <svg-icon class="pointer" icon-class="icon_topnav_bell" />

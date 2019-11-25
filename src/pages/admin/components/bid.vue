@@ -20,7 +20,7 @@
         <a-col class="text-right" :span='2' :offset='1'>采购单位：</a-col>
         <a-col :span='5'>{{formData.com_name}}</a-col>
         <a-col class="text-right" :span='2' :offset='1'>采购方式：</a-col>
-        <a-col :span='5'>{{formData.com_name}}</a-col>
+        <a-col :span='5'>{{formData.buy_type_name}}</a-col>
       </a-row>
       <a-row class="mb-10">
         <a-col class="text-right" :span='2' :offset='1'>采购联系人：</a-col>

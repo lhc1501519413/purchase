@@ -22,6 +22,22 @@ export function get_sign_info(bid_code) {
     params: { c: 'Judge', a: 'get_sign_info', token: global.token,bid_code }
   })
 }
+/* 专家开启评审 */
+export function open_judge(bid_code) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'open_judge', token: global.token },
+    data:{bid_code}
+  })
+}
+/* 评审下一步操作 */
+export function check_judge_next(bid_code,step) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'check_judge_next', token: global.token },
+    data:{bid_code,step}
+  })
+}
 /* 获取项目评审中的状态 */
 export function get_judge_info(bid_code) {
   return request({
@@ -140,11 +156,51 @@ export function get_judge_result(bid_code) {
     params: { c: 'Judge', a: 'get_judge_result', token: global.token,bid_code }
   })
 }
-
-
-
-
-
+/* 废标供应商列表 */
+export function scrap_supply_list(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Judge', a: 'scrap_supply_list', token: global.token,bid_code }
+  })
+}
+/* 获取废标记录 */
+export function get_scrap_list(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Judge', a: 'get_scrap_list', token: global.token,bid_code }
+  })
+}
+/* 普通专家获取废标详情 */
+export function get_scrap_info(bid_code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Judge', a: 'get_scrap_info', token: global.token,bid_code }
+  })
+}
+/* 发起/修改废标 */
+export function save_start_scrap(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'save_start_scrap', token: global.token },
+    data
+  })
+}
+/* 取消废标 */
+export function cancel_scrap(scrap_code) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'cancel_scrap', token: global.token },
+    data:{scrap_code}
+  })
+}
+/* 提交废标意见 */
+export function submit_scrap(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'submit_scrap', token: global.token },
+    data
+  })
+}
 
 
 
