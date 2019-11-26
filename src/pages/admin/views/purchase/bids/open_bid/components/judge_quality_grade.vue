@@ -100,7 +100,7 @@ export default {
   methods: {
     next() {
       this.$router.push({
-        path: "/Bid/judge_quality_grade",
+        path: "/Bid/judge_total_quality_grade",
         query: { bid_code: this.bid_code }
       });
     },

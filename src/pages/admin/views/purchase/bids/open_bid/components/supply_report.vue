@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
       supply_report: [],
@@ -59,7 +60,7 @@ export default {
         .catch(error => this.$message.error(error));
     },
     next() {
-      if(this.status>9){
+      if(this.status>11){ // 开启报价记录与开启报价文件完成
         this.$router.push({path:'/Bid/judge_report',query:{bid_code:this.bid_code}})
       }else{
         open_report_judge({bid_code:this.bid_code}).then(res => {

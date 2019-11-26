@@ -300,7 +300,7 @@ export default {
     check_judge(bid_code){
       open_judge(bid_code).then(res=>{
         this.$router.push({path:'/judge',query:{bid_code}})
-      }).catch(error => this.$message.error(error));
+      }).catch(error => this.$message.warn(error));
     }
   }
 };

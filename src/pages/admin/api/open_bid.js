@@ -139,6 +139,14 @@ export function get_judge_result(bid_code) {
     params: { c: 'Bid', a: 'get_judge_result', token: global.token, bid_code }
   })
 }
+/* 得分汇总下一步 */
+export function confirm_bid_judge(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'confirm_bid_judge', token: global.token },
+    data
+  })
+}
 /* 获取推荐供应商 */
 export function get_judge_elect_supply(bid_code) {
   return request({

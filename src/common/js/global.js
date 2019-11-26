@@ -2,10 +2,10 @@
 // const baseUrl = 'http://smart.acuit.net/bid/cloud.php'
 // const host = window.location.protocol+"//"+window.location.host + '/purchases';
 // const baseUrl = 'http://demo.acuit.net/cloud.php';
-// const host = window.location.protocol+"//"+window.location.host + '/purchase';
-// const baseUrl = 'http://192.168.2.134/cloud.php';
-const host = window.location.protocol+"//"+window.location.host;
-const baseUrl = process.env.API;
+const host = window.location.protocol+"//"+window.location.host + '/purchase';
+const baseUrl = 'http://192.168.2.134/cloud.php';
+// const host = window.location.protocol+"//"+window.location.host;
+// const baseUrl = process.env.API;
 const webSocketUrl = 'ws://127.0.0.1:9797/ws';
 var token,realname,username,type,supplyInfo,comInfo,com_info,supply_info;
 token=localStorage.getItem('token')||'';

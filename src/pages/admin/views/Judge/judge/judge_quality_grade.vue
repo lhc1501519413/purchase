@@ -210,7 +210,7 @@ export default {
     save_judge_quality_grade_detail() {
       var key1 = this.judge_quality_grade_list.some(elem => elem.score == "");
       if (key1) {
-        this.$message.info("供应商分数评审未完全，请评审完全后保存");
+        this.$message.info("供应商分数评审未完成，请评审完成后保存");
       } else {
         var formData = {
           bid_code: this.bid_code,

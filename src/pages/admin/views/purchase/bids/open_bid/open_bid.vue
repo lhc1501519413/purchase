@@ -29,7 +29,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=2&&$router.push({path:'/Bid/judge_group',query:{bid_code}})">
+        <li @click="judge_info.status>=2?$router.push({path:'/Bid/judge_group',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=2}">2</p>
             <span>评审小组设置</span>
@@ -39,7 +39,7 @@
       </ul>
       <h4>开标评标</h4>
       <ul class="prepare">
-        <li @click="judge_info.status>=3&&$router.push({path:'/Bid/open_record',query:{bid_code}})">
+        <li @click="judge_info.status>=3?$router.push({path:'/Bid/open_record',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=3}">1</p>
             <span>
@@ -53,7 +53,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=4&&$router.push({path:'/Bid/judge_quality',query:{bid_code}})">
+        <li @click="judge_info.status>=4?$router.push({path:'/Bid/judge_quality',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=4}">2</p>
             <span>
@@ -67,7 +67,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=5&&$router.push({path:'/Bid/judge_match',query:{bid_code}})">
+        <li @click="judge_info.status>=5?$router.push({path:'/Bid/judge_match',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=5}">3</p>
             <span>
@@ -81,7 +81,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=6&&$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}})">
+        <li @click="judge_info.status>=6?$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=6}">4</p>
             <span>
@@ -95,7 +95,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=7&&$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})">
+        <li @click="judge_info.status>=7?$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=7}">5</p>
             <span>
@@ -109,7 +109,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=8&&$router.push({path:'/Bid/business_result',query:{bid_code}})">
+        <li @click="judge_info.status>=8?$router.push({path:'/Bid/business_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=8}">6</p>
             <span>
@@ -123,7 +123,7 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=9&&$router.push({path:'/Bid/supply_report',query:{bid_code}})">
+        <li @click="judge_info.status>=9?$router.push({path:'/Bid/supply_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
             <p :class="{bg:judge_info.status>=9}">7</p>
             <span>
@@ -137,9 +137,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=11&&$router.push({path:'/Bid/judge_report',query:{bid_code}})">
+        <li @click="judge_info.status>=12?$router.push({path:'/Bid/judge_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
-            <p :class="{bg:judge_info.status>=11}">8</p>
+            <p :class="{bg:judge_info.status>=12}">8</p>
             <span>
               <span>
                 报价评审
@@ -151,9 +151,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=12&&$router.push({path:'/Bid/judge_result',query:{bid_code}})">
+        <li @click="judge_info.status>=13?$router.push({path:'/Bid/judge_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
-            <p :class="{bg:judge_info.status>=12}">9</p>
+            <p :class="{bg:judge_info.status>=13}">9</p>
             <span>
               <span>
                 得分汇总
@@ -165,15 +165,15 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=13&&$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}})">
+        <li @click="judge_info.status>=14?$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
-            <p :class="{bg:judge_info.status>=13}">10</p>
+            <p :class="{bg:judge_info.status>=14}">10</p>
             <span>
               <span>
                 结果公布
               </span>
-              <span class="warning">
-                评标
+              <span class="info">
+                开标
               </span>
             </span>
           </div>
@@ -181,7 +181,7 @@
         </li>
       </ul>
     </section>
-    <section class="content judge-result">
+    <section class="content judge-result pb-20">
       <h4>评审结果</h4>
       <a-row>
         <a-col :span="4" class="text-right">
@@ -198,7 +198,7 @@
             </a-button>
           </upload>
           <ul class="ml-10">
-            <li @click.stop="del2" class="mb-10" v-for="(item,index) of result_list" :key="index">
+            <li @click.stop="del" class="mb-10" v-for="(item,index) of result_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
               <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
@@ -213,7 +213,7 @@
         <a-col :span="12">
           <upload
             class="ml-10"
-            @choose-file="quality_grade_change"
+            @choose-file="quality_grade_change_confirm"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
           >
             <a-button>
@@ -221,7 +221,7 @@
             </a-button>
           </upload>
           <ul class="ml-10">
-            <li @click.stop="del2" class="mb-10" v-for="(item,index) of result_list" :key="index">
+            <li @click.stop="del2" class="mb-10" v-for="(item,index) of confirm_result_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
               <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
@@ -255,6 +255,7 @@ export default {
       del_icon: require("@static/icon/icon_close.png"),
       point: require("@static/images/icon_point.png"),
       result_list: [],
+      confirm_result_list: [],
       judge_info: {},
       pagination: {
         showQuickJumper: true,
@@ -313,28 +314,85 @@ export default {
         })
         .catch();
     },
-    del2(e) {
+    quality_grade_change() {
+      // 添加资格评分要求文件
+      var self = this;
+      var files = event.target.files;
+      if (
+        (files[0].type === "image/png" ||
+          files[0].type === "image/jpg" ||
+          files[0].type === "image/jpeg") &&
+        files[0].size / 1024 / 1024 > 0.8
+      ) {
+        this.$message.error("图片大小必须小于800KB!");
+        return;
+      } else if (
+        files[0].type === "application/pdf" &&
+        files[0].size / 1024 / 1024 > 8
+      ) {
+        this.$message.error("文件大小必须小于 8MB!");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", files[0]);
+      POST({ c: "Upload", a: "upload_one" }, formData)
+        .then(res => {
+          let img_obj = {};
+          img_obj.file_name = res.data.name;
+          img_obj.file_path = res.data.savepath;
+          this.result_list.push(img_obj);
+        })
+        .catch();
+    },
+    del(e) {
       let index = e.target.dataset.key;
       if (index !== undefined) {
         this.result_list.splice(index, 1);
       }
     },
+    quality_grade_change_confirm() {
+      // 添加资格评分要求文件
+      var self = this;
+      var files = event.target.files;
+      if (
+        (files[0].type === "image/png" ||
+          files[0].type === "image/jpg" ||
+          files[0].type === "image/jpeg") &&
+        files[0].size / 1024 / 1024 > 0.8
+      ) {
+        this.$message.error("图片大小必须小于800KB!");
+        return;
+      } else if (
+        files[0].type === "application/pdf" &&
+        files[0].size / 1024 / 1024 > 8
+      ) {
+        this.$message.error("文件大小必须小于 8MB!");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", files[0]);
+      POST({ c: "Upload", a: "upload_one" }, formData)
+        .then(res => {
+          let img_obj = {};
+          img_obj.file_name = res.data.name;
+          img_obj.file_path = res.data.savepath;
+          this.confirm_result_list.push(img_obj);
+        })
+        .catch();
+    },
+    del2(e) {
+      let index = e.target.dataset.key;
+      if (index !== undefined) {
+        this.confirm_result_list.splice(index, 1);
+      }
+    },
     submit() {
       var self = this;
-      this.$confirm({
-        title: "确认提交投标文件吗？",
+      self.$confirm({
+        title: "确认提交评审结果吗？",
         onOk() {
-          submit_tender(self.bid_code)
-            .then(res => {
-              self.$message.success(res.msg);
-              let time = setTimeout(() => {
-                self.$router.push({ name: "/Sbid/tender_list" });
-                clearTimeout(time);
-              }, 1500);
-            })
-            .catch(error => {
-              self.$message.error(error);
-            });
+          console.log(self.result_list)
+          console.log(self.confirm_result_list)
         },
         onCancel() {}
       });

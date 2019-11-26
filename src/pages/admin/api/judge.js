@@ -142,6 +142,14 @@ export function get_judge_report(bid_code) {
     params: { c: 'Judge', a: 'get_judge_report', token: global.token,bid_code }
   })
 }
+/* 保存报价评审 */
+export function save_judge_report(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'save_judge_report', token: global.token },
+    data
+  })
+}
 /* 获取供应商报价详情 */
 export function get_judge_report_detail(bid_code,supply_id) {
   return request({
@@ -149,7 +157,7 @@ export function get_judge_report_detail(bid_code,supply_id) {
     params: { c: 'Judge', a: 'get_judge_report_detail', token: global.token,bid_code,supply_id }
   })
 }
-/* 保存报价详情 */
+/* 保存供应商报价详情 */
 export function save_judge_report_detail(data) {
   return request({
     method: 'POST',
@@ -164,6 +172,15 @@ export function get_judge_result(bid_code) {
     params: { c: 'Judge', a: 'get_judge_result', token: global.token,bid_code }
   })
 }
+/* 标价推荐供应商 */
+export function save_judge_supply_elect(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'save_judge_supply_elect', token: global.token },
+    data
+  })
+}
+
 /* 废标供应商列表 */
 export function scrap_supply_list(bid_code) {
   return request({

@@ -192,7 +192,7 @@ export default {
     switch_supply() {
       get_judge_quality_detail(this.bid_code, this.supply_id)
         .then(res => {
-          this.quality_list = res.data;
+          this.quality_list = res.data||[];
         })
         .catch(error => this.$message.error(error));
     },

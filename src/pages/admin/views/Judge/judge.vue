@@ -3,7 +3,7 @@
     <h5>
       项目评审 / 招标项目评审
       <div class="btn-container">
-        <a-button @click="$router.go(-1)">返回</a-button>
+        <a-button @click="$router.replace({path:'/Judge/bid_list'})">返回</a-button>
         <a-button @click="get_judge_info">刷新</a-button>
         <a-button hidden @click="download_tender_file">下载投标文件</a-button>
         <a-button hidden @click="download_bid_file">下载采购文件</a-button>
@@ -11,44 +11,44 @@
         <a-button class='primary' type="primary" v-if="status==6&&current==2" @click="online_judge_quality_grade">在线电子评标</a-button>
         <a-button class='primary' type="primary" v-if="status==12&&current==4" @click="online_judge_report">在线报价评审</a-button>
         <a-button @click="failure">废标</a-button>
-        <a-button v-if='status!=7||status!=8' @click="save">保存</a-button>
-        <a-button class='primary' type="primary" v-if='group_leader==1||group_leader!=1&&(status!=7||status!=8)' @click="submit">提交</a-button>
+        <a-button v-if='status!=7&&status!=8&&status!=13' @click="save">保存</a-button>
+        <a-button class='primary' type="primary" v-if='group_leader==1||group_leader!=1&&status!=7&&status!=8&&status!=13' @click="submit">提交</a-button>
         <a-button class='primary' type="primary" v-if="group_leader==1&&status!=13" @click="next">下一步</a-button>
       </div>
     </h5>
     <section class="content">
       <a-steps :current="current" labelPlacement="vertical">
-        <a-step @click="status>=4&&$router.push({path:'/judge/judge_quality',query:{bid_code}})">
+        <a-step @click="status>=4?$router.push({path:'/judge/judge_quality',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             资格审查
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="status>=5&&$router.push({path:'/judge/judge_match',query:{bid_code}})">
+        <a-step @click="status>=5?$router.push({path:'/judge/judge_match',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             符合性评审
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="status>=6&&$router.push({path:'/judge/judge_quality_grade',query:{bid_code}})">
+        <a-step @click="status>=6?$router.push({path:'/judge/judge_quality_grade',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             商务技术评分
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="status>=7&&$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})">
+        <a-step @click="status>=7?$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             商务技术评分汇总
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="status>=12&&$router.push({path:'/judge/judge_report',query:{bid_code}})">
+        <a-step @click="status>=12?$router.push({path:'/judge/judge_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             报价评审
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="status>=13&&$router.push({path:'/judge/judge_result',query:{bid_code}})">
+        <a-step @click="status>=13?$router.push({path:'/judge/judge_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             得分汇总
             <span class="judge">评</span>

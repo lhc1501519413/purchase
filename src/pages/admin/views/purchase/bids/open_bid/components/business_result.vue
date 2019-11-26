@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
       business_result: [],
@@ -62,8 +63,8 @@ export default {
         .then(res => this.business_result = res.data || [] )
         .catch(error => this.$message.error(error));
     },
-     next() {
-      if(this.status>9){
+    next() {
+      if(this.status>8){ // 如技术结果公布完成，跳转到开标记录
         this.$router.push({path:'/Bid/supply_report',query:{bid_code:this.bid_code}})
       }else{
         open_report({bid_code:this.bid_code}).then(res => {

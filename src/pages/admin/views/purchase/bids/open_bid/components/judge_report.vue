@@ -10,22 +10,16 @@
         :tabBarGutter="10"
       >
         <a-tab-pane v-for="item of judge_report" :key="item.user_id">
-          <h4>资格审查</h4>
+          <h4>报价情况</h4>
           <div slot="tab">{{item.username}}</div>
           <a-table
             class="table"
-            :dataSource="item.quality_info"
+            :dataSource="item.report_info"
             :columns="columns"
             rowKey="supply_id"
           >
             <template slot="status" slot-scope="text">
-              <a-select :defaultValue="text" disabled style="width: 120px" @change="handleChange">
-                <a-select-option value="1">符合</a-select-option>
-                <a-select-option value="2">不符合</a-select-option>
-              </a-select>
-            </template>
-            <template slot="desc" slot-scope="text">
-              <a-input :value="text" disabled></a-input>
+              {{text==1?'符合':'不符合'}}
             </template>
           </a-table>
         </a-tab-pane>
@@ -65,7 +59,7 @@ export default {
         {
           title: "最终报价（万元）",
           dataIndex: "report_money",
-          width: "20%"
+          width: "10%"
         },
         {
           title: "报价是否有效",
@@ -88,7 +82,7 @@ export default {
   methods: {
     next() {
       this.$router.push({
-        path: "/Bid/judge_match",
+        path: "/Bid/judge_result",
         query: { bid_code: this.bid_code }
       });
     },
