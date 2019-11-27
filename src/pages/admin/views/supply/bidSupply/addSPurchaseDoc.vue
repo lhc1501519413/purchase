@@ -483,6 +483,9 @@ export default {
         // self.ws = new WebSocket(`ws://192.168.2.144:9797/ws`);
         self.ws = new WebSocket(self.webSocketUrl);
         self.ws.onopen = function(e) {};
+        self.ws.onerror = function(e) {
+          self.$message.warn('加密协议连接失败，请打开加密程序')
+        };
         self.ws.onmessage = function(e) {
           var result,controls,code,msg;
           result = JSON.parse(e.data);
@@ -533,7 +536,7 @@ export default {
           }
         };
         self.ws.onclose = function() {
-          clearInterval(self.heart_beat_interval);
+          // clearInterval(self.heart_beat_interval);
         };
         self.heart_beat();
       }else{
@@ -555,10 +558,9 @@ export default {
           self.ping++;
         } else {
           clearInterval(self.heart_beat_interval);
-          self.$message.info("连接断开，正在尝试重新连接");
           self.connect_webSocket();
         }
-      }, 6000);
+      }, 12000);
       self.$once("hook:beforeDestroy", () => {
         clearInterval(self.heart_beat_interval);
       });

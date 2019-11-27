@@ -25,6 +25,7 @@
           <a @click="sign(index)" v-if="record.status==1" href="javascript:;">签到</a>
           <a @click="check_judge(record.bid_code)" v-if="record.status==2" href="javascript:;">评审</a>
           <router-link v-if="record.status==3" :to="{path:'/judge',query:{bid_code:record.bid_code}}">评审</router-link>
+          <router-link v-if="record.status==14" :to="{path:'/judge',query:{bid_code:record.bid_code}}">评审完成</router-link>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />

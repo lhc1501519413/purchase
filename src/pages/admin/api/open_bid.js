@@ -170,4 +170,11 @@ export function open_report(data) {
     data
   })
 }
-
+/* 审核结果确认 */
+export function submit_judge_result(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'submit_judge_result', token: global.token },
+    data
+  })
+}

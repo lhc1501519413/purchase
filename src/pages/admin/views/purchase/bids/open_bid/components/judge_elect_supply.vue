@@ -71,6 +71,9 @@ export default {
           this.judge_elect = res.data.supply_list||[];
         })
         .catch(error => this.$message.error(error));
+    },
+    next(){
+      this.$router.push({path:'/Bid/open_bid',query:{bid_code:this.bid_code}})
     }
   }
 };

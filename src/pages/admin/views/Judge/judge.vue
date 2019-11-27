@@ -13,7 +13,7 @@
         <a-button @click="failure">废标</a-button>
         <a-button v-if='status!=7&&status!=8&&status!=13' @click="save">保存</a-button>
         <a-button class='primary' type="primary" v-if='group_leader==1||group_leader!=1&&status!=7&&status!=8&&status!=13' @click="submit">提交</a-button>
-        <a-button class='primary' type="primary" v-if="group_leader==1&&status!=13" @click="next">下一步</a-button>
+        <a-button class='primary' type="primary" v-if="group_leader==1&&status!=13&&status!=14" @click="next">下一步</a-button>
       </div>
     </h5>
     <section class="content">

@@ -108,29 +108,19 @@ export default {
     },
     next() {
       var self = this;
-      if (this.status >= 8) {
+      if (this.status >= 12) {
         this.$router.push({
           path: "/judge/judge_report",
           query: { bid_code: this.bid_code }
         });
+        self.$message.success(res.msg);
+        self.father.get_judge_info();
       } else {
         self.$confirm({
           title: "温馨提示",
           content: "是否开启报价标？需要报价标开启完后才可进入下一步。",
           okText: "确认",
           cancelText: "取消",
-          onOk() {
-            check_judge_next(self.bid_code, 8)
-              .then(res => {
-                self.$message.success(res.msg);
-                self.father.get_judge_info();
-                self.$router.push({
-                  path: "/judge/judge_quality_grade",
-                  query: { bid_code: self.bid_code }
-                });
-              })
-              .catch(error => self.$message.error(error));
-          }
         });
       }
     }

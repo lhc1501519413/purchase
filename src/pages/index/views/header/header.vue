@@ -5,7 +5,7 @@
         <svg-icon class="svg pointer" icon-class="logo" />
       </div>
       <img hidden :src="logo" alt="logo"/>
-      <div class="search-container">
+      <div hidden class="search-container">
         <div class="btn-container">
           <button class="switch-tab" :class="{bg:tab}" @click="() => switch_tab(true)">最新询价</button>
           <button class="switch-tab" :class="{bg:!tab}" @click="() => switch_tab(false)">询价结果</button>
@@ -19,7 +19,7 @@
         <a-button v-if="token&&type&&priv.inquiry_list.add" type="primary" @click="search_online">发布询价</a-button>
       </div>
     </header>
-    <section class="second-row">
+    <section hidden class="second-row">
       <span class="all-cate">在线询价</span>
       <!-- <span class="all-cate">全部商品分类</span>
       <a-menu v-model="current" mode="horizontal" @click="choose_item">
@@ -101,7 +101,7 @@ export default {
     height: 11.5%;
     @include flex(space-between);
     .svg,img {
-      @include box(346px, 51px);
+      @include box(303px, 45px);
     }
     .search-container {
       width: 50%;

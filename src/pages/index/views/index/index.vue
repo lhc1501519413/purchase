@@ -22,7 +22,104 @@
         </router-link>
       </div>
     </section>
-    <section class="enquiry">
+    <section class="notice-new">
+      <div class="notice-title">
+        <h3>项目采购</h3>
+        <ul class="notice-title-item" @click="change_item">
+          <li :class="{'active':isActive==1}" data-isActive='1'>采购公告</li>
+          <li :class="{'active':isActive==2}" data-isActive='2'>中标成交公告</li>
+          <li :class="{'active':isActive==3}" data-isActive='3'>废标公告</li>
+        </ul>
+        <router-link :to="{path:'/notices'}">查看更多 ></router-link>
+      </div>
+      <a-row :gutter="16">
+        <a-col class="gutter-row" :span="6" v-for="item of Pbid_notice_list" :key="item.id">
+          <div class="gutter-box enquiry-item">
+            <h3 :title="item.title">{{item.title}}</h3>
+            <!-- <p class="time">
+              剩余时间：
+              <span class="red">{{item.end_time}}</span>
+            </p> -->
+            <div class="line"></div>
+            <div class="content">
+              <p :title="item.custom_code">项目编号：{{item.custom_code}}</p>
+              <p :title="item.project_name">项目名称：{{item.project_name}}</p>
+              <p :title="item.create_time">发布时间：{{item.create_time}}</p>
+              <p :title="item.bid_type_name">采购方式：{{item.bid_type_name}}</p>
+              <p :title="item.com_name">采购单位：{{item.com_name}}</p>
+            </div>
+            <div class="line"></div>
+            <div class="text-center">
+              <router-link :to="{path:'/enquiryDetail',query:{inquiry_code:item.code}}">查看详情</router-link>
+            </div>
+          </div>
+        </a-col>
+      </a-row>
+    </section>
+    <section class="enquiry-new">
+      <div class="notice-title">
+        <h3>在线询价</h3>
+        <ul class="notice-title-item" @click="enquiry_change">
+          <li :class="{'active':isActive2==1}" data-isActive='1'>最新询价</li>
+          <li :class="{'active':isActive2==2}" data-isActive='2'>询价结果</li>
+        </ul>
+        <router-link v-show="isActive2==1" :to="{name:'notice',params:{noticeType:'1'}}">查看更多 ></router-link>
+        <router-link v-show="isActive2==2" :to="{name:'notice',params:{noticeType:'2'}}">查看更多 ></router-link>
+      </div>
+      <a-row :gutter="16">
+        <a-col class="gutter-row" :span="6" v-show="isActive2==1" v-for="item of enquiryList.slice(0,4)" :key="item.id">
+          <div class="gutter-box enquiry-item">
+            <h4 class="status">{{item.status|status}}</h4>
+            <h3 :title="item.title">{{item.title}}</h3>
+            <p class="time">
+              结束询价倒计时：
+              <span class="red">{{item.end_date}}</span>
+            </p>
+            <div class="line"></div>
+            <div class="content">
+              <p :title="item.start_date">发布时间：{{item.start_date}}</p>
+              <p :title="item.cat_name">采购类别：{{item.cat_name}}</p>
+              <p :title="item.com_name">采购方式：在线询价</p>
+              <p :title="item.com_name">采购单位：{{item.com_name}}</p>
+              <!-- <p>
+                已报价
+                <span class="red">{{item.supply_count}}</span>条
+              </p> -->
+            </div>
+            <div class="line"></div>
+            <div class="text-center">
+              <router-link :to="{path:'/enquiryDetail',query:{inquiry_code:item.code}}">立即报价</router-link>
+            </div>
+          </div>
+        </a-col>
+        <a-col class="gutter-row" :span="6" v-show="isActive2==2" v-for="item of noticeList.slice(0,4)" :key="item.id">
+          <div class="gutter-box enquiry-item">
+            <h4 class="status">{{item.status|status_notice}}</h4>
+            <h3 :title="item.title">{{item.title}}</h3>
+            <!-- <p class="time">
+              询价结束时间：
+              <span class="red">{{item.end_date}}</span>
+            </p> -->
+            <div class="line"></div>
+            <div class="content">
+              <p :title="item.start_date">发布时间：{{item.start_date}}</p>
+              <p :title="item.cat_name">采购类别：{{item.cat_name}}</p>
+              <p :title="item.com_name">采购方式：在线询价</p>
+              <p :title="item.com_name">采购单位：{{item.com_name}}</p>
+              <!-- <p>
+                已报价
+                <span class="red">{{item.supply_count}}</span>条
+              </p> -->
+            </div>
+            <div class="line"></div>
+            <div class="text-center">
+              <router-link :to="{path:'/noticeDetail',query:{inquiry_code:item.code}}">查看详情</router-link>
+            </div>
+          </div>
+        </a-col>
+      </a-row>
+    </section>
+    <!-- <section class="enquiry">
       <h3>
         <span>最新询价</span>
         <span>
@@ -43,10 +140,6 @@
               <p :title="item.start_date">发布时间：{{item.start_date}}</p>
               <p :title="item.cat_name">采购类别：{{item.cat_name}}</p>
               <p :title="item.com_name">采购单位：{{item.com_name}}</p>
-              <!-- <p>
-                已报价
-                <span class="red">{{item.supply_count}}</span>条
-              </p> -->
             </div>
             <div class="line"></div>
             <div class="text-center">
@@ -69,10 +162,6 @@
               <p :title="item.start_date">发布时间：{{item.start_date}}</p>
               <p :title="item.cat_name">采购类别：{{item.cat_name}}</p>
               <p :title="item.com_name">采购单位：{{item.com_name}}</p>
-              <!-- <p>
-                已报价
-                <span class="red">{{item.supply_count}}</span>条
-              </p> -->
             </div>
             <div class="line"></div>
             <div class="text-center">
@@ -107,21 +196,29 @@
           </template>
         </a-table>
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
 <script>
-import { get_inquiry_list,get_notice_list, get_inquiry_base_info } from "@indexApi/common";
+import { 
+  get_inquiry_list, 
+  get_notice_list, 
+  get_inquiry_base_info,
+  get_Pbid_notice_list, // 公告列表
+} from "@indexApi/common";
 export default {
   data() {
     return {
       logo: require("@static/images/logo.png"),
-      searchValue: "",
+      /* searchValue: "",
       tab: true,
-      current: ["enquiry"],
+      current: ["enquiry"], */
+      isActive:'1',
+      isActive2:'1',
       enquiryList: [],
       noticeList:[],
+      Pbid_notice_list:[],
       columns: [
         {
           title: "公告标题",
@@ -173,6 +270,25 @@ export default {
           break;
       }
     },
+    status_notice:value=>{
+      switch (value) {
+        case '6':
+          return '已撤销'
+          break;
+        case '8':
+          return '已成交'
+          break;
+        case '9':
+          return '重新询价'
+          break;
+        case '10':
+          return '取消询价'
+          break;
+      
+        default:
+          break;
+      }
+    },
     status2: value => {
       switch (value) {
         case "8":
@@ -205,6 +321,7 @@ export default {
       }).catch(error=>{
         this.$message.warn(error)
       })
+      this.get_Pbid_notice_list(1);
     },
     end_time(end_date,index){
       var self,endTime,time,date,hour,minute,second;
@@ -226,7 +343,42 @@ export default {
       function getZero(value){
         return value<10?'0'+value:value
       }
-    }
+    },
+    end_time2(end_date,index){
+      var self,endTime,time,date,hour,minute,second;
+      self = this;
+      endTime = setInterval(() => {
+        time = new Date(end_date).getTime()-new Date().getTime();
+        if(time<1000){
+          clearInterval(endTime)
+        }
+        date = parseInt(time/(3600*24*1000));
+        hour = parseInt((time-date*(3600*24*1000))/(3600*1000));
+        minute = parseInt((time-date*(3600*24*1000)-hour*(3600*1000))/(60*1000));
+        second = parseInt((time-date*(3600*24*1000)-hour*(3600*1000)-minute*(60*1000))/1000);
+        this.Pbid_notice_list[index].end_time = date+'天'+getZero(hour)+'时'+ getZero(minute) +'分'+getZero(second)+'秒'
+      },1000);
+      self.$once('hook:beforeDestroy',() => {
+        clearInterval(endTime);
+      })
+      function getZero(value){
+        return value<10?'0'+value:value
+      }
+    },
+    change_item(){
+      this.isActive=event.target.dataset.isactive;
+      this.get_Pbid_notice_list(event.target.dataset.isactive)
+    },
+    get_Pbid_notice_list(type){
+      get_Pbid_notice_list({page_size:4,type}).then(res=>{
+        this.Pbid_notice_list = res.data.list||[];
+      }).catch(error=>{
+        this.$message.warn(error)
+      })
+    },
+    enquiry_change(){
+      this.isActive2=event.target.dataset.isactive;
+    },
   }
 };
 </script>
@@ -234,70 +386,8 @@ export default {
 #index {
   width: 100%;
   height: 100%;
-  header {
-    width: 100%;
-    padding: 20px 17.5%;
-    background-color: #fff;
-    height: 11.5%;
-    @include flex(space-between);
-    img {
-      @include box(346px, 39px);
-    }
-    .search-container {
-      width: 50%;
-      .switch-tab {
-        @include box(80px, 24px);
-        position: relative;
-        top: 2px;
-        font-size: 13px;
-      }
-      .bg {
-        color: $white;
-        background-color: $primary2;
-      }
-      .ant-input-search {
-        width: 75%;
-        .ant-btn {
-          border: none;
-          border-radius: 0;
-          height: 98%;
-          height: 31px;
-        }
-      }
-      .ant-btn {
-        width: 20%;
-        margin-left: 3%;
-        height: 33px;
-        line-height: 33px;
-      }
-    }
-  }
-  .second-row {
-    width: 100%;
-    padding: 0 17.5%;
-    background-color: #fff;
-    .all-cate {
-      display: inline-block;
-      @include box(180px, 40px, $primary2);
-      line-height: 40px;
-      color: $white;
-      @extend .text-center;
-    }
-    .ant-menu {
-      position: relative;
-      top: 1px;
-      line-height: 37px;
-      display: inline-block;
-      border: none;
-      .ant-menu-item {
-        width: 120px;
-        margin: 0 5px;
-        @extend .text-center;
-      }
-    }
-  }
   .third-row {
-    @include box(100%, 420px);
+    @include box(100%, 230px);
     @include flex(space-between, flex-start);
     background: url("../../../../../static/images/bg2.png");
     padding: 0 17.5%;
@@ -334,13 +424,13 @@ export default {
         top: 20%;
         left: 10%;
         color: $white;
-        font-size: 40px;
+        font-size: 35px;
         letter-spacing: 7px;
       }
       .slogan {
         position: absolute;
         top: 43%;
-        font-size: 80px;
+        font-size: 68px;
         left: 10%;
         color: $white;
         @include flex(30%);
@@ -356,10 +446,38 @@ export default {
     }
   }
   .enquiry,
-  .notice {
+  .notice,.notice-new,.enquiry-new {
     width: 100%;
     padding: 0 17.5%;
     margin-top: 45px;
+    .notice-title{
+      @extend .relative;
+      @include flex(flex-start);
+      h3{
+        @extend .pl-10;
+        border-left: 4px solid $primary2;
+        color: $primary2;
+      }
+      .notice-title-item{
+        @extend .relative;
+        left: 50px;
+        @include flex(flex-start);
+        li{
+          padding: 0 15px 5px;
+          @extend .ml-10;
+          @extend .mr-10;
+          @extend .pointer;
+        }
+        li.active{
+          border-bottom: 2px solid $primary2;
+        }
+      }
+      a{
+        @extend .absolute;
+        right: 5px;
+        font-size: 1.17em;
+      }
+    }
     >h3 {
       @include flex(space-between);
       margin: 8px 0;
@@ -370,6 +488,7 @@ export default {
     .enquiry-item {
       background-color: $white;
       padding: 10px 16px;
+      border-radius: 2px;
       h3 {
         margin: 5px 0;
         font-weight: bold;
@@ -412,7 +531,7 @@ export default {
       padding: 20px;
     }
   }
-  .notice {
+  .enquiry-new {
     margin-bottom: 100px;
   }
 }

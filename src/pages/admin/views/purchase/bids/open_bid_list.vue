@@ -62,6 +62,10 @@
         <template slot="operation" slot-scope="text,record">
           <!-- <div v-if="$moment()>$moment(record.open_time)"> -->
             <router-link
+              v-if="priv.open_bid_list.open&&record.status==17"
+              :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
+            >确认</router-link>
+            <router-link
               v-if="priv.open_bid_list.open&&(record.status==15||record.status==16)"
               :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
             >开标评标</router-link>
@@ -114,6 +118,7 @@ export default {
         { value: "0", label: "全部" },
         { value: "15", label: "待开标" },
         { value: "16", label: "评标中" },
+        { value: "17", label: "待确认" },
         { value: "18", label: "已确认" },
         { value: "20,21", label: "已流标" }
       ],
@@ -181,6 +186,9 @@ export default {
           break;
         case "16":
           return "评标中";
+          break;
+        case "17":
+          return "待确认";
           break;
         case "18":
           return "已确认";

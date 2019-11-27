@@ -190,7 +190,7 @@
         <a-col :span="12">
           <upload
             class="ml-10"
-            @choose-file="quality_grade_change"
+            @choose-file="result_file_list_change"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
           >
             <a-button>
@@ -198,7 +198,7 @@
             </a-button>
           </upload>
           <ul class="ml-10">
-            <li @click.stop="del" class="mb-10" v-for="(item,index) of result_list" :key="index">
+            <li @click.stop="del" class="mb-10" v-for="(item,index) of result_file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
               <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
@@ -213,7 +213,7 @@
         <a-col :span="12">
           <upload
             class="ml-10"
-            @choose-file="quality_grade_change_confirm"
+            @choose-file="confirm_file_list_change"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
           >
             <a-button>
@@ -221,7 +221,7 @@
             </a-button>
           </upload>
           <ul class="ml-10">
-            <li @click.stop="del2" class="mb-10" v-for="(item,index) of confirm_result_list" :key="index">
+            <li @click.stop="del2" class="mb-10" v-for="(item,index) of confirm_file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
               <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
@@ -237,6 +237,7 @@
 import { POST } from "@common/js/apis";
 import { 
   get_judge_info, // 获取项目评审中的状态
+  submit_judge_result // 提交评审结果
 } from '@admin/api/open_bid'
 
 export default {
@@ -254,8 +255,8 @@ export default {
       bid_code: "",
       del_icon: require("@static/icon/icon_close.png"),
       point: require("@static/images/icon_point.png"),
-      result_list: [],
-      confirm_result_list: [],
+      result_file_list: [],
+      confirm_file_list: [],
       judge_info: {},
       pagination: {
         showQuickJumper: true,
@@ -284,7 +285,7 @@ export default {
         this.$store.commit('SET_STATUS',res.data.status)
       }).catch(error=>this.$message.error(error))
     },
-    quality_grade_change() {
+    result_file_list_change() {
       // 添加资格评分要求文件
       var self = this;
       var files = event.target.files;
@@ -310,47 +311,17 @@ export default {
           let img_obj = {};
           img_obj.file_name = res.data.name;
           img_obj.file_path = res.data.savepath;
-          this.result_list.push(img_obj);
+          this.result_file_list.push(img_obj);
         })
-        .catch();
-    },
-    quality_grade_change() {
-      // 添加资格评分要求文件
-      var self = this;
-      var files = event.target.files;
-      if (
-        (files[0].type === "image/png" ||
-          files[0].type === "image/jpg" ||
-          files[0].type === "image/jpeg") &&
-        files[0].size / 1024 / 1024 > 0.8
-      ) {
-        this.$message.error("图片大小必须小于800KB!");
-        return;
-      } else if (
-        files[0].type === "application/pdf" &&
-        files[0].size / 1024 / 1024 > 8
-      ) {
-        this.$message.error("文件大小必须小于 8MB!");
-        return;
-      }
-      const formData = new FormData();
-      formData.append("file", files[0]);
-      POST({ c: "Upload", a: "upload_one" }, formData)
-        .then(res => {
-          let img_obj = {};
-          img_obj.file_name = res.data.name;
-          img_obj.file_path = res.data.savepath;
-          this.result_list.push(img_obj);
-        })
-        .catch();
+        .catch(error=>this.$message.error(error));
     },
     del(e) {
       let index = e.target.dataset.key;
       if (index !== undefined) {
-        this.result_list.splice(index, 1);
+        this.result_file_list.splice(index, 1);
       }
     },
-    quality_grade_change_confirm() {
+    confirm_file_list_change() {
       // 添加资格评分要求文件
       var self = this;
       var files = event.target.files;
@@ -376,23 +347,33 @@ export default {
           let img_obj = {};
           img_obj.file_name = res.data.name;
           img_obj.file_path = res.data.savepath;
-          this.confirm_result_list.push(img_obj);
+          this.confirm_file_list.push(img_obj);
         })
-        .catch();
+        .catch(error=>this.$message.error(error));
     },
     del2(e) {
       let index = e.target.dataset.key;
       if (index !== undefined) {
-        this.confirm_result_list.splice(index, 1);
+        this.confirm_file_list.splice(index, 1);
       }
     },
     submit() {
       var self = this;
+      var formData = {
+        bid_code:self.bid_code,
+        result_file_list:self.result_file_list,
+        confirm_file_list:self.confirm_file_list
+      }
       self.$confirm({
         title: "确认提交评审结果吗？",
         onOk() {
-          console.log(self.result_list)
-          console.log(self.confirm_result_list)
+          submit_judge_result(formData).then(res=>{
+            self.$message.success('提交成功');
+            let time = setTimeout(() => {
+              self.$router.push({path:'/Bid/open_bid_list'})
+              clearTimeout(time);
+            }, 1500);
+          }).catch(error=>self.$message.error(error));
         },
         onCancel() {}
       });

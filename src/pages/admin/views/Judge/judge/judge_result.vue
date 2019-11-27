@@ -112,8 +112,12 @@ export default {
     get_judge_result() {
       get_judge_result(this.bid_code)
         .then(res => {
-          this.judge_result = res.data.supply_list||[]
-          this.opinion_list = res.data.opinion_list||[]
+          this.judge_result = res.data.supply_list||[];
+          this.opinion_list = res.data.opinion_list||[];
+          this.selectedRowKeys=[];
+          this.judge_result.forEach(elem=>{
+            if(elem.is_elect==1) this.selectedRowKeys.push(elem.supply_id)
+          })
         })
         .catch(error => this.$message.error(error));
     },
@@ -135,7 +139,16 @@ export default {
       });
       function save_fn() {
         save_judge_supply_elect(formData)
-          .then(res => self.$message.success(res.msg))
+          .then(res => {
+            self.$message.success('提交成功，即将跳转回项目评审列表');
+            let time = setTimeout(()=>{
+              self.$router.push({path:'/Judge/bid_list'});
+              clearTimeout(time);
+            },1500)
+            self.$once("hook:beforeDestroy", () => {
+              clearTimeout(time);
+            });
+          })
           .catch(error => self.$message.error(error));
       }
     }

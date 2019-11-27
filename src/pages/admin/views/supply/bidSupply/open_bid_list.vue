@@ -360,7 +360,7 @@ export default {
       get_decrypt_info(bid_code)
         .then(res => {
           this.decrypt_info = res.data;
-          this.decrypt_time_interval = setInterval((() => {
+          (() => {
             var now_start = new Date().getTime() - new Date(this.decrypt_info.supply_info.start_decrypt_time).getTime();
             var decrypt_time = 30*60*1000 - now_start;
             var minute = parseInt(decrypt_time/(60*1000));
@@ -368,11 +368,24 @@ export default {
             if(minute>0||second>0){
               this.decrypt_time = `${minute}分${second}秒`
             }else{
-              // this.decrypt_btn_ctrl = true;
+              this.decrypt_btn_ctrl = true;
               this.decrypt_time = `0分0秒`
               clearInterval(this.decrypt_time_interval)
             }
-          })(), 5000);
+          })()
+          this.decrypt_time_interval = setInterval(() => {
+            var now_start = new Date().getTime() - new Date(this.decrypt_info.supply_info.start_decrypt_time).getTime();
+            var decrypt_time = 30*60*1000 - now_start;
+            var minute = parseInt(decrypt_time/(60*1000));
+            var second = parseInt((decrypt_time-minute*(60*1000))/1000);
+            if(minute>0||second>0){
+              this.decrypt_time = `${minute}分${second}秒`
+            }else{
+              this.decrypt_btn_ctrl = true;
+              this.decrypt_time = `0分0秒`
+              clearInterval(this.decrypt_time_interval)
+            }
+          }, 1000);
           this.$once('hook:beforeDestroy',() => {
             clearInterval(this.decrypt_time_interval);
           })
@@ -402,6 +415,7 @@ export default {
           encryption(formData)
             .then(res => {
               if (res.data.result != "") {
+                self.$message.error("解密中，请稍候");
                 let obj = {
                   id: self.decrypt_file[0].id,
                   secret_key: res.data.result
@@ -448,7 +462,7 @@ export default {
       });
     },
     afterClose() {
-      this.decrypt_btn_ctrl = true;
+      this.decrypt_btn_ctrl = false;
       this.decrypted_file = [];
       clearInterval(this.decrypt_time_interval);
     }
