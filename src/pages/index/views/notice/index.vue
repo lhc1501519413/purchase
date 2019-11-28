@@ -6,7 +6,7 @@
         <span>采购类别：</span>
         <a-tree-select
           style="width:200px;"
-          @change="paginationChange"
+          @change="get_notice_list_method2"
           v-model="cat_id"
           showSearch
           allowClear
@@ -17,7 +17,7 @@
           dropdownMatchSelectWidth
         />
         <span class="ml-10">公告类型：</span>
-        <a-select v-model="noticeType" style="width: 120px" @change="paginationChange">
+        <a-select v-model="noticeType" style="width: 180px" @change="get_notice_list_method2">
           <a-select-option value="1">在线询价</a-select-option>
           <a-select-option value="2">询价结果</a-select-option>
         </a-select>
@@ -83,7 +83,7 @@ export default {
       cat_id: "",
       noticeType:'1',
       page:1,
-      total:100,
+      total:0,
       noticeList: [],
       inquiry_list:[],
       columns: [
@@ -142,6 +142,10 @@ export default {
     }
   },
   methods: {
+    get_notice_list_method2(){
+      this.page=1;
+      this.get_notice_list_method();
+    },
     get_notice_list_method(){
       var params={
         page:this.page,

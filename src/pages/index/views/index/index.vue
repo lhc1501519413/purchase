@@ -30,7 +30,7 @@
           <li :class="{'active':isActive==2}" data-isActive='2'>中标成交公告</li>
           <li :class="{'active':isActive==3}" data-isActive='3'>废标公告</li>
         </ul>
-        <router-link :to="{path:'/notices'}">查看更多 ></router-link>
+        <router-link :to="{name:'bid_notice',params:{noticeType:isActive}}">查看更多 ></router-link>
       </div>
       <a-row :gutter="16">
         <a-col class="gutter-row" :span="6" v-for="item of Pbid_notice_list" :key="item.id">
@@ -50,7 +50,8 @@
             </div>
             <div class="line"></div>
             <div class="text-center">
-              <router-link :to="{path:'/enquiryDetail',query:{inquiry_code:item.code}}">查看详情</router-link>
+              <a @click="to_detail(item.id)">查看详情</a>
+              <!-- <router-link :to="{path:'/bid_notice_detail',query:{id:item.id}}">查看详情</router-link> -->
             </div>
           </div>
         </a-col>
@@ -379,6 +380,21 @@ export default {
     enquiry_change(){
       this.isActive2=event.target.dataset.isactive;
     },
+    to_detail(id){
+      switch (this.isActive) {
+        case '1':
+          this.$router.push({path:'/bid_notice_detail',query:{id}})
+          break;
+        case '2':
+          this.$router.push({path:'/bid_notice_detail_deal',query:{id}})
+          break;
+        case '3':
+          this.$router.push({path:'/bid_notice_detail_fail',query:{id}})
+          break;
+        default:
+          break;
+      }
+    }
   }
 };
 </script>

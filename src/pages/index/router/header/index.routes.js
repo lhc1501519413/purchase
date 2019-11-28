@@ -53,7 +53,43 @@ export default [
           title: '公告详情', 
           permission: true 
         }
-      }
+      },
+      {
+        path: '/bid_notice',
+        name: 'bid_notice',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/bid_notice/index'),
+        meta: { 
+          title: '招标公告', 
+          permission: true 
+        }
+      },
+      {
+        path: '/bid_notice_detail',
+        name: 'bid_notice_detail',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/bid_notice/bid_notice_detail'),
+        meta: { 
+          title: '采购公告详情', 
+          permission: true 
+        }
+      },
+      {
+        path: '/bid_notice_detail_deal',
+        name: 'bid_notice_detail_deal',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/bid_notice/bid_notice_detail_deal'),
+        meta: { 
+          title: '中标成交公告详情', 
+          permission: true 
+        }
+      },
+      {
+        path: '/bid_notice_detail_fail',
+        name: 'bid_notice_detail_fail',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/bid_notice/bid_notice_detail_fail'),
+        meta: { 
+          title: '废标公告详情', 
+          permission: true 
+        }
+      },
     ]
   },
 ]

@@ -32,7 +32,7 @@ export function get_Pbid_notice_list(params) {
 export function get_Pbid_notice_info(params) {
   return request({
     method: 'GET',
-    params: Object.assign({ c: 'Pbid', a: 'notice_info' },params)
+    params: Object.assign({ c: 'Pbid', a: 'get_notice_info' },params)
   })
 }
 
