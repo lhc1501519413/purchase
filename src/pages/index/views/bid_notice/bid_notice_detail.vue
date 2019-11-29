@@ -34,7 +34,7 @@
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>
         <h3>十、联系方式</h3>
         <a-row class="text-indent-35 mb-10">
-          <a-col :span="15" :offset="3">采购单位：{{formData.com_name}}</a-col>
+          <a-col :span="15">采购单位：{{formData.com_name}}</a-col>
         </a-row>
         <a-row class="text-indent-35 mb-10">
           <a-col :span="6">联系人：{{formData.contact_name}}</a-col>

@@ -168,7 +168,6 @@ export default {
       this.endTimeCtrl[index] = setInterval(() => {
         time = new Date(end_date).getTime()-new Date().getTime();
         if(time<1000){
-          console.log(index)
           clearInterval(this.endTimeCtrl[index])
         }
         date = parseInt(time/(3600*24*1000));

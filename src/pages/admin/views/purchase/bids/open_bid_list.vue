@@ -71,28 +71,80 @@
             >开标评标</router-link>
             <router-link
               v-if="priv.open_bid_list.view&&(record.status==18||record.status==20||record.status==21)"
-              :to="{path:'/Bid/experts_draw',query:{bid_code:record.code}}"
+              :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
             >查看</router-link>
-            <router-link
-              v-if="priv.open_bid_list.view&&record.status==20"
-              :to="{path:'/Bid/experts_draw',query:{bid_code:record.code}}"
-            >流标信息</router-link>
+            <a v-if="priv.open_bid_list.view&&record.status==20"
+              @click="show_bid_fail(record.code)">
+              流标信息
+            </a>
+            <a v-if="priv.open_bid_list.view&&record.status==21"
+              @click="show_bid_fail(record.code)">
+            流标信息</a>
             <router-link
               v-if="priv.open_bid_list.view&&record.status==21"
-              :to="{path:'/Bid/experts_draw',query:{bid_code:record.code}}"
-            >开标中流标信息</router-link>
-            <router-link
-              v-if="priv.open_bid_list.view&&record.status==21"
-              :to="{path:'/Bid/experts_draw',query:{bid_code:record.code}}"
-            >开标中废标信息</router-link>
-          <!-- </div>
-          <a v-else>
-            未到开标时间
-          </a> -->
+              :to="{path:'/Bid/scrap',query:{bid_code:record.code}}"
+            >废标信息</router-link>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
     </section>
+    <a-modal
+      class="failure-modal"
+      :destroyOnClose="true"
+      style="top: 10%;"
+      width="55%"
+      :visible="ModalVisible"
+      :maskClosable="false"
+      :footer="null"
+      @ok="ModalVisible = false"
+      @cancel="ModalVisible = false"
+      >
+      <h3 class="text-center">流标</h3>
+      <a-form :form="form" @submit="handleSubmit">
+        <h4>项目基本信息</h4>
+        <a-row class="mb-10">
+          <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
+          <a-col :span="4">{{formData.custom_code}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
+          <a-col :span="4">{{formData.title}}</a-col>
+        </a-row>
+        <a-row class="mb-10">
+          <a-col :span="5" class="text-right" :offset="1">采购单位：</a-col>
+          <a-col :span="4">{{formData.com_name}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">采购方式：</a-col>
+          <a-col :span="4">{{formData.bid_type_name}}</a-col>
+        </a-row>
+        <a-form-item label="流标原因" v-bind="formItemLayout">
+          <a-textarea
+            readOnly
+            style="width:65%"
+            :rows="4"
+            placeholder="请输入流标原因"
+            v-decorator="[
+              'reason',
+              { rules: [{ required: true, message: '请输入流标原因' }],initialValue:formData.reason}
+            ]"
+          ></a-textarea>
+        </a-form-item>
+        <a-form-item label="附件" v-bind="formItemLayout">
+          <ul>
+            <li
+              class="file-list-item"
+              v-for="(item,index) of formData.file_list"
+              :key="index"
+            >
+              <svg-icon class="wenjian" icon-class="wenjian" />
+              <span class="ml-10 mr-10">{{item.file_name}}</span>
+              <a :href="item.full_path" target="_blank">预览文件</a>
+            </li>
+          </ul>
+        </a-form-item>
+        <!-- <a-form-item class="text-center">
+          <a-button class="mr-10" @click="ModalVisible = false">取消</a-button>
+          <a-button class="ml-10" type="primary" html-type="submit">确定</a-button>
+        </a-form-item> -->
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -101,7 +153,8 @@ import {
   get_bid_type // 采购方式
 } from "@common/js/apis";
 import {
-  open_bid_list // 开标评标列表
+  open_bid_list, // 开标评标列表
+  get_bid_fail // 流标详情
 } from "@admin/api/open_bid";
 export default {
   props: {
@@ -175,7 +228,18 @@ export default {
           width: "20%"
         }
       ],
-      total: 0
+      total: 0,
+      form: this.$form.createForm(this),
+      formItemLayout: {
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 }
+      },
+      ModalVisible:false,
+      del_icon: require("@static/icon/icon_close.png"),
+      formData: {
+        reason: "",
+        file_list: []
+      }
     };
   },
   filters: {
@@ -242,6 +306,22 @@ export default {
     paginationChange(page) {
       this.page = page;
       this.open_bid_list_method();
+    },
+    show_bid_fail(bid_code){
+      get_bid_fail({bid_code}).then(res=>{
+        this.formData = res.data;
+        this.ModalVisible = true;
+      }).catch(error=>this.$message.error(error))
+    },
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFieldsAndScroll((err, fieldsValue) => {
+        if (!err) {
+          const values = {
+            ...fieldsValue,
+          };
+        }
+      });
     }
   }
 };
@@ -250,5 +330,26 @@ export default {
 @import "~@admin/assets/scss/common";
 #open_bid_list {
   @include component;
+}
+</style>
+<style lang="scss">
+.failure-modal {
+  h4 {
+    border-left: 4px solid $primary2;
+    @extend .pl-10;
+    @extend .ml-40;
+    @extend .mb-10;
+  }
+  .wenjian {
+    width: 17px;
+    height: 17px;
+  }
+  .ant-input {
+    padding-left: 5px;
+  }
+  .file-list-item {
+    height: 20px;
+    margin-top: 5px;
+  }
 }
 </style>

@@ -1,5 +1,6 @@
 import global from '@common/js/global';
 import request from '@utils/request';
+import requestcodemsg from '@utils/requestcodemsg';
 /* 评审项目列表 */
 export function bid_list(params) {
   return request({
@@ -32,7 +33,7 @@ export function open_judge(bid_code) {
 }
 /* 评审下一步操作 */
 export function check_judge_next(bid_code,step) {
-  return request({
+  return requestcodemsg({
     method: 'POST',
     params: { c: 'Judge', a: 'check_judge_next', token: global.token },
     data:{bid_code,step}
@@ -172,7 +173,7 @@ export function get_judge_result(bid_code) {
     params: { c: 'Judge', a: 'get_judge_result', token: global.token,bid_code }
   })
 }
-/* 标价推荐供应商 */
+/* 标记推荐供应商 */
 export function save_judge_supply_elect(data) {
   return request({
     method: 'POST',
@@ -189,17 +190,24 @@ export function scrap_supply_list(bid_code) {
   })
 }
 /* 获取废标记录 */
-export function get_scrap_list(bid_code) {
+export function get_scrap_list(params) {
   return request({
     method: 'GET',
-    params: { c: 'Judge', a: 'get_scrap_list', token: global.token,bid_code }
+    params: Object.assign({ c: 'Judge', a: 'get_scrap_list', token: global.token},params)
+  })
+}
+/* 专家组长获取废标详情 */
+export function get_start_scrap_info(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Judge', a: 'get_start_scrap_info', token: global.token},params)
   })
 }
 /* 普通专家获取废标详情 */
-export function get_scrap_info(bid_code) {
+export function get_scrap_info(params) {
   return request({
     method: 'GET',
-    params: { c: 'Judge', a: 'get_scrap_info', token: global.token,bid_code }
+    params: Object.assign({ c: 'Judge', a: 'get_scrap_info', token: global.token},params)
   })
 }
 /* 发起/修改废标 */
@@ -239,6 +247,14 @@ export function back_expert_judge_score(data) {
   return request({
     method: 'POST',
     params: { c: 'Judge', a: 'back_expert_judge_score', token: global.token },
+    data
+  })
+}
+/* 流标 */
+export function save_bid_fail(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Judge', a: 'save_bid_fail', token: global.token },
     data
   })
 }

@@ -69,7 +69,6 @@ export default {
     },
     request(){
       all_city({"c":"public","a":"get_all_city"}).then(res=>{
-        console.log(res)
       })
     }
   },

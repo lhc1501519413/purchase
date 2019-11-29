@@ -1,7 +1,7 @@
 <template>
   <div id="notice">
     <section class="notice">
-      <h4>在线询价 / 询价结果</h4>
+      <h4>项目公告 / 采购公告</h4>
       <div class="cat-container">
         <span>采购类别：</span>
         <a-tree-select
@@ -12,7 +12,7 @@
           allowClear
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           :treeData="cat_list"
-          placeholder="请选择询价大类"
+          placeholder="请选择类别"
           treeNodeFilterProp="title"
           dropdownMatchSelectWidth
         />

@@ -281,5 +281,26 @@ export default [
         },
       },
     ]
-  }
+  },
+  {
+    path: '/Bid/scrap',
+    name: '/Bid/scrap',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/scrap'),
+    meta: {
+      title: '流标',
+      permission: true
+    },
+  },
+  {
+    path: '/Bid/notice_list',
+    name: '/Bid/notice_list',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_list'),
+    meta: {
+      title: '公告',
+      permission: true
+    },
+  },
+  
 ]

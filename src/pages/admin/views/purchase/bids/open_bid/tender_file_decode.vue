@@ -2,16 +2,15 @@
   <div id="tender_file_decode">
     <h5>
       招标管理 / 投标文件解密
-      <div class="btn-container">
-        <a-button type="primary" class="ml-10" :disabled='status<3' @click="failure">流标</a-button>
-        <a-button type="primary" class="ml-10" :disabled='status<3' @click="get_open_supply_list">刷新</a-button>
+      <div class="btn-container" v-if="status<14">
+        <a-button type="primary" class="ml-10" @click="failure">流标</a-button>
+        <a-button type="primary" class="ml-10" @click="get_open_supply_list">刷新</a-button>
         <a-button
-         :disabled='status<3'
           type="primary"
           class="ml-10"
           @click="start_decode"
         >开始解密</a-button>
-        <a-button :disabled='status<3' type="primary" class="ml-10" @click="open_bid_file">开启标书</a-button>
+        <a-button type="primary" class="ml-10" @click="open_bid_file">开启标书</a-button>
       </div>
     </h5>
     <section class="content">
@@ -20,7 +19,7 @@
         :dataSource="dataSource"
         :columns="columns"
         :pagination="false"
-        rowKey="id"
+        rowKey="supply_id"
       >
         <template slot="status" slot-scope="text">
           <a href="javascript:;">{{text|status}}</a>
@@ -119,7 +118,7 @@ export default {
   data() {
     return {
       priv: this.$store.getters.priv,
-      status: this.$store.getters.status,
+      status: this.$store.getters.judgeStatus,
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },

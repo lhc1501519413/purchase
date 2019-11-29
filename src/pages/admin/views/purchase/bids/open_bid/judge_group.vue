@@ -2,7 +2,7 @@
   <div id="judge_group">
     <h5>
       招标管理 / 评审小组设置
-      <a-button type="primary" @click="save">保存</a-button>
+      <a-button type="primary" v-if="status<14" @click="save">保存</a-button>
     </h5>
     <a-table
       class="content"
@@ -12,8 +12,8 @@
       rowKey="id"
     >
       <template slot="operation" slot-scope="text,record">
-        <a-checkbox v-model="record.is_join">参与</a-checkbox>
-        <a-checkbox v-model="record.group_leader" @change="leader_change(record.id)">组长</a-checkbox>
+        <a-checkbox :disabled='status>=14' v-model="record.is_join">参与</a-checkbox>
+        <a-checkbox :disabled='status>=14' v-model="record.group_leader" @change="leader_change(record.id)">组长</a-checkbox>
       </template>
     </a-table>
   </div>
@@ -36,6 +36,7 @@ export default {
     return {
       group_leader: false,
       priv: this.$store.getters.priv,
+      status: this.$store.getters.judgeStatus,
       bid_code: "",
       dataSource: [],
       columns: [

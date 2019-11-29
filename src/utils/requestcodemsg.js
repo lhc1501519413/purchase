@@ -65,7 +65,7 @@ service.interceptors.response.use(
       //     location.href = global.host + "/index.html#/login"
       //   },1500)
       // }
-      return Promise.reject(res.msg)
+      return Promise.reject(res)
     } else {
       return res
     }

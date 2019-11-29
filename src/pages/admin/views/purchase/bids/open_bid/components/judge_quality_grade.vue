@@ -16,14 +16,15 @@
             class="table"
             :dataSource="item.quality_grade_list"
             :columns="columns"
-            rowKey="supply_id"
+            rowKey="id"
           >
             <template slot="desc" slot-scope="text">
               <a-input :value="text" disabled></a-input>
             </template>
           </a-table>
           <h4>评审意见</h4>
-          <a-row v-for="item of judge_quality_grade" :key="item.user_id" class="mb-10">
+          <!-- <a-row v-for="item of judge_quality_grade" :key="item.user_id" class="mb-10"> -->
+          <a-row>
             <a-col :span="3" class="text-right">【{{item.username}}】评审意见：</a-col>
             <a-col :span="13">
               {{item.opinion}}

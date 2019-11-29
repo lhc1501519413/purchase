@@ -2,7 +2,7 @@
   <div id="open_bid">
     <h5>
       招标管理 / 开标评标管理
-      <a-button type="primary" @click="submit">提交</a-button>
+      <a-button type="primary" v-if="judge_info.status<14" @click="submit">提交</a-button>
     </h5>
     <section class="content">
       <h4>项目基本信息</h4>
@@ -189,6 +189,7 @@
         </a-col>
         <a-col :span="12">
           <upload
+            v-if="judge_info.status<14"
             class="ml-10"
             @choose-file="result_file_list_change"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
@@ -201,7 +202,8 @@
             <li @click.stop="del" class="mb-10" v-for="(item,index) of result_file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
-              <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+              <img v-if="judge_info.status<14" :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+              <a v-else :href="item.full_path" target='_blank' class="ml-10">预览</a>
             </li>
           </ul>
         </a-col>
@@ -212,6 +214,7 @@
         </a-col>
         <a-col :span="12">
           <upload
+            v-if="judge_info.status<14"
             class="ml-10"
             @choose-file="confirm_file_list_change"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
@@ -224,7 +227,8 @@
             <li @click.stop="del2" class="mb-10" v-for="(item,index) of confirm_file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
-              <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+              <img v-if="judge_info.status<14" :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+              <a v-else :href="item.full_path" target='_blank' class="ml-10">预览</a>
             </li>
           </ul>
         </a-col>
@@ -282,7 +286,9 @@ export default {
     get_judge_info(){ // 获取项目评审中的状态
       get_judge_info(this.bid_code).then(res=>{
         this.judge_info = res.data;
-        this.$store.commit('SET_STATUS',res.data.status)
+        this.$store.commit('SET_STATUS',res.data.status);
+        this.result_file_list = res.data.result_file_list;
+        this.confirm_file_list = res.data.confirm_file_list;
       }).catch(error=>this.$message.error(error))
     },
     result_file_list_change() {

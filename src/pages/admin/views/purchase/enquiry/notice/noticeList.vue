@@ -35,8 +35,7 @@
     <a-table class="table" :dataSource="dataSource" :columns="columns" :pagination="false" rowKey="id">
       <template slot="titleRender" slot-scope="value,record">
         <span>
-          {{value}}
-          {{record.status==8?'的在线询价成交公告':'的在线询价终止公告'}}
+          {{value}}{{record.status==8?'的在线询价成交公告':'的在线询价终止公告'}}
         </span>
       </template>
       <template slot="status" slot-scope="value">

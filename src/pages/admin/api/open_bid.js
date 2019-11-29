@@ -178,3 +178,24 @@ export function submit_judge_result(data) {
     data
   })
 }
+/* 流标详情 */
+export function get_bid_fail(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Bid', a: 'get_bid_fail', token: global.token },params)
+  })
+}
+/* 废标供应商列表 */
+export function scrap_supply_list(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Bid', a: 'scrap_supply_list', token: global.token },params)
+  })
+}
+/* 获取废标记录 */
+export function get_scrap_list(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Bid', a: 'get_scrap_list', token: global.token },params)
+  })
+}
