@@ -199,3 +199,18 @@ export function get_scrap_list(params) {
     params: Object.assign({ c: 'Bid', a: 'get_scrap_list', token: global.token },params)
   })
 }
+/* 公告列表 */
+export function notice_list(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Bid', a: 'notice_list', token: global.token },params)
+  })
+}
+/* 公告详情 */
+export function get_notice_info(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Bid', a: 'get_notice_info', token: global.token },params)
+  })
+}
+

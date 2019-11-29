@@ -5,8 +5,8 @@
       <div class="btn-container">
         <a-button @click="$router.replace({path:'/Judge/bid_list'})">返回</a-button>
         <a-button @click="get_judge_info">刷新</a-button>
-        <a-button hidden @click="download_tender_file">下载投标文件</a-button>
-        <a-button hidden @click="download_bid_file">下载采购文件</a-button>
+        <a-button v-if="current==0||current==1||current==2||current==4" @click="download_tender_file">下载投标文件</a-button>
+        <a-button v-if="current!=5" @click="download_bid_file">下载采购文件</a-button>
         <a-button class='primary' type="primary" v-if="status==4&&current==0" @click="online_judge_quality">在线资格评审</a-button>
         <a-button class='primary' type="primary" v-if="status==6&&current==2" @click="online_judge_quality_grade">在线电子评标</a-button>
         <a-button class='primary' type="primary" v-if="status==12&&current==4" @click="online_judge_report">在线报价评审</a-button>
@@ -56,13 +56,53 @@
         </a-step>
       </a-steps>
     </section>
+    <a-modal
+      class="failure-modal"
+      :destroyOnClose="true"
+      style="top: 10%;"
+      width="65%"
+      :visible="ModalVisible"
+      :maskClosable="false"
+      :footer="null"
+      @ok="ModalVisible = false"
+      @cancel="ModalVisible = false"
+      >
+      <h3 slot="title">附件</h3>
+      <a-table
+        class="table"
+        :dataSource="ModalInfo"
+        :columns="columns"
+        :pagination="false"
+        rowKey="id"
+        >
+        <template slot="business_file_list" slot-scope="text,record"><!-- 商务技术文件 -->
+          <ul>
+            <li v-for="(item,index) of record.business_file_list" :key='index'>
+              <a :href="item.full_path" target="_blank">{{item.file_name}}</a>
+            </li>
+          </ul>
+        </template>
+        <template slot="price_file_list" slot-scope="text,record"><!-- 价格文件 -->
+          <ul>
+            <li v-for="(item,index) of record.price_file_list" :key='index'>
+              <a :href="item.full_path" target="_blank">{{item.file_name}}</a>
+            </li>
+          </ul>
+        </template>
+        <template slot="operation" slot-scope="text,record"><!-- 采购文件 -->
+          <a :href="record.full_path" target="_blank">查看文件</a>
+        </template>
+      </a-table>
+    </a-modal>
     <router-view :father="this" :status='status' :judge_info='judge_info' ref="child"></router-view>
   </div>
 </template>
 
 <script>
 import {
-  get_judge_info
+  get_judge_info, // 获取项目评审中的状态
+  get_supply_file_list, // 获取商务技术附件和价格附件
+  get_bid_purchase_file // 获取招标附件
 } from '@admin/api/judge'
 export default {
   props: {
@@ -76,7 +116,10 @@ export default {
       bid_code:'',
       status:'',
       group_leader:'',
-      judge_info:{}
+      judge_info:{},
+      ModalVisible:false,
+      ModalInfo:[],
+      columns: [],
     };
   },
   created() {
@@ -92,8 +135,77 @@ export default {
         this.judge_info = res.data;
       }).catch(error=>this.$message.error(error))
     },
-    download_tender_file() {},
-    download_bid_file() {},
+    download_tender_file() {
+      var step;
+      switch (this.current) {
+        case 0:
+          step = '4';
+          break;
+        case 1:
+          step = '5'
+          break;
+        case 2:
+          step = '6'
+          break;
+        case 5:
+          step = '12'
+          break;
+        default:
+          break;
+      }
+      get_supply_file_list({bid_code:this.bid_code,step}).then(res=>{
+        this.columns = [
+        {
+          title: "序号",
+          customRender: (text, record, index) => `${index + 1}`,
+          width: "6%",
+          align: "center"
+        },
+        {
+          title:'供应商名称',
+          dataIndex:'supply_name',
+          width:'10%'
+        },
+        {
+          title: "商务技术文件",
+          dataIndex: "status",
+          scopedSlots: { customRender: "business_file_list" },
+          width: "10%"
+        },
+        {
+          title: "价格文件",
+          scopedSlots: { customRender: "price_file_list" },
+          width: "20%"
+        }
+      ];
+        this.ModalVisible = true;
+        this.ModalInfo = res.data;
+      }).catch(error=>this.$message.error(error))
+    },
+    download_bid_file() {
+      get_bid_purchase_file({bid_code:this.bid_code}).then(res=>{
+        this.columns = [
+        {
+          title: "序号",
+          customRender: (text, record, index) => `${index + 1}`,
+          width: "6%",
+          align: "center"
+        },
+        {
+          title: "操作",
+          dataIndex:'file_name',
+          width: "20%"
+        },
+        {
+          title: "操作",
+          scopedSlots: { customRender: "operation" },
+          width: "20%"
+        }
+      ]
+        this.ModalVisible = true;
+        this.ModalInfo = res.data;
+      }).catch(error=>this.$message.error(error))
+    },
     online_judge_quality() {
       this.$refs.child.online_judge_quality();
     },

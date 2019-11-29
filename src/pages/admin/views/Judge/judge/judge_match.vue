@@ -114,6 +114,9 @@ export default {
     },
     status: {
       type: String
+    },
+    judge_info: {
+      type: Object
     }
   },
   data() {

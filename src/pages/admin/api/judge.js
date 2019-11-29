@@ -258,6 +258,20 @@ export function save_bid_fail(data) {
     data
   })
 }
+/* 获取商务技术附件和价格附件 */
+export function get_supply_file_list(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Judge', a: 'get_supply_file_list', token: global.token},params)
+  })
+}
+/* 获取采购附件列表 */
+export function get_bid_purchase_file(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Judge', a: 'get_bid_purchase_file', token: global.token},params)
+  })
+}
 
 
 

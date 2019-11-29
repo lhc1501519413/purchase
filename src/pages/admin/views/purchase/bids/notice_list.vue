@@ -1,26 +1,44 @@
 <template>
   <div id="contract">
-    <h5>公告管理 / 公告列表</h5>
+    <h5>招标管理 / 公告列表</h5>
     <section class="content">
       <a-row>
-        <a-col :span="7">
+        <a-col :span="6">
           <span>模糊搜索：</span>
-          <a-input style="width: 70%" v-model="keyword" @keyup.13="get_contract_list_method2" placeholder="模糊搜索：公告编号/公告名称"/>
+          <a-input style="width: 65%" v-model="keyword" @keyup.13="notice_list_method2" placeholder="模糊搜索：公告编号/公告名称"/>
         </a-col>
         <a-col :span="6" class="ml">
-          <span>状态：</span>
+          <span>公告类别：</span>
           <a-select 
               allowClear 
-              v-model='status'
-              dropdownMatchSelectWidth 
-              style="width: 80%" 
-              @change="get_contract_list_method2"
+              v-model="type" 
+              style="width: 65%" 
+              @change="notice_list_method2"
             >
-            <a-select-option v-for="item of statusList" :value="item.value" :key="item.value">{{item.label}}</a-select-option>
+            <a-select-option value="0">全部</a-select-option>
+            <a-select-option value="1">采购公告</a-select-option>
+            <a-select-option value="2">中标成交公告</a-select-option>
+            <a-select-option value="3">废标公告</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col :span="6">
+          <span>采购方式：</span>
+          <a-select
+            allowClear
+            v-model="bid_type"
+            dropdownMatchSelectWidth
+            style="width: 65%"
+            @change="notice_list_method2"
+          >
+            <a-select-option
+              v-for="item of bid_type_list"
+              :value="item.value"
+              :key="item.value"
+            >{{item.title}}</a-select-option>
           </a-select>
         </a-col>
         <a-col :span="5" class="ml">
-          <a-button @click="get_contract_list_method2" type="primary">搜索</a-button>
+          <a-button @click="notice_list_method2" type="primary">搜索</a-button>
         </a-col>
       </a-row>
       <a-table class="table" 
@@ -29,29 +47,15 @@
         :pagination="false" 
         rowKey="id"
       >
-        <template slot="titleRender" slot-scope="value">
-          <span>
-            {{value}}的在线询价公告
-          </span>
-        </template>
-        <template slot="status" slot-scope="value">
-          <span>
-            {{value|status}}
-          </span>
-        </template>
-        <template slot="operation" slot-scope="text">
-          <router-link v-if='priv.contract_list.edit && text.status==1' :to="{path:'/addContract',query:{code:text.code}}">
-            起草
-          </router-link>
-          <a v-if='text.status==1||text.status==3' @click="submit(text.code)" href="javascript:;">提交</a>
-          <router-link v-if='priv.contract_list.view && text.status==2||text.status==3||text.status==8' :to="{path:'/contractDetail',query:{code:text.code}}">
+        <template slot="operation" slot-scope="text,record">
+          <router-link v-if='record.type==1' :to="{path:'/Bid/notice_detail',query:{id:record.id}}">
             详情
           </router-link>
-          <router-link v-if='priv.contract_list.edit && text.status==3' :to="{path:'/addContract',query:{code:text.code}}">
-            编辑
+          <router-link v-if='record.type==2' :to="{path:'/Bid/notice_detail_deal',query:{id:record.id}}">
+            详情
           </router-link>
-          <router-link v-if='priv.contract_list.confirm && text.status==4' :to="{path:'/confirmContract',query:{code:text.code}}">
-            确认
+          <router-link v-if='record.type==3' :to="{path:'/Bid/notice_detail_fail',query:{id:record.id}}">
+            详情
           </router-link>
         </template>
       </a-table>
@@ -62,10 +66,11 @@
 
 <script>
 import {
-  get_contract_list, // 公告列表
-  submit_contract // 提交公告
-} from '@admin/api/contract';
-
+  get_bid_type // 采购方式
+} from "@common/js/apis";
+import {
+  notice_list // 公告列表
+} from '@admin/api/open_bid';
 export default {
   props:{
     father:{
@@ -74,63 +79,43 @@ export default {
   },
   data() {
     return {
-      priv:this.$store.getters.priv,
       keyword:'',
-      status:'0',
-      statusList:[
-        {value:'0',label:'全部'},
-        {value:'1',label:'待起草'},
-        {value:'2',label:'待供应商确认'},
-        {value:'3',label:'供应商已退回'},
-        {value:'4',label:'待确认'},
-        {value:'8',label:'已完成'},
-      ],
+      type:'0',
+      bid_type: '0',
+      bid_type_list: [{ value: "0", title: "全部" }],
       page:1,
       dataSource: [],
       columns:[
         {
           title:'序号',
           customRender: (text,record,index)=>`${index+1}`,
-          width:'7%',
+          width:'6%',
           align:'center'
         },
         {
-          title: '公告编号',
-          dataIndex: 'code',
-          width:'8%',
-          scopedSlots: { customRender: 'code' },
-        },
-        {
-          title: '公告名称',
+          title: '公告标题',
           dataIndex: 'title',
           width:'16%',
-          scopedSlots: { customRender: 'titleRender' },
         },
         {
-          title: '项目编号',
-          dataIndex: 'inquiry_code',
+          title: '公告类型',
+          dataIndex: 'type_name',
           width:'8%',
         },
         {
           title: '项目名称',
-          dataIndex: 'inquiry_title',
-          width:'16%',
+          dataIndex: 'project_name',
+          width:'10%',
+        },
+        {
+          title: '项目编号',
+          dataIndex: 'custom_code',
+          width:'10%',
         },
         {
           title: '采购单位',
           dataIndex: 'com_name',
-          width:'14%',
-        },
-        {
-          title: '成交金额（元）',
-          dataIndex: 'total_money',
           width:'10%',
-        },
-        {
-          title: '状态',
-          dataIndex:'status',
-          scopedSlots: { customRender: 'status' },
-          width:'8%',
         },
         {
           title: '操作',
@@ -138,71 +123,43 @@ export default {
           width:'10%',
         }
       ],
-      total:100
+      total:0
     };
-  },
-  filters:{
-    status:(key)=>{
-      switch (key) {
-        case '1':
-          return '待起草'
-          break;
-        case '2':
-          return '待供应商确认'
-          break;
-        case '3':
-          return '供应商已退回'
-          break;
-        case '4':
-          return '待确认'
-          break;
-        case '8':
-          return '已完成'
-          break;
-        default:
-          return '未知状态'
-          break;
-      }
-    }
   },
   created() {
     this.father.selectedKeys = ['/Bid/notice_list'];
-    this.status = this.$route.params.status || '0';
-    this.get_contract_list_method();
+    this.notice_list_method();
+    this.get_tree_data();
   },
   methods: {
-    get_contract_list_method2(){
-      this.page = 1;
-      this.get_contract_list_method();
+    get_tree_data() {
+      get_bid_type()
+        .then(res => {
+          this.bid_type_list = [
+            ...this.bid_type_list,
+            ...this.$common.treeSelectFormat(res.data)
+          ];
+        })
+        .catch();
     },
-    get_contract_list_method(){
+    notice_list_method2(){
+      this.page = 1;
+      this.notice_list_method();
+    },
+    notice_list_method(){
       var params = {};
       params.keyword = this.keyword;
-      params.status = this.status;
+      params.type = this.type;
+      params.bid_type = this.bid_type;
       params.page = this.page;
-      get_contract_list(params).then(res=>{
+      notice_list(params).then(res=>{
         this.dataSource = res.data.list;
         this.total = +res.data.total_count;
       }).catch(error=>this.$message.error(error))
     },
-    submit(code){
-      var self = this;
-      this.$confirm({
-        title: '确认提交此公告？',
-        onOk() {
-          submit_contract(code).then(res=>{
-            self.$message.success(res.msg)
-            self.get_contract_list_method();
-          }).catch(error=>{
-            self.$message.error(error)
-          })
-        },
-        onCancel() {},
-      });
-    },
     paginationChange(page) {
       this.page = page;
-      this.get_contract_list_method();
+      this.notice_list_method();
     },
   },
 };

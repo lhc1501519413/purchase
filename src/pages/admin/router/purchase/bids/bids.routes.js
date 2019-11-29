@@ -302,5 +302,34 @@ export default [
       permission: true
     },
   },
-  
+  {
+    path: '/Bid/notice_detail',
+    name: '/Bid/notice_detail',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_detail'),
+    meta: {
+      title: '公告详情',
+      permission: true
+    },
+  },
+  {
+    path: '/Bid/notice_detail_fail',
+    name: '/Bid/notice_detail_fail',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_detail_fail'),
+    meta: {
+      title: '公告详情',
+      permission: true
+    },
+  },
+  {
+    path: '/Bid/notice_detail_deal',
+    name: '/Bid/notice_detail_deal',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_detail_deal'),
+    meta: {
+      title: '公告详情',
+      permission: true
+    },
+  },
 ]
