@@ -37,7 +37,7 @@
         @tabClick="callback($event)"
         :tabBarGutter="10"
       >
-        <a-tab-pane 
+        <a-tab-pane
           :key="item.path" 
           v-for="item of main_list" 
           >

@@ -28,7 +28,7 @@
         <a-tab-pane key="1">
           <div slot="tab">报价</div>
           <h4 class="relative">
-            询价商品信息
+            商品信息
             <a-tooltip placement="top">
               <template slot="title">
                 <span>此报价应与投标文件保持一致，若不一致则以在线报价为准。</span>
@@ -44,6 +44,7 @@
             <a-col :span="8">预计配送时间：{{formData.bid_info.shipping_days}}天</a-col>
           </a-row>
           <a-table
+            bordered
             class="table mt-10"
             rowKey="id"
             :columns="columnsStock"
@@ -63,8 +64,18 @@
             <template slot="response_standard" slot-scope="value,record">
               <input type="text" v-model="record.response_standard" />
             </template>
+            <template slot="response_note" slot-scope="value,record">
+              <input type="text" v-model="record.response_note" />
+            </template>
             <template slot="is_match" slot-scope="value,record">
               <input type="checkbox" v-model="record.is_match" />
+            </template>
+            <template
+              v-for="(item,index2) of formData.area_list"
+              :slot="item.area_key"
+              slot-scope="text,record"
+            >
+              <div :key="index2">{{record.area_stock_number[index2].number}}</div>
             </template>
           </a-table>
         </a-tab-pane>
@@ -277,6 +288,7 @@ export default {
           region_name: "",
           shipping_region_list: []
         },
+        area_list:[],
         stock_list: [],
         quality_info: [],
         quality_grade_info: [],
@@ -313,6 +325,12 @@ export default {
           align: "center"
         },
         {
+          title: "产品参数",
+          dataIndex: "note",
+          width: "6%",
+          align: "center"
+        },
+        {
           title: "采购单位",
           dataIndex: "price_unit_name",
           width: "6%",
@@ -320,9 +338,27 @@ export default {
         },
         {
           title: "预估采购数量",
-          dataIndex: "number",
-          width: "8%",
-          align: "center"
+          align: "center",
+          children:[
+            {
+              title:'片区1',
+              dataIndex:'761327721673',
+              width:'8%',
+              align:'center'
+            },
+            {
+              title:'片区1',
+              dataIndex:'761327721673',
+              width:'8%',
+              align:'center'
+            },
+            {
+              title:'合计数量',
+              dataIndex:'number',
+              width:'8%',
+              align:'center'
+            },
+          ]
         },
         {
           title: "单价（元）",
@@ -344,6 +380,13 @@ export default {
           width: "9%",
           align: "center",
           scopedSlots: { customRender: "response_standard" }
+        },
+        {
+          title: "响应产品参数",
+          dataIndex: "response_note",
+          width: "9%",
+          align: "center",
+          scopedSlots: { customRender: "response_note" }
         },
         {
           title: "是否符合",
@@ -538,7 +581,7 @@ export default {
         self.ws.onclose = function() {
           // clearInterval(self.heart_beat_interval);
         };
-        self.heart_beat();
+        // self.heart_beat();
       }else{
         self.$message.info("您的浏览器不支持webSocket链接");
       }
@@ -591,13 +634,14 @@ export default {
     },
     save_stock_list() {
       // 保存报价
-      var self, data, key1, key2, key3, key4, key5;
+      var self, data, key1, key2, key3, key4, key5, key6;
       self = this;
       key1 = false;
       key2 = false;
       key3 = false;
       key4 = false;
       key5 = false;
+      key6 = false;
       data = {
         bid_code: this.bid_code,
         stock_list: this.formData.stock_list
@@ -606,6 +650,7 @@ export default {
       key2 = data.stock_list.some(elem => elem.response_brand === "");
       key3 = data.stock_list.some(elem => elem.response_standard === "");
       key4 = data.stock_list.some(elem => elem.is_match === 0);
+      key6 = data.stock_list.some(elem => elem.response_note === "");
       data.stock_list.forEach(elem => {
         let length = this.$common.isArray(elem.price.match(/\./g))
           ? elem.price.match(/\./g).length
@@ -629,6 +674,10 @@ export default {
       }
       if (key3) {
         this.$message.warn("响应规格不能为空");
+        return;
+      }
+      if (key6) {
+        this.$message.warn("响应产品参数不能为空");
         return;
       }
       if (key4) {

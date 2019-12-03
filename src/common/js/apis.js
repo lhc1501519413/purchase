@@ -137,3 +137,10 @@ export function get_draw_type() {
     params: { c: 'Public', a: 'get_draw_type' }
   })
 }
+/* 中标执行方式 */
+export function get_exec_price_type() {
+  return request({
+    method: 'GET',
+    params: { c: 'Public', a: 'get_exec_price_type' }
+  })
+}

@@ -1,5 +1,6 @@
 <template>
   <div id="tenderDoc">
+    <h5>投标管理 / 查看投标文件</h5>
     <section class="content">
       <h4>询价商品信息</h4>
       <a-row>

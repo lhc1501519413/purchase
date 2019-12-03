@@ -24,6 +24,13 @@ export function get_shipping_region(price_region_id) {
     params: { c: 'Comdep', a: 'get_shipping_region', token: global.token,price_region_id }
   })
 }
+/* 获取全部公司价格配送区域列表 */
+export function get_all_shipping_region(com_id) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Comdep', a: 'get_all_shipping_region', token: global.token },com_id)
+  })
+}
 /* 公告列表 */
 export function get_notice_list(params) {
   return request({

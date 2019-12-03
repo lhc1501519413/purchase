@@ -26,9 +26,9 @@
       <a-row class="mb-10">
         <a-col :span="5" class="text-right vertical-middle">获取时间：</a-col>
         <a-col :span="10">
-          <a-input 
+          <a-input
             class="mr-10"
-            style="width:195px"
+            style="width:180px"
             readOnly
             :value="formData.notice_info.start_time"
             >
@@ -51,11 +51,32 @@
         <a-col :span="10">
           <a-input 
             class="mr-10"
-            style="width:195px"
+            style="width:26%;"
             readOnly
             :value="formData.notice_info.min_supply"
             >
-          </a-input>
+          </a-input>家
+        </a-col>
+      </a-row>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right vertical-middle">中标执行价格：</a-col>
+        <a-col :span="10">
+          <a-radio-group
+            v-if="formData.notice_info.exec_price_type<=4"
+            :value='formData.notice_info.exec_price_type'
+            >
+            <a-radio class="radioStyle" v-for="item of exec_price_type.slice(0,4)" :key='item.id' :value="item.id">{{item.name}}</a-radio>
+          </a-radio-group>
+          <a-radio-group
+            v-else
+            :value='formData.notice_info.exec_price_type'
+            >
+            <a-radio class="radioStyle" v-for="item of exec_price_type.slice(4)" :key='item.id' :value="item.id">
+              {{item.name.split('N')[0]}}
+              <span class="color ml-10 mr-10">{{item.name.indexOf('N')!=-1?formData.notice_info.min_supply:''}}</span>
+              {{item.name.split('N')[1]}}
+            </a-radio>
+          </a-radio-group>
         </a-col>
       </a-row>
       <h4>开标评标时间地址</h4>
@@ -126,6 +147,19 @@
           </a-radio-group>
         </a-col>
       </a-row>
+      <h4>公告附件</h4>
+      <ul class="ml-30">
+        <li
+          class="mb-10"
+          v-for="(item,index) of formData.notice_info.file_list"
+          :key="index"
+        >
+          <svg-icon class="wenjian" icon-class="wenjian" />
+          <span class="ml-10 mr-10">{{item.file_name}}</span>
+          <a href="JavaScript:;" @click="showFile(item.full_path)">预览采购文件</a>
+          <a href="JavaScript:;" @click="downloadFile(item.full_path)">下载采购文件</a>
+        </li>
+      </ul>
       <h4>其他事项</h4>
       <a-textarea readOnly class="ml-10 mb-10" :rows="4" :value="formData.notice_info.desc" />
       <h4>联系信息</h4>
@@ -229,6 +263,9 @@
 import {
   get_bid_purchase_info // 获取采购文件全部详情
 } from "@admin/api/bids";
+import { 
+  get_exec_price_type
+} from "@common/js/apis";
 export default {
   props: {
     father: {
@@ -240,77 +277,35 @@ export default {
     return {
       bid_id: "",
       point: require("@static/images/icon_point.png"),
+      exec_price_type:[],
       formData: {
         bid_info: {
-          id: "2",
-          title: "招标项目11041017",
-          custom_code: "11041017",
-          code: "191104102056070596",
-          com_code: "zdyszx",
-          com_name: "浙大饮食中心",
-          com_id: "1",
-          shipping_days: "123",
-          bid_type: "1",
-          status: "2",
-          cat_id: "36",
-          cat_name: "粮油类",
-          region_id: "15",
-          supply_id: "0",
-          total_number: "0.00",
-          total_money: "0.0000",
-          contact_name: "Tony",
-          contact_number: "13355558888",
-          supply_count: "0",
+          id: "",
+          title: "",
+          custom_code: "",
+          code: "",
+          com_code: "",
+          com_name: "",
+          com_id: "",
+          shipping_days: "",
+          bid_type: "",
+          status: "",
+          cat_id: "",
+          cat_name: "",
+          region_id: "",
+          supply_id: "",
+          total_number: "",
+          total_money: "",
+          contact_name: "",
+          contact_number: "",
+          supply_count: "",
           memo: null,
-          is_del: "0",
-          create_time: "1572834056",
-          update_time: "1572838185",
-          bid_type_name: "公开招标",
-          region_name: "大食堂",
-          shipping_region_list: [
-            { id: "1", code: "ZJGXQST01", name: "紫金港校区食堂1", pid: "15" },
-            { id: "17", code: "YQXQST01", name: "玉泉校区食堂1", pid: "15" },
-            { id: "26", code: "XXXQST01", name: "西溪校区食堂", pid: "15" },
-            { id: "30", code: "YQXCT02", name: "玉泉二食堂", pid: "15" },
-            { id: "31", code: "HCXQ01", name: "华家池校区食堂", pid: "15" },
-            { id: "37", code: "ZJXQST02", name: "之江校区食堂", pid: "15" },
-            { id: "39", code: "ZJGXQST03", name: "风味餐厅", pid: "15" },
-            { id: "40", code: "ZJGXQST04", name: "紫金港清真", pid: "15" },
-            { id: "41", code: "SSJLB01", name: "师生交流吧", pid: "15" },
-            {
-              id: "42",
-              code: "ZJGXQST05",
-              name: "紫金港易耗品仓库",
-              pid: "15"
-            },
-            { id: "94", code: "YQQJ", name: "玉泉清真", pid: "15" },
-            { id: "97", code: "PS00002", name: "西溪清真", pid: "15" },
-            { id: "98", code: "PS00003", name: "华家池清真", pid: "15" },
-            {
-              id: "99",
-              code: "PS00004",
-              name: "紫金港运行保障组",
-              pid: "15"
-            },
-            { id: "100", code: "PS00005", name: "玉泉运行保障组", pid: "15" },
-            { id: "101", code: "PS00006", name: "西溪运行保障组", pid: "15" },
-            { id: "114", code: "PS00016", name: "海创园", pid: "15" },
-            {
-              id: "115",
-              code: "PS00017",
-              name: "绍兴镜湖校区档口",
-              pid: "15"
-            },
-            { id: "117", code: "PS00018", name: "玉泉易耗品仓库", pid: "15" },
-            {
-              id: "159",
-              code: "PS00054",
-              name: "紫金港校区食堂2",
-              pid: "15"
-            },
-            { id: "160", code: "PS00055", name: "玉泉校区食堂2", pid: "15" },
-            { id: "164", code: "PS00057", name: "义乌二院食堂", pid: "15" }
-          ]
+          is_del: "",
+          create_time: "",
+          update_time: "",
+          bid_type_name: "",
+          region_name: "",
+          shipping_region_list: []
         },
         notice_info: {
           id: "",
@@ -324,33 +319,32 @@ export default {
           judge_address: "",
           is_margin: "",
           desc: "",
-          bid_name: "浙大饮食中心",
-          contact_name: "Tony",
-          contact_number: "13355558888",
+          bid_name: "",
+          contact_name: "",
+          contact_number: "",
           fax: "",
           address: "",
           qualifications: "",
           create_time: "",
           update_time: ""
         },
-        quality_info: [
-          {
-            id: "1",
-            bid_code: "190920182116941657", //单号
-            name: "adsa", //项目内容
-            desc: "asda", //项目描述
-            gist: "daas" //依据
-          },
-          {
-            id: "2",
-            bid_code: "190920182116941657", //单号
-            name: "adsa", //项目内容
-            desc: "asda", //项目描述
-            gist: "daas" //依据
+        quality_info: [],
+        quality_eval_method_info: [],
+        purchase_file: [],
+        eval_method_info: {
+          id: "",
+          bid_code: "", //单号
+          type: "", //计算公式
+          max_score: "", //结束时间
+          standard_price_type: "", //开标时间
+          eval_standard_type: "", //评分标准 1基准价 / 投标报价*最大分值2 基准价得分-（投标人报价-基准价）/基准价*100%*每百分点分值 3最大分值-|投标人报价-基准价| / 基准价*100%*每百分点分值
+          eval_standard_ext: { //评分标准扩展说明如下
+            standard_price: '',
+            per_percent_point: '',
+            up_percent_point: '',
+            down_percent_point: ''
           }
-        ],
-        quality_grade_info: null,
-        purchase_file: false
+        }
       },
       columns: [
         {
@@ -420,6 +414,7 @@ export default {
     this.bid_id = this.$route.query.id;
     this.father.selectedKeys = ["/Bid/purchase_list"];
     this.get_bid_info();
+    this.get_exec_price_type();
   },
   methods: {
     get_bid_info() {
@@ -430,6 +425,11 @@ export default {
         .catch(error => {
           this.$message.error(error);
         });
+    },
+    get_exec_price_type(){
+      get_exec_price_type().then(res=>{
+        this.exec_price_type = res.data||[];
+      }).catch(error => this.$message.error(error));
     },
     showFile(full_path){
       open(full_path)
@@ -445,10 +445,14 @@ export default {
 #auditPurchaseDoc {
   @include component;
   .ant-input {
-    @extend .block;
     width: 70%;
   }
   .vertical-middle {
+    height: 30px;
+    line-height: 30px;
+  }
+  .radioStyle{
+    @extend .block;
     height: 30px;
     line-height: 30px;
   }
@@ -464,6 +468,10 @@ export default {
     width: 8px;
     height: 8px;
     margin-bottom: 3px;
+  }
+  .wenjian {
+    width: 17px;
+    height: 17px;
   }
 }
 </style>

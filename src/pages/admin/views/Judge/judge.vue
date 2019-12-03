@@ -67,7 +67,7 @@
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
       >
-      <h3 slot="title">附件</h3>
+      <h3 slot="title">{{ModalTitle}}</h3>
       <a-table
         class="table"
         :dataSource="ModalInfo"
@@ -118,6 +118,7 @@ export default {
       group_leader:'',
       judge_info:{},
       ModalVisible:false,
+      ModalTitle:'',
       ModalInfo:[],
       columns: [],
     };
@@ -178,6 +179,7 @@ export default {
           width: "20%"
         }
       ];
+        this.ModalTitle = '投标文件';
         this.ModalVisible = true;
         this.ModalInfo = res.data;
       }).catch(error=>this.$message.error(error))
@@ -192,7 +194,7 @@ export default {
           align: "center"
         },
         {
-          title: "操作",
+          title: "文件名称",
           dataIndex:'file_name',
           width: "20%"
         },
@@ -202,6 +204,7 @@ export default {
           width: "20%"
         }
       ]
+        this.ModalTitle = '采购文件';
         this.ModalVisible = true;
         this.ModalInfo = res.data;
       }).catch(error=>this.$message.error(error))

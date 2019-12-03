@@ -3,6 +3,12 @@
     <a-row class="first-row">
       <a-col :span="21">
         <span class="title">特殊资质列表</span>
+        <span style="font-size:12px;" class="inline-block help">
+          注：①带“*”资质为供应大类的必备资质，属于必填项。<br>
+          <span style="left:24px;">
+            ②供应商还可添加其他资质证书，例如ISO9001证书、ISO22000证书及获取的其他荣誉资质证书，属于非必填项。
+          </span>
+        </span>
       </a-col>
       <a-col :span="3">
         <a-button type="primary" v-show="father.status!='1'" @click="new_add">新增</a-button>

@@ -109,6 +109,13 @@ export function get_bid_eval_method(bid_id) {
     params: { c: 'Bid', a: 'get_bid_eval_method', token: global.token,bid_id },
   })
 }
+/* 获取采购文件是否完善 */
+export function get_purchase_complete_info(bid_id) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_purchase_complete_info', token: global.token,bid_id },
+  })
+}
 /* 添加/编辑评标方法 */
 export function save_bid_eval_method(data) {
   return request({

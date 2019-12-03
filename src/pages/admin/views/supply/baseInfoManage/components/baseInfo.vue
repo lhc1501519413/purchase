@@ -429,16 +429,18 @@
           </a-radio-group>
         </a-form-item>
       </a-col>
-      <a-col :span="11">
-        <a-form-item label="公司介绍：" v-bind="formItemLayout">
+    </a-row>
+    <a-row>
+      <a-col :span="14">
+        <a-form-item label="公司介绍" :label-col='{ span: 7 }' :wrapper-col='{ span: 17 }' :help="edit_read?'':deschelp">
           <span v-show="edit_read">{{formData.desc}}</span>
           <a-textarea
-          v-show="!edit_read"
-            placeholder="请输入公司介绍"
+            style="width:100%;"
+            v-show="!edit_read"
             :rows="4"
             v-decorator="[
             'desc',
-            { rules: [{ required: true, message: '公司介绍必填' }],initialValue:formData.desc }
+            { rules: [{ required: true, message: '公司介绍必填' }],initialValue:formData.desc||deschelp }
           ]"
           />
         </a-form-item>
@@ -528,6 +530,7 @@ export default {
         is_listed: 1,
         desc: ""
       },
+      deschelp:'请填写关于公司的基本情况、公司的理念、公司的业绩、售后服务及荣誉资质等信息的介绍',
       addr_options: [],
       // supply_type: [],
       value: [],

@@ -26,7 +26,14 @@
         :tabBarGutter="10"
       >
         <a-tab-pane key="1">
-          <div slot="tab">公告信息</div>
+          <div slot="tab">
+            <img class="img_point" :src="point" alt="必填" />
+            公告信息
+            <img
+              :src="purchase_complete_info.notice_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
+              alt="是否完善"
+            />
+          </div>
           <a-form :form="form" @submit="handleSubmit">
             <h4 class="relative">
               供应商资格要求
@@ -93,13 +100,51 @@
             <h4>招标供应商数量</h4>
             <a-form-item label="需求数量" v-bind="formItemLayout">
               <a-input
-                style="width:60%;"
+                @input="input_min_supply"
+                style="width:26%;"
+                class="mr-10"
                 placeholder="请输入需求数量"
                 v-decorator="[
                   'min_supply',
                   { rules: [{ required: true, message: '请输入需求数量' }],initialValue:formData.notice_info.min_supply }
                 ]"
-              ></a-input>
+              ></a-input>家
+            </a-form-item>
+            <a-form-item label="中标执行价格" v-bind="formItemLayout">
+              <a-radio-group
+                v-if="min_supply<2"
+                v-decorator="[
+                  'exec_price_type',
+                  { rules: [{ required: true, message: '请选择中标执行价格' }],initialValue:formData.notice_info.exec_price_type }
+                ]"
+              >
+                <a-radio
+                  class="radioStyle"
+                  v-for="item of exec_price_type.slice(0,4)"
+                  :key="item.id"
+                  :value="item.id"
+                >{{item.name}}</a-radio>
+              </a-radio-group>
+              <a-radio-group
+                v-else
+                v-decorator="[
+                  'exec_price_type',
+                  { rules: [{ required: true, message: '请选择中标执行价格' }],initialValue:formData.notice_info.exec_price_type }
+                ]"
+              >
+                <a-radio
+                  class="radioStyle"
+                  v-for="item of exec_price_type.slice(4)"
+                  :key="item.id"
+                  :value="item.id"
+                >
+                  {{item.name.split('N')[0]}}
+                  <span
+                    class="color ml-10 mr-10"
+                  >{{item.name.indexOf('N')!=-1?min_supply:''}}</span>
+                  {{item.name.split('N')[1]}}
+                </a-radio>
+              </a-radio-group>
             </a-form-item>
             <h4>开标评标时间地址</h4>
             <a-form-item v-bind="formItemLayout" label="投标截止时间(开标时间)">
@@ -185,6 +230,34 @@
                 <a-radio :value="0">否</a-radio>
               </a-radio-group>
             </a-form-item>
+            <h4>公告附件</h4>
+            <a-form-item label="附件" v-bind="formItemLayout">
+              <a-upload
+                :showUploadList="false"
+                :customRequest="customRequest2"
+                :beforeUpload="beforeUpload"
+                v-decorator="[
+                  'file_path',
+                  { rules: [{ required: true, message: '请选择附件' }],initialValue:formData.notice_info.file_list }
+                ]"
+              >
+                <a-button>
+                  <a-icon type="upload" />上传
+                </a-button>
+                <ul>
+                  <li
+                    class="mt-10"
+                    @click.stop="del_notice_file"
+                    v-for="(item,index) of formData.notice_info.file_list"
+                    :key="index"
+                  >
+                    <svg-icon class="wenjian" icon-class="wenjian" />
+                    <span class="ml-10 mr-10">{{item.file_name}}</span>
+                    <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+                  </li>
+                </ul>
+              </a-upload>
+            </a-form-item>
             <h4>其他事项</h4>
             <a-form-item :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }" class="ml-10">
               <a-textarea
@@ -247,7 +320,13 @@
           </a-form>
         </a-tab-pane>
         <a-tab-pane key="2">
-          <div slot="tab">资格审查要求</div>
+          <div slot="tab">
+            资格审查要求
+            <img
+              :src="purchase_complete_info.quality_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
+              alt="是否完善"
+            />
+          </div>
           <div>
             <div class="header">
               <h4>资格审查要求</h4>
@@ -293,8 +372,15 @@
           </div>
         </a-tab-pane>
         <a-tab-pane key="3">
-          <div slot="tab">价格评标方法</div>
-          <a-form :form="form" @submit="save_bid_eval_method" class="bid-rule">
+          <div slot="tab">
+            <img class="img_point" :src="point" alt="必填" />
+            价格评标方法
+            <img
+              :src="purchase_complete_info.eval_method_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
+              alt="是否完善"
+            />
+          </div>
+          <a-form :form="form2" @submit="save_bid_eval_method" class="bid-rule">
             <h4 class="relative">
               评分规则
               <a-form-item class="absolute no-margin" style="right:0;top:0;">
@@ -316,7 +402,7 @@
                     initialValue:formData.eval_method_info.type
                   }
                 ]"
-                >
+              >
                 <a-select-option
                   v-for="item of eval_method_info.type"
                   :value="item.value"
@@ -339,10 +425,11 @@
             </a-form-item>
             <a-form-item label="基准价" v-bind="formItemLayout2">
               <a-radio-group
+                @change="standard_price_type_change"
                 :options="eval_method_info.standard_price_type"
                 v-decorator="[
                 'standard_price_type',
-                { 
+                {
                   rules: [{ required: true, message: '请选择基准价' }],
                   initialValue:formData.eval_method_info.standard_price_type
                 }
@@ -359,41 +446,42 @@
                     initialValue:formData.eval_method_info.eval_standard_type 
                   }
                 ]"
-                >
+              >
                 <a-radio
-                  class="radioStyle block mb-10"
+                  class="block mb-10"
                   v-for="item of eval_method_info.eval_standard_type"
                   :value="item.value"
                   :key="item.value"
-                  >
+                >
                   {{item.label}}
-                  <div v-if="formData.eval_method_info.eval_standard_type === '2' && item.value==='2'">
+                  <div
+                    v-if="formData.eval_method_info.eval_standard_type === '2' && item.value==='2'"
+                  >
                     <div class="ratio">
                       <span>基准价得分：</span>
-                      <a-input 
-                      placeholder="请输入基准价得分" 
-                      v-model="eval_standard_ext.standard_price"
-                      />
+                      <a-input placeholder="请输入基准价得分" v-model="eval_standard_ext.standard_price" />
                     </div>
                     <div class="ratio">
                       <span>每百分点分值：</span>
-                      <a-input 
-                      placeholder="请输入每百分点分值" 
-                      v-model="eval_standard_ext.per_percent_point"
+                      <a-input
+                        placeholder="请输入每百分点分值"
+                        v-model="eval_standard_ext.per_percent_point"
                       />
                     </div>
                   </div>
-                  <div v-if="formData.eval_method_info.eval_standard_type === '3' && item.value==='3'">
+                  <div
+                    v-if="formData.eval_method_info.eval_standard_type === '3' && item.value==='3'"
+                  >
                     <div class="ratio">
                       <span>正偏离每百分点分值：</span>
-                      <a-input 
-                        placeholder="请输入正偏离每百分点分值" 
+                      <a-input
+                        placeholder="请输入正偏离每百分点分值"
                         v-model="eval_standard_ext.up_percent_point"
                       />
                     </div>
                     <div class="ratio">
                       <span>负偏离每百分点分值：</span>
-                      <a-input 
+                      <a-input
                         placeholder="请输入负偏离每百分点分值"
                         v-model="eval_standard_ext.down_percent_point"
                       />
@@ -405,7 +493,14 @@
           </a-form>
         </a-tab-pane>
         <a-tab-pane key="4">
-          <div slot="tab">资格评分要求</div>
+          <div slot="tab">
+            <img class="img_point" :src="point" alt="必填" />
+            资格评分要求
+            <img
+              :src="purchase_complete_info.quality_grade_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
+              alt="是否完善"
+            />
+          </div>
           <div>
             <div class="header">
               <h4>资格评分要求</h4>
@@ -463,7 +558,14 @@
           </div>
         </a-tab-pane>
         <a-tab-pane key="5">
-          <div slot="tab">项目附件</div>
+          <div slot="tab">
+            <img class="img_point" :src="point" alt="必填" />
+            项目附件
+            <img
+              :src="purchase_complete_info.purchase_file.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
+              alt="是否完善"
+            />
+          </div>
           <div class="mb-10 relative">
             <h4>采购文件</h4>
             <a-button
@@ -511,9 +613,10 @@ import {
   save_bid_quality_grade, // 保存资质评分要求
   save_bid_purchase_file, // 保存文件附件
   submit_bid_purchase, // 提交采购文件
-  save_bid_eval_method // 添加/编辑评标方法
+  save_bid_eval_method, // 添加/编辑评标方法
+  get_purchase_complete_info // 获取采购文件是否完善
 } from "@admin/api/bids";
-import { POST } from "@common/js/apis";
+import { POST, get_exec_price_type } from "@common/js/apis";
 export default {
   props: {
     father: {
@@ -524,6 +627,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
+      form2: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },
         wrapperCol: { span: 10 }
@@ -533,7 +637,36 @@ export default {
         wrapperCol: { span: 11 }
       },
       bid_id: "",
+      point: require("@static/images/icon_point.png"),
       del_icon: require("@static/icon/icon_close.png"),
+      exec_price_type: [],
+      purchase_complete_info: {
+        notice_info: {
+          status: 0, //0未完善 1已完善
+          name: "",
+          ico_class: ""
+        },
+        quality_info: {
+          status: 0,
+          name: "",
+          ico_class: ""
+        },
+        eval_method_info: {
+          status: 0,
+          name: "",
+          ico_class: ""
+        },
+        quality_grade_info: {
+          status: 0,
+          name: "",
+          ico_class: ""
+        },
+        purchase_file: {
+          status: 0,
+          name: "",
+          ico_class: ""
+        }
+      },
       formData: {
         bid_info: {
           id: "",
@@ -594,14 +727,16 @@ export default {
           max_score: "", //结束时间
           standard_price_type: "", //开标时间
           eval_standard_type: "", //评分标准 1基准价 / 投标报价*最大分值2 基准价得分-（投标人报价-基准价）/基准价*100%*每百分点分值 3最大分值-|投标人报价-基准价| / 基准价*100%*每百分点分值
-          eval_standard_ext: { //评分标准扩展说明如下
-            standard_price: '',
-            per_percent_point: '',
-            up_percent_point: '',
-            down_percent_point: ''
+          eval_standard_ext: {
+            //评分标准扩展说明如下
+            standard_price: "",
+            per_percent_point: "",
+            up_percent_point: "",
+            down_percent_point: ""
           }
         }
       },
+      min_supply: "",
       point: require("@static/images/icon_point.png"),
       activeKey: "1",
       columns: [
@@ -698,54 +833,73 @@ export default {
         }
       },
       eval_method_info: {
-        type: [
-          { value: '1', label: "自动计算报价得分" },
-        ],
+        type: [{ value: "1", label: "自动计算报价得分" }],
         standard_price_type: [
-          { value: '1', label: "最低价" },
-          { value: '2', label: "次低价" },
-          { value: '3', label: "中位值" }
+          { value: "1", label: "最低价" },
+          { value: "2", label: "次低价" },
+          { value: "3", label: "中位值" }
         ],
         eval_standard_type: [
-          { value: '1', label: "基准价 / 投标报价*最大分值" },
+          { value: "1", label: "基准价 / 投标报价*最大分值" },
           {
-            value: '2',
+            value: "2",
             label: "基准价得分-（投标人报价-基准价）/基准价*100%*每百分点分值"
           },
           {
-            value: '3',
-            label: "最大分值- |  投标人报价-基准价  | / 基准价*100%*每百分点分值"
+            value: "3",
+            label:
+              "最大分值- |  投标人报价-基准价  | / 基准价*100%*每百分点分值"
           }
-        ],
+        ]
       },
-      eval_standard_ext: { //评分标准扩展说明如下
-        standard_price: '',
-        per_percent_point: '',
-        up_percent_point: '',
-        down_percent_point: ''
-      },
+      eval_standard_ext: {
+        //评分标准扩展说明如下
+        standard_price: "",
+        per_percent_point: "",
+        up_percent_point: "",
+        down_percent_point: ""
+      }
     };
   },
   created() {
     this.bid_id = this.$route.query.id;
     this.father.selectedKeys = ["/Bid/purchase_list"];
     this.get_bid_info();
+    this.get_exec_price_type();
+    this.get_purchase_complete_info();
   },
   methods: {
     get_bid_info() {
       get_bid_purchase_info(this.bid_id)
         .then(res => {
           this.formData = res.data;
-          this.eval_standard_ext = res.data.eval_method_info.eval_standard_ext||{ //评分标准扩展说明如下
-            standard_price: '',
-            per_percent_point: '',
-            up_percent_point: '',
-            down_percent_point: ''
+          this.min_supply = res.data.notice_info.min_supply;
+          this.eval_standard_ext = res.data.eval_method_info
+            .eval_standard_ext || {
+            //评分标准扩展说明如下
+            standard_price: "",
+            per_percent_point: "",
+            up_percent_point: "",
+            down_percent_point: ""
           };
         })
         .catch(error => {
           this.$message.error(error);
         });
+    },
+    get_exec_price_type() {
+      get_exec_price_type()
+        .then(res => {
+          this.exec_price_type = res.data || [];
+        })
+        .catch(error => this.$message.error(error));
+    },
+    get_purchase_complete_info() {
+      get_purchase_complete_info(this.bid_id)
+        .then(res => {
+          this.purchase_complete_info = res.data || {};
+        })
+        .catch(error => this.$message.error(error));
     },
     callback(name) {
       this.activeKey = name;
@@ -773,6 +927,18 @@ export default {
         onCancel() {}
       });
     },
+    input_min_supply() {
+      this.formData.notice_info.exec_price_type = "";
+      if (
+        (event.target.value < 2 &&
+          this.form.getFieldValue("exec_price_type") > 4) ||
+        (event.target.value >= 2 &&
+          this.form.getFieldValue("exec_price_type") <= 4)
+      ) {
+        this.form.resetFields("exec_price_type");
+      }
+      this.min_supply = event.target.value;
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, fieldsValue) => {
@@ -791,15 +957,15 @@ export default {
             open_time:
               fieldsValue["open_time"] &&
               fieldsValue["open_time"].format("YYYY-MM-DD HH:mm:ss"),
+            file_list: this.formData.notice_info.file_list,
             bid_id: this.bid_id
           };
           save_bid_notice(values)
             .then(res => {
               this.$message.success(res.msg);
+              this.get_purchase_complete_info();
             })
-            .catch(error => {
-              this.$message.error(error);
-            });
+            .catch(error => this.$message.error(error));
         }
       });
     },
@@ -842,6 +1008,7 @@ export default {
         save_bid_quality(obj)
           .then(res => {
             this.$message.success(res.msg);
+            this.get_purchase_complete_info();
           })
           .catch(error => {
             this.$message.error(error);
@@ -897,6 +1064,7 @@ export default {
         save_bid_quality_grade(obj)
           .then(res => {
             this.$message.success(res.msg);
+            this.get_purchase_complete_info();
           })
           .catch(error => {
             this.$message.error(error);
@@ -918,6 +1086,22 @@ export default {
           this.$message.error(error);
         });
       this.formData.purchase_file = purchase_file;
+    },
+    customRequest2(data) {
+      var file_list = this.formData.notice_info.file_list || [];
+      const formData = new FormData();
+      formData.append("file", data.file);
+      POST({ c: "Upload", a: "upload_one" }, formData)
+        .then(res => {
+          let img_obj = {};
+          img_obj.file_name = res.data.name;
+          img_obj.file_path = res.data.savepath;
+          file_list.push(img_obj);
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
+      this.formData.notice_info.file_list = file_list;
     },
     beforeUpload(file) {
       const isJPGPDF =
@@ -952,6 +1136,12 @@ export default {
         this.formData.purchase_file.splice(index, 1);
       }
     },
+    del_notice_file(e) {
+      let index = e.target.dataset.key;
+      if (index !== undefined) {
+        this.formData.notice_info.file_list.splice(index, 1);
+      }
+    },
     saveFile() {
       var purchase_file = this.formData.purchase_file || [];
       if (JSON.stringify(purchase_file) === "[]") {
@@ -963,54 +1153,75 @@ export default {
       obj.file_list = purchase_file;
       save_bid_purchase_file(obj)
         .then(res => {
+          this.get_purchase_complete_info();
           this.$message.success(res.msg);
         })
         .catch(error => {
           this.$message.error(error);
         });
     },
-    change_max_score(e){
+    change_max_score(e) {
       this.formData.eval_method_info.max_score = e.target.value;
     },
-    eval_standard_type_change(e){
+    standard_price_type_change(e) {
+      this.form2.setFieldsValue({ ["standard_price_type"]: e.target.value });
+      this.form2.setFieldsValue({ ["eval_standard_type"]: e.target.value });
+      this.formData.eval_method_info.standard_price_type = e.target.value;
+      this.formData.eval_method_info.eval_standard_type = e.target.value;
+    },
+    eval_standard_type_change(e) {
+      this.form2.setFieldsValue({ ["standard_price_type"]: e.target.value });
+      this.form2.setFieldsValue({ ["eval_standard_type"]: e.target.value });
+      this.formData.eval_method_info.standard_price_type = e.target.value;
       this.formData.eval_method_info.eval_standard_type = e.target.value;
     },
     save_bid_eval_method(e) {
       e.preventDefault();
-      this.form.validateFieldsAndScroll((err, fieldsValue) => {
+      this.form2.validateFieldsAndScroll((err, fieldsValue) => {
         if (!err) {
           const values = {
             ...fieldsValue,
-            bid_id:this.bid_id,
-            eval_standard_ext:{
+            bid_id: this.bid_id,
+            eval_standard_ext: {
               standard_price: this.eval_standard_ext.standard_price,
               per_percent_point: this.eval_standard_ext.per_percent_point,
               up_percent_point: this.eval_standard_ext.up_percent_point,
               down_percent_point: this.eval_standard_ext.down_percent_point
             }
           };
-          if(values.eval_standard_type==='2'&& values.eval_standard_ext.standard_price==''){
-            this.$message.warn('请输入基准价得分')
+          if (
+            values.eval_standard_type === "2" &&
+            values.eval_standard_ext.standard_price == ""
+          ) {
+            this.$message.warn("请输入基准价得分");
             return;
           }
-          if(values.eval_standard_type==='2'&& values.eval_standard_ext.per_percent_point==''){
-            this.$message.warn('请输入每百分点分值')
+          if (
+            values.eval_standard_type === "2" &&
+            values.eval_standard_ext.per_percent_point == ""
+          ) {
+            this.$message.warn("请输入每百分点分值");
             return;
           }
-          if(values.eval_standard_type==='3'&& values.eval_standard_ext.up_percent_point==''){
-            this.$message.warn('请输入正偏离每百分点分值')
+          if (
+            values.eval_standard_type === "3" &&
+            values.eval_standard_ext.up_percent_point == ""
+          ) {
+            this.$message.warn("请输入正偏离每百分点分值");
             return;
           }
-          if(values.eval_standard_type==='3'&& values.eval_standard_ext.down_percent_point==''){
-            this.$message.warn('请输入负偏离每百分点分值')
+          if (
+            values.eval_standard_type === "3" &&
+            values.eval_standard_ext.down_percent_point == ""
+          ) {
+            this.$message.warn("请输入负偏离每百分点分值");
             return;
           }
-          save_bid_eval_method(values).then(res => {
-            this.$message.success(res.msg);
-          })
-          .catch(error => {
-            this.$message.error(error);
-          });
+          save_bid_eval_method(values)
+            .then(res =>{
+              this.$message.success(res.msg)
+              this.get_purchase_complete_info();
+            }).catch(error => this.$message.error(error));
         }
       });
     }
@@ -1021,12 +1232,27 @@ export default {
 @import "~@admin/assets/scss/common";
 #addPurchaseDoc {
   @include component;
-  .tabs {
-    @include flex;
-    li {
-      @extend .mr-10;
-      @extend .text-center;
+  .ant-tabs {
+    .ant-tabs-tab {
+      div {
+        .img_point {
+          width: 6px;
+          height: 6px;
+          position: relative;
+          bottom: 2px;
+        }
+        img {
+          width: 17px;
+          height: 17px;
+          margin-bottom: 2px;
+        }
+      }
     }
+  }
+  .radioStyle {
+    @extend .block;
+    height: 30px;
+    line-height: 30px;
   }
   .tab-bg {
     background-color: $primary2;
@@ -1053,24 +1279,24 @@ export default {
     height: 17px;
   }
   .bid-rule {
-      .ant-col-11 {
-        .ant-input {
-          width: 50%;
+    .ant-col-11 {
+      .ant-input {
+        width: 50%;
+      }
+      .ratio {
+        @include flex;
+        @extend .mt-10;
+        @extend .pl-20;
+        width: 85%;
+        span {
+          flex: 1;
+          @extend .text-right;
         }
-        .ratio {
-          @include flex;
-          @extend .mt-10;
-          @extend .pl-20;
-          width: 85%;
-          span {
-            flex: 1;
-            @extend .text-right;
-          }
-          .ant-input {
-            flex: 2;
-          }
+        .ant-input {
+          flex: 2;
         }
       }
+    }
   }
 }
 </style>

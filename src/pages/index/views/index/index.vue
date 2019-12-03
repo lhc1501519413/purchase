@@ -405,7 +405,7 @@ export default {
   .third-row {
     @include box(100%, 230px);
     @include flex(space-between, flex-start);
-    background: url("../../../../../static/images/bg2.png");
+    background: url("../../../../../static/images/bg.png");
     padding: 0 17.5%;
     .announce {
       padding: 20px 0;

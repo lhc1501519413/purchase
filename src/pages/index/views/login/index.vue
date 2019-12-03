@@ -167,8 +167,14 @@ export default {
       login_mobile:false,
       yzm_disabled: true,
       yzm_time: 60,
-      yzm_btn: "发送验证码"
+      yzm_btn: "发送验证码",
+      router:{}
     };
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm=>{
+      vm.router = from;
+    })
   },
   methods: {
     yzm(){
@@ -228,11 +234,13 @@ export default {
                     },1000)
                     break;
                 }
-              }else{
+              }else if(this.router.name){
                 let time = setTimeout(()=>{
-                  this.$router.go(-1);
+                this.$router.replace({path:this.router.path,query:this.router.query})
                   clearTimeout(time)
                 },1000)
+              }else{
+                this.$router.replace({path:'/'})
               }
             }).catch(error=>{
               this.$message.warn(error)
@@ -290,11 +298,13 @@ export default {
                     },1000)
                     break;
                 }
-              }else{
+              }else if(this.router.name){
                 let time = setTimeout(()=>{
-                  this.$router.go(-1);
+                this.$router.replace({path:this.router.path,query:this.router.query})
                   clearTimeout(time)
                 },1000)
+              }else{
+                this.$router.replace({path:'/'})
               }
             }).catch(error=>{
               this.$message.warn(error)

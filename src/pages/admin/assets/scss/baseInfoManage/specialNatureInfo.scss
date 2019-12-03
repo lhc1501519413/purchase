@@ -7,9 +7,18 @@
   .first-row {
     padding: 20px;
     border-bottom: 1px dashed #e5e5e5;
-    .title {
-      color: #202020;
-      font-size: 16px;
+    .ant-col-21{
+      @include flex(flex-start,flex-start);
+      .title {
+        color: #202020;
+        font-size: 16px;
+      }
+      .help{
+        position: relative;
+        font-size: 12px;
+        top: 8px;
+        left: 17px;
+      }
     }
   }
   .ant-pagination{

@@ -69,24 +69,24 @@ export default {
           align: "center",
           scopedSlots:{customRender:'project_name'}
         },
-        {
+        /* {
           title: "中标金额（元）",
           dataIndex: "report_money",
           width: "14%",
           align: "center"
-        },
+        }, */
         {
           title: "中标供应商",
           dataIndex: "supply_name",
           width: "14%",
           align: "center"
         },
-        {
+        /* {
           title: "中标供应商地址",
           dataIndex: "address",
           width: "14%",
           align: "center"
-        }
+        } */
       ],
       pagination: {
         showQuickJumper: true,

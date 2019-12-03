@@ -450,7 +450,7 @@ export default {
       get_supply_purchase_info(bid_code)
         .then(res => {
           this.supply_purchase_info = res.data;
-          this.supply_purchase_info.supply_info.file_list = res.data.supply_info.file_list||[];
+          // this.supply_purchase_info.supply_info.file_list = res.data.supply_info.file_list;
           this.ModalVisible = true;
         })
         .catch(error => this.$message.error(error));
@@ -512,6 +512,7 @@ export default {
       return isJPGPDF && isPicLt100KB && isPdfLt2M;
     },
     customRequest(data) {
+      var purchase_file = this.supply_purchase_info.supply_info.file_list||[];
       const formData = new FormData();
       formData.append("file", data.file);
       POST({ c: "Upload", a: "upload_one" }, formData)
@@ -519,9 +520,10 @@ export default {
           let img_obj = {};
           img_obj.file_name = res.data.name;
           img_obj.file_path = res.data.savepath;
-          this.supply_purchase_info.supply_info.file_list.push(img_obj)
+          purchase_file.push(img_obj);
           this.$forceUpdate();
         }).catch();
+        this.supply_purchase_info.supply_info.file_list = purchase_file;
     },
     del(e) {
       let index = e.target.dataset.key;
