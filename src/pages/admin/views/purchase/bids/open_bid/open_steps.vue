@@ -7,7 +7,7 @@
       <div>
         <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
-        <a-button type="primary" @click="get_judge_info">刷新</a-button>
+        <a-button type="primary" @click="refresh">刷新</a-button>
         <a-button type="primary" v-if="judge_info.status!=14" @click="next">下一步</a-button>
       </div>
     </h5>
@@ -113,6 +113,12 @@ export default {
         this.judge_info = res.data;
         this.$store.commit('SET_STATUS',res.data.status)
       }).catch(error=>this.$message.error(error))
+    },
+    refresh(){  // 刷新
+      this.get_judge_info();
+      if(!!this.$refs.child.refresh){
+        this.$refs.child.refresh()
+      }
     },
     next() {
       this.$refs.child.next();

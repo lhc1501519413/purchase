@@ -100,6 +100,10 @@ export default {
         elem.is_join = +elem.is_join;
         elem.group_leader = +elem.group_leader;
       })
+      if(obj.expert_list.every(elem=>elem.group_leader==0)){
+        this.$message.info('请选择专家组长');
+        return;
+      }
       set_bid_expert(obj)
         .then(res => {
           let time = setTimeout(()=>{

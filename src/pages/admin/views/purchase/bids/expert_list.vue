@@ -40,7 +40,7 @@
         rowKey="id"
       >
         <template slot="sex" slot-scope="text">{{text==1?'男':'女'}}</template>
-        <template slot="type" slot-scope="text">{{text==1?'用户代表':'评标专家'}}</template>
+        <template slot="type" slot-scope="text">{{text|type}}</template>
         <template slot="operation" slot-scope="text, record">
           <a href="javascript:;" @click="edit(record)">编辑</a>
           <a href="javascript:;" @click="del(record.user_id)">删除</a>
@@ -114,7 +114,7 @@
               'sex',
               { 
                 rules: [{ required: true, message: '请选择性别' }],
-                initialValue:+formData.sex 
+                initialValue:formData.sex?+formData.sex:''
               }
             ]"
           >
@@ -243,6 +243,18 @@ export default {
         username: "" // 用户名
       }
     };
+  },
+  filters:{
+    type(key){
+      switch (key) {
+        case '1':
+          return '用户代表'
+        case '2':
+          return '评标专家'
+        default:
+          return ''
+      }
+    }
   },
   created() {
     this.father.selectedKeys = ["/Expert/expert_list"];

@@ -390,12 +390,12 @@ export default {
             clearInterval(this.decrypt_time_interval);
           })
         })
-        .catch(error => this.$message.error(error));
+        .catch(error => this.$message.info(error));
       get_decrypt_file(bid_code)
         .then(res => {
           this.decrypt_file = res.data || [];
         })
-        .catch(error => this.$message.error(error));
+        .catch(error => this.$message.info(error));
       this.ModalVisible = true;
     },
     handleSubmit(e) {

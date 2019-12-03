@@ -97,7 +97,8 @@ export default {
         {value:'15',label:'待开标'},
         {value:'16',label:'评审中'},
         {value:'17',label:'采购人确认中'},
-        {value:'18',label:'采购结果公告已发布'}
+        {value:'18',label:'采购结果公告已发布'},
+        {value:'20,21',label:'已流标'}
       ],
       bid_type:'',
       bid_type_list:[
@@ -157,43 +158,32 @@ export default {
       switch (key) {
         case '1':
           return '待提交'
-          break;
         case '2':
           return '待审核'
-          break;
         case '3':
           return '项目已驳回'
-          break;
         case '8':
           return '采购文件待制作'
-          break;
         case '9':
           return '采购文件待审核'
-          break;
         case '10':
           return '采购文件已驳回'
-          break;
         case '11':
           return '采购公告已发布'
-          break;
         case '15':
           return '待开标'
-          break;
         case '16':
           return '评审中'
-          break;
         case '17':
           return '采购人确认中'
-          break;
         case '18':
           return '采购结果公告已发布'
-          break;
         case '20':
           return '已流标'
-          break;
+        case '21':
+          return '已流标'
         default:
           return '未知状态'
-          break;
       }
     }
   },

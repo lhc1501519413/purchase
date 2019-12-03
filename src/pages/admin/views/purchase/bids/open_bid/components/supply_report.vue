@@ -41,7 +41,7 @@ export default {
           width: "10%",
         },
         {
-          title: "最终报价（万元）",
+          title: "最终报价（元）",
           width: "10%",
           dataIndex:'report_money',
           scopedSlots:{ customRender:'report_money' }

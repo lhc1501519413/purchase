@@ -1,5 +1,13 @@
 <template>
   <div id="bid">
+    <h3>
+      <span>
+        项目编号：{{formData.custom_code}}
+      </span>
+      <span class="status">
+        状态：{{formData.status|status}}
+      </span>
+    </h3>
     <section class="content">
       <h4>项目基本信息</h4>
       <a-row class="mb-10">
@@ -12,7 +20,7 @@
         <a-col class="text-right" :span='2' :offset='1'>采购单位：</a-col>
         <a-col :span='5'>{{formData.com_name}}</a-col>
         <a-col class="text-right" :span='2' :offset='1'>采购方式：</a-col>
-        <a-col :span='5'>{{formData.buy_type_name}}</a-col>
+        <a-col :span='5'>{{formData.bid_type_name}}</a-col>
       </a-row>
       <a-row class="mb-10">
         <a-col class="text-right" :span='2' :offset='1'>采购联系人：</a-col>
@@ -152,6 +160,40 @@ export default {
         pageSizeOptions: ["10", "20", "30", "40"]
       }
     };
+  },
+  filters:{
+    status:(key)=>{
+      switch (key) {
+        case '1':
+          return '待提交'
+        case '2':
+          return '待审核'
+        case '3':
+          return '项目已驳回'
+        case '8':
+          return '采购文件待制作'
+        case '9':
+          return '采购文件待审核'
+        case '10':
+          return '采购文件已驳回'
+        case '11':
+          return '采购公告已发布'
+        case '15':
+          return '待开标'
+        case '16':
+          return '评审中'
+        case '17':
+          return '采购人确认中'
+        case '18':
+          return '采购结果公告已发布'
+        case '20':
+          return '已流标'
+        case '21':
+          return '已流标'
+        default:
+          return '未知状态'
+      }
+    }
   },
   created() {
     var id = this.$route.query.id;

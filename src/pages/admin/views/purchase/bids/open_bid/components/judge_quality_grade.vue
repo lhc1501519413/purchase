@@ -80,7 +80,11 @@ export default {
   },
   created() {
     this.father.current = 3;
-    get_judge_quality_grade(this.bid_code)
+    this.refresh();
+  },
+  methods: {
+    refresh(){
+      get_judge_quality_grade(this.bid_code)
       .then(res => {
         this.judge_quality_grade = res.data.expert_list || [];
         this.activeKey = res.data.expert_list[0].user_id;
@@ -97,8 +101,7 @@ export default {
         });
       })
       .catch(error => this.$message.error(error));
-  },
-  methods: {
+    },
     next() {
       this.$router.push({
         path: "/Bid/judge_total_quality_grade",
@@ -107,8 +110,7 @@ export default {
     },
     callback(name) {
       this.activeKey = name;
-    },
-    handleChange() {}
+    }
   }
 };
 </script>

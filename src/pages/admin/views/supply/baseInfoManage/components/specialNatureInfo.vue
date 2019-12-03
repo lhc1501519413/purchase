@@ -16,7 +16,12 @@
     </a-row>
     <a-table :dataSource="special_nature_list" :columns="columns" :pagination="false">
       <template slot="special_nature_type" slot-scope="text, record">
-        <span @click="show_edit_read(record.id,true)" class="nature-type">{{record.special_nature_type}}</span>
+        <div class="nature-type-container" :class="{'pl-10':record.priv.show_del!=1}">
+          <span v-if="record.priv.show_del!=1" class="necessary">*</span>
+          <span @click="show_edit_read(record.id,true)" class="nature-type">
+            {{record.special_nature_type}}
+          </span>
+        </div>
       </template>
       <template
         slot="timeLimit"

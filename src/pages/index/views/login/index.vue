@@ -234,7 +234,7 @@ export default {
                     },1000)
                     break;
                 }
-              }else if(this.router.name){
+              }else if(this.router.name&&this.router.name!='reg'){
                 let time = setTimeout(()=>{
                 this.$router.replace({path:this.router.path,query:this.router.query})
                   clearTimeout(time)
@@ -298,7 +298,7 @@ export default {
                     },1000)
                     break;
                 }
-              }else if(this.router.name){
+              }else if(this.router.name&&this.router.name!='reg'){
                 let time = setTimeout(()=>{
                 this.$router.replace({path:this.router.path,query:this.router.query})
                   clearTimeout(time)

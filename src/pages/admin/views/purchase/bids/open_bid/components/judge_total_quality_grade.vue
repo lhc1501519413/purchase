@@ -49,10 +49,10 @@ export default {
   },
   created() {
     this.father.current = 4;
-    this.get_judge_total_quality_grade();
+    this.refresh();
   },
   methods: {
-    get_judge_total_quality_grade() {
+    refresh() {
       get_judge_total_quality_grade(this.bid_code)
         .then(res => {
           var expert_list = res.data.expert_list || [];

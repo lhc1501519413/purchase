@@ -88,10 +88,10 @@ export default {
   },
   created() {
     this.father.current = 8;
-    this.get_judge_result();
+    this.refresh();
   },
   methods: {
-    get_judge_result() {
+    refresh() {
       get_judge_result(this.bid_code)
         .then(res => {
           this.judge_result = res.data.supply_list||[];

@@ -18,6 +18,9 @@
         font-size: 12px;
         top: 8px;
         left: 17px;
+        span{
+          position: relative;
+        }
       }
     }
   }
@@ -27,9 +30,19 @@
     margin-right: 10px;
   }
   .ant-table{
-    .nature-type{
-      color: $primary2;
-      @extend .pointer;
+    .nature-type-container{
+      @extend .relative;
+      .nature-type{
+        color: $primary2;
+        @extend .pointer;
+      }
+      .necessary{
+        @extend .absolute;
+        color: #f00;;
+        left: -4px;
+        font-size: 29px;
+        top: -16px;
+      }
     }
   }
 }

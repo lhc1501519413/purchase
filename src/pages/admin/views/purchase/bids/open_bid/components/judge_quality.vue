@@ -14,7 +14,7 @@
           <div slot="tab">{{item.username}}</div>
           <a-table class="table" :dataSource="item.quality_info" :columns="columns" rowKey="supply_id">
             <template slot="status" slot-scope="text">
-              <a-select :defaultValue="text" disabled style="width: 120px" @change="handleChange">
+              <a-select :defaultValue="text" disabled style="width: 120px">
                 <a-select-option value="1">符合</a-select-option>
                 <a-select-option value="2">不符合</a-select-option>
               </a-select>
@@ -74,21 +74,23 @@ export default {
   },
   created() {
     this.father.current = 1;
-    get_judge_quality(this.bid_code)
+    this.refresh();
+  },
+  methods: {
+    refresh(){
+      get_judge_quality(this.bid_code)
       .then(res => {
         this.judge_quality = res.data || [];
         this.activeKey = res.data[0].user_id;
       })
       .catch(error => this.$message.error(error));
-  },
-  methods: {
+    },
     next() {
       this.$router.push({ path: "/Bid/judge_match", query:{bid_code: this.bid_code }});
     },
     callback(name) {
       this.activeKey = name;
     },
-    handleChange() {}
   }
 };
 </script>

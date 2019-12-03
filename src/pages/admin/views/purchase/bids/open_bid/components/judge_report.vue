@@ -72,14 +72,17 @@ export default {
   },
   created() {
     this.father.current = 7;
-    get_judge_report(this.bid_code)
+    this.refresh();
+  },
+  methods: {
+    refresh(){
+      get_judge_report(this.bid_code)
       .then(res => {
         this.judge_report = res.data || [];
         this.activeKey = res.data[0].user_id;
       })
       .catch(error => this.$message.error(error));
-  },
-  methods: {
+    },
     next() {
       this.$router.push({
         path: "/Bid/judge_result",
@@ -88,8 +91,7 @@ export default {
     },
     callback(name) {
       this.activeKey = name;
-    },
-    handleChange() {}
+    }
   }
 };
 </script>

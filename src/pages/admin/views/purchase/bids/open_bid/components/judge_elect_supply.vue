@@ -33,7 +33,7 @@ export default {
           width: "20%",
         },
         {
-          title: "最终报价（万元）",
+          title: "最终报价（元）",
           dataIndex:'report_money',
           width: "15%",
         },
