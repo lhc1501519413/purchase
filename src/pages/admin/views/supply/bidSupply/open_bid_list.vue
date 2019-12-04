@@ -65,6 +65,12 @@
             href="javascript:;"
             @click="showModal(record.bid_code)"
           >解密</a>
+          <router-link
+            v-if="priv.open_sbid_list.view&&record.status==12"
+            :to="{path:'/Sbid/bid_result',query:{id:record.id}}"
+          >
+            中标信息
+          </router-link>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -200,7 +206,8 @@ export default {
         { value: "8", label: "待开标" },
         { value: "9", label: "待解密" },
         { value: "12", label: "评标中" },
-        { value: "14", label: "已确认" },
+        { value: "13", label: "待采购方确认" },
+        { value: "14", label: "采购结果公告已发布" },
         { value: "20,21", label: "已流标" }
       ],
       bid_type: "0",
@@ -302,8 +309,11 @@ export default {
         case "12":
           return "评标中";
           break;
+        case "13":
+          return "待采购方确认";
+          break;
         case "14":
-          return "已确认";
+          return "采购结果公告已发布";
           break;
         case "20":
           return "已流标";

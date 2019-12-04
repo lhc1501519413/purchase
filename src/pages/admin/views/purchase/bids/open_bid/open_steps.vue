@@ -5,10 +5,12 @@
         招标管理 / <span class="pointer" @click="$router.push({path:'/Bid/open_bid',query:{bid_code}})">开标评标管理</span> / 评标
       </div>
       <div>
+        <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
+        <a-button v-if="(judge_info.status==13||judge_info.status==14)&&current==8" type="primary" @click="submit">提交</a-button>
         <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
         <a-button type="primary" @click="refresh">刷新</a-button>
-        <a-button type="primary" v-if="judge_info.status!=14" @click="next">下一步</a-button>
+        <a-button type="primary" v-if="judge_info.status<=14" @click="next">下一步</a-button>
       </div>
     </h5>
     <section class="content">
@@ -85,7 +87,7 @@
 
 <script>
 import {
-  get_judge_info // 获取项目评审中的状态
+  get_judge_info // 获取项目评标中的状态
 } from "@admin/api/open_bid";
 export default {
   props: {
@@ -108,7 +110,7 @@ export default {
     open_report_file(){
       this.$refs.child.open_report_file();
     },
-    get_judge_info(){ // 获取项目评审中的状态
+    get_judge_info(){ // 获取项目评标中的状态
       get_judge_info(this.bid_code).then(res=>{
         this.judge_info = res.data;
         this.$store.commit('SET_STATUS',res.data.status)
@@ -119,6 +121,12 @@ export default {
       if(!!this.$refs.child.refresh){
         this.$refs.child.refresh()
       }
+    },
+    submit(){
+      this.$refs.child.submit();
+    },
+    compute_bid_price(){
+      this.$refs.child.compute_bid_price();
     },
     next() {
       this.$refs.child.next();

@@ -136,17 +136,38 @@
           <a-input readOnly :value="formData.notice_info.judge_address"></a-input>
         </a-col>
       </a-row>
-      <h4>投标保证金</h4>
+      <h4>投标保证金与处罚信息</h4>
       <a-row class="mb-10">
         <a-col :span="5" class="text-right vertical-middle">
           <img class="img_point" :src="point" alt="必填" />
           是否需要缴纳投标保证金：
         </a-col>
-        <a-col :span="10">
+        <a-col :span="10" style="padding-top:5px;">
           <a-radio-group :value="Number(formData.notice_info.is_margin)">
             <a-radio :value="1">是</a-radio>
             <a-radio :value="0">否</a-radio>
           </a-radio-group>
+          <div v-if="formData.notice_info.is_margin==1" class="mt-10">
+            <a-input
+              readOnly
+              style="width:30%;margin-right:5px;"
+              :value='formData.notice_info.margin'
+            ></a-input>元
+          </div>
+        </a-col>
+      </a-row>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right vertical-middle">
+          <img class="img_point" :src="point" alt="必填" />
+          处罚信息：
+        </a-col>
+        <a-col :span="10">
+          由于中标价格原因、配送能力等原因供应商当场放弃中标权利，饮食中心可对其处罚
+          <a-input
+            readOnly
+            style="width:120px;margin-right:5px;"
+            :value='formData.notice_info.fine_money'
+          ></a-input>元
         </a-col>
       </a-row>
       <h4>公告附件</h4>

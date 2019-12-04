@@ -45,15 +45,28 @@
           </a-table>
         </a-col>
       </a-row>
+      <a-row>
+        <a-col :span="2" :offset='1' class="text-right">配送要求：</a-col>
+        <a-col :span="11">
+          根据合同甲方所定数量与时间（一般为订货时间起
+          <span style="color:#f00;margin:0 5px;">
+            {{formData.order_times}}
+          </span>
+          小时内）送货。如遇合同甲方特殊情况需紧急订货的，商家应首先满足。
+        </a-col>
+      </a-row>
     </section>
     <section class="content">
       <h4>项目商品信息</h4>
       <a-row>
-        <a-col :span="7" :offset='1'>
+        <a-col :span="6" :offset='1'>
           采购类别：{{formData.cat_name}}
         </a-col>
-        <a-col :span="7" :offset='1'>
+        <a-col :span="6" :offset='1'>
           预计配送时间：{{formData.shipping_days}}天
+        </a-col>
+        <a-col :span="6" :offset='1'>
+          预估采购金额：{{formData.expert_money}}元
         </a-col>
       </a-row>
       <a-table
@@ -181,7 +194,7 @@ export default {
         case '15':
           return '待开标'
         case '16':
-          return '评审中'
+          return '评标中'
         case '17':
           return '采购人确认中'
         case '18':
@@ -215,12 +228,15 @@ export default {
               width: "6%"
             });
           });
-          this.columns_stock_list[5].children.push({
-            title: "合计数量",
-            align: "center",
-            dataIndex: "number",
-            width: "10%"
-          });
+          /* 插入合计列 */
+          if(formData.area_list.length>1){
+            this.columns_stock_list[5].children.push({
+              title:'合计数量',
+              align:'center',
+              dataIndex:'number',
+              width:'10%'
+            })
+          }
           this.formData = formData;
         })
         .catch(error => {

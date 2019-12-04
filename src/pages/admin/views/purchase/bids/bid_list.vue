@@ -95,9 +95,10 @@ export default {
         {value:'10',label:'采购文件已驳回'},
         {value:'11',label:'采购公告已发布'},
         {value:'15',label:'待开标'},
-        {value:'16',label:'评审中'},
+        {value:'16',label:'评标中'},
         {value:'17',label:'采购人确认中'},
         {value:'18',label:'采购结果公告已发布'},
+        {value:'19',label:'中标通知书已发布'},
         {value:'20,21',label:'已流标'}
       ],
       bid_type:'',
@@ -173,11 +174,13 @@ export default {
         case '15':
           return '待开标'
         case '16':
-          return '评审中'
+          return '评标中'
         case '17':
           return '采购人确认中'
         case '18':
           return '采购结果公告已发布'
+        /* case '19':
+          return '中标通知书已发布' */
         case '20':
           return '已流标'
         case '21':

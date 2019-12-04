@@ -116,7 +116,7 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <a-row>
+      <a-row class="mb-10">
         <a-col :span="2" class="text-right" style="color:rgba(0,0,0,0.85)">
           配送区域：
         </a-col>
@@ -166,12 +166,29 @@
           <a-button type='primary' @click="add_line">添加行</a-button>
         </a-col>
       </a-row>
+      <a-form-item label="配送要求" :label-col='{ span: 2 }' :wrapper-col='{ span: 20 }'>
+        根据合同甲方所定数量与时间（一般为订货时间起
+        <a-select style="width: 80px"
+          v-decorator="[
+            'order_times',
+            {
+              rules: [{ required: true, message: '请选择配送要求' }],
+              initialValue:formData.order_times
+            }
+          ]"
+        >
+          <a-select-option value="24">24</a-select-option>
+          <a-select-option value="48">48</a-select-option>
+          <a-select-option value="72">72</a-select-option>
+        </a-select>
+        小时内）送货。如遇合同甲方特殊情况需紧急订货的，商家应首先满足。
+      </a-form-item>
     </section>
     <section class="content second-area">
       <h4>项目商品信息</h4>
       <a-row>
-        <a-col :span="7">
-          <a-form-item label="采购类别" :label-col="{ span: 7 }" :wrapper-col="{ span: 17 }">
+        <a-col :span="6">
+          <a-form-item label="采购类别" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
             <a-tree-select
               style="width:80%;"
               @change="cat_change"
@@ -193,7 +210,7 @@
             />
           </a-form-item>
         </a-col>
-        <a-col :span="7">
+        <a-col :span="6">
           <a-form-item label="预计配送时间" :label-col="{ span: 12 }" :wrapper-col="{ span: 12 }">
             <a-input
               style="width:68px;margin-right:5px;"
@@ -208,7 +225,22 @@
             />天
           </a-form-item>
         </a-col>
-        <a-col :span="7">
+        <a-col :span="6">
+          <a-form-item label="预估采购金额" :label-col="{ span: 12 }" :wrapper-col="{ span: 12 }">
+            <a-input
+              style="width:100px;margin-right:5px;"
+              placeholder="请输入"
+              v-decorator="[
+              'expert_money',
+              {
+                rules: [{ required: true, message: '请输入预估采购金额' }],
+                initialValue:formData.expert_money
+              }
+            ]"
+            />元
+          </a-form-item>
+        </a-col>
+        <a-col :span="3">
           <a-button type="primary" @click="add_stock">添加商品</a-button>
         </a-col>
       </a-row>
@@ -221,19 +253,12 @@
         rowKey="stock_id"
         :pagination="pagination_shipping"
       >
-        <!-- <template slot="brand_name" slot-scope="text,record">
-          <a-input v-model="record.brand_name"></a-input>
-        </template> -->
         <template v-for="(item,index2) of formData.area_list" :slot="item.area_key" slot-scope="text,record,index">
           <a-input :key='index2' 
             :value="record.area_stock_number[index2].number"
             @change="e => handleChange(e.target.value, index2, index)"
           ></a-input>
         </template>
-        <!-- <template v-for="item of formData.area_list" :slot="item.area_key" slot-scope="text,record" >
-          <a-input v-model="record.number" />
-          {{text}}
-        </template> -->
         <template slot="operation" slot-scope="text,record">
           <a @click="del(record.stock_id)">删除</a>
         </template>
@@ -576,12 +601,15 @@ export default {
               width:'6%'
             })
           })
-          this.columns_stock_list[6].children.push({
-            title:'合计数量',
-            align:'center',
-            dataIndex:'number',
-            width:'10%'
-          })
+          /* 插入合计列 */
+          if(this.formData.area_list.length>1){
+            this.columns_stock_list[6].children.push({
+              title:'合计数量',
+              align:'center',
+              dataIndex:'number',
+              width:'10%'
+            })
+          }
           this.formData = formData;
         })
         .catch(error => {
@@ -676,7 +704,7 @@ export default {
         elem.area_stock_number = area_stock_number;
       });
       this.formData.stock_list = data;
-
+      
       this.columns_stock_list[6].children = [];
       this.formData.area_list.forEach(elem=>{
         this.columns_stock_list[6].children.push({
@@ -688,12 +716,14 @@ export default {
         })
       })
       /* 插入合计列 */
-      this.columns_stock_list[6].children.push({
-        title:'合计数量',
-        align:'center',
-        dataIndex:'number',
-        width:'10%'
-      })
+      if(this.formData.area_list.length>1){
+        this.columns_stock_list[6].children.push({
+          title:'合计数量',
+          align:'center',
+          dataIndex:'number',
+          width:'10%'
+        })
+      }
     },
     add_area(index){
       var other_region_list = [];
@@ -739,12 +769,14 @@ export default {
         })
       })
       /* 插入合计列 */
-      this.columns_stock_list[6].children.push({
-        title:'合计数量',
-        align:'center',
-        dataIndex:'number',
-        width:'10%'
-      })
+      if(this.formData.area_list.length>1){
+        this.columns_stock_list[6].children.push({
+          title:'合计数量',
+          align:'center',
+          dataIndex:'number',
+          width:'10%'
+        })
+      }
       this.formData.stock_list.forEach(elem=>{
         elem.number = elem.area_stock_number.reduce((priv,elem)=>{
           return priv+= +elem.number;
@@ -763,12 +795,14 @@ export default {
         })
       })
       /* 插入合计列 */
-      this.columns_stock_list[6].children.push({
-        title:'合计数量',
-        align:'center',
-        dataIndex:'number',
-        width:'10%'
-      })
+      if(this.formData.area_list.length>1){
+        this.columns_stock_list[6].children.push({
+          title:'合计数量',
+          align:'center',
+          dataIndex:'number',
+          width:'10%'
+        })
+      }
     },
     shipping_row_click(record, index) {
       return {

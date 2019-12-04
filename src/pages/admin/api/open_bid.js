@@ -7,7 +7,7 @@ export function open_bid_list(params) {
     params: Object.assign({ c: 'Bid', a: 'open_bid_list', token: global.token }, params),
   })
 }
-/* 获取项目评审中的状态 */
+/* 获取项目评标中的状态 */
 export function get_judge_info(bid_code) {
   return request({
     method: 'GET',
@@ -213,4 +213,33 @@ export function get_notice_info(params) {
     params: Object.assign({ c: 'Bid', a: 'get_notice_info', token: global.token },params)
   })
 }
-
+/* 提交供应商关于价格意见 */
+export function submit_supply_price_status(data){
+  return request({
+    method:'POST',
+    params:{ c: 'Bid' , a: 'submit_supply_price_status',token: global.token },
+    data
+  })
+}
+/* 获取中标预执行价详情 */
+export function get_bid_pre_price_info(params){
+  return request({
+    method:'GET',
+    params: Object.assign({ c: 'Bid' , a: 'get_bid_pre_price_info', token: global.token },params)
+  })
+}
+/* 获取片区列表 */
+export function get_area_list(params){
+  return request({
+    method:'GET',
+    params: Object.assign({ c: 'Bid' , a: 'get_area_list', token: global.token },params)
+  })
+}
+/* 分配供应商片区 */
+export function submit_supply_area(data){
+  return request({
+    method:'POST',
+    params: { c: 'Bid' , a: 'submit_supply_area', token: global.token },
+    data
+  })
+}

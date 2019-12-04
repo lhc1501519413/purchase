@@ -36,6 +36,7 @@
               <a-icon type="info-circle" />
             </a-tooltip>
             <div class="absolute no-margin" style="right:0;top:0;">
+              <a-button @click="download_excel" type="primary">下载报价文件</a-button>
               <a-button @click="save_stock_list" type="primary">保存</a-button>
             </div>
           </h4>
@@ -45,13 +46,19 @@
           </a-row>
           <a-table
             bordered
-            class="table mt-10"
+            class="table stock_table mt-10"
             rowKey="id"
             :columns="columnsStock"
             :dataSource="formData.stock_list"
             :pagination="paginationStock"
           >
+            <template v-for="(item,index2) of formData.bid_info.area_list" :slot="String(item.area_key)" slot-scope="text,record">
+              <span :key='index2'>
+              {{record.area_stock_number[index2].number}}
+              </span>
+            </template>
             <template slot="price" slot-scope="value,record">
+              <span class="hide">{{record.price}}</span>
               <input
                 type="text"
                 oninput="value=value.replace(/[^\d.)]/g, '')"
@@ -59,16 +66,27 @@
               />
             </template>
             <template slot="response_brand" slot-scope="value,record">
+              <span class="hide">{{record.response_brand}}</span>
               <input type="text" v-model="record.response_brand" />
             </template>
             <template slot="response_standard" slot-scope="value,record">
+              <span class="hide">{{record.response_standard}}</span>
               <input type="text" v-model="record.response_standard" />
             </template>
             <template slot="response_note" slot-scope="value,record">
+              <span class="hide">{{record.response_note}}</span>
               <input type="text" v-model="record.response_note" />
             </template>
             <template slot="is_match" slot-scope="value,record">
-              <input type="checkbox" v-model="record.is_match" />
+              <span class="hide">{{record.is_match|is_match}}</span>
+              <a-select style="width: 100px"
+                v-model="record.is_match"
+              >
+                <a-select-option disabled value="">请选择偏离信息</a-select-option>
+                <a-select-option value="1">正偏离</a-select-option>
+                <a-select-option value="0">无偏离</a-select-option>
+                <a-select-option value="-1">负偏离</a-select-option>
+              </a-select>
             </template>
             <template
               v-for="(item,index2) of formData.area_list"
@@ -87,12 +105,13 @@
               <a-button type="primary" @click="save_bid_quality">保存</a-button>
             </div>
             <a-table
+              v-if='formData.quality_info&&formData.quality_info.length>0'
               :pagination="pagination_quality_info"
               bordered
               :dataSource="formData.quality_info"
               :columns="columns_quality_info"
               rowKey="id"
-            >
+              >
               <span slot="nameTitle">
                 <img class="img_point" :src="point" alt="必填" />
                 审查内容
@@ -118,6 +137,9 @@
                 </ul>
               </template>
             </a-table>
+            <div class="ml-20" v-else>
+              本次招标暂无资格审查要求
+            </div>
           </div>
         </a-tab-pane>
         <a-tab-pane key="3">
@@ -235,6 +257,8 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver'; // 导出Excel
+import XLSX from 'xlsx'; // 导出Excel
 import upload from "@admin/components/upload";
 import {
   get_tender_info, // 获取采购文件全部详情
@@ -339,59 +363,40 @@ export default {
         {
           title: "预估采购数量",
           align: "center",
-          children:[
-            {
-              title:'片区1',
-              dataIndex:'761327721673',
-              width:'8%',
-              align:'center'
-            },
-            {
-              title:'片区1',
-              dataIndex:'761327721673',
-              width:'8%',
-              align:'center'
-            },
-            {
-              title:'合计数量',
-              dataIndex:'number',
-              width:'8%',
-              align:'center'
-            },
-          ]
+          children:[]
         },
         {
           title: "单价（元）",
           dataIndex: "price",
-          width: "9%",
+          width: "8%",
           align: "center",
           scopedSlots: { customRender: "price" }
         },
         {
           title: "响应品牌",
           dataIndex: "response_brand",
-          width: "9%",
+          width: "8%",
           align: "center",
           scopedSlots: { customRender: "response_brand" }
         },
         {
           title: "响应规格",
           dataIndex: "response_standard",
-          width: "9%",
+          width: "8%",
           align: "center",
           scopedSlots: { customRender: "response_standard" }
         },
         {
           title: "响应产品参数",
           dataIndex: "response_note",
-          width: "9%",
+          width: "8%",
           align: "center",
           scopedSlots: { customRender: "response_note" }
         },
         {
-          title: "是否符合",
+          title: "偏离信息",
           dataIndex: "is_match",
-          width: "8%",
+          width: "15%",
           align: "center",
           scopedSlots: { customRender: "is_match" }
         }
@@ -502,12 +507,45 @@ export default {
       tabIndex:null
     };
   },
+  filters:{
+    is_match(key){
+      switch (key) {
+        case '1':
+          return '正偏离'
+        case '0':
+          return '无偏离'
+        case '-1':
+          return '负偏离'
+        default:
+          return '未知状态'
+      }
+    }
+  },
   created() {
     this.bid_code = this.$route.query.code;
     this.father.selectedKeys = ["/Sbid/tender_list"];
     get_tender_info(this.bid_code)
       .then(res => {
-        this.formData = res.data;
+        var formData = res.data || {};
+        var columns=[];
+        formData.bid_info.area_list.forEach(elem=>{
+          this.columnsStock[6].children.push({
+            title:elem.area_name,
+            dataIndex:elem.area_key,
+            scopedSlots:{ customRender:elem.area_key },
+            width:'6%',
+            align:'center'
+          })
+        })
+        if(formData.bid_info.area_list.length>1){
+          this.columnsStock[6].children.push({
+            title:'合计数量',
+            dataIndex:'number',
+            width:'6%',
+            align:'center'
+          })
+        }
+        this.formData = formData;
       })
       .catch(error => {
         this.$message.error(error);
@@ -632,6 +670,15 @@ export default {
         onCancel() {},
       });
     },
+    download_excel(){
+      var file_name = `${this.formData.bid_info.title}商品信息${new Date().Format('YYYYMMDD')}`;
+      var wb = XLSX.utils.table_to_book(document.querySelector('.stock_table table'))
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), `${file_name}.xlsx`)
+      } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+      return wbout
+    },
     save_stock_list() {
       // 保存报价
       var self, data, key1, key2, key3, key4, key5, key6;
@@ -649,16 +696,13 @@ export default {
       key1 = data.stock_list.some(elem => elem.price === "");
       key2 = data.stock_list.some(elem => elem.response_brand === "");
       key3 = data.stock_list.some(elem => elem.response_standard === "");
-      key4 = data.stock_list.some(elem => elem.is_match === 0);
+      key4 = data.stock_list.some(elem => elem.is_match === "");
       key6 = data.stock_list.some(elem => elem.response_note === "");
       data.stock_list.forEach(elem => {
         let length = this.$common.isArray(elem.price.match(/\./g))
           ? elem.price.match(/\./g).length
           : 0;
-        if (length > 1) {
-          key5 = true;
-        }
-        elem.is_match = +elem.is_match;
+        if (length > 1) key5 = true;
       });
       if (key1) {
         this.$message.warn("单价不能为空");
@@ -684,6 +728,8 @@ export default {
         this.$message.warn("请选择符合");
         return;
       }
+      console.log(data)
+      return;
       this.$confirm({
         title: "确认保存报价吗?",
         onOk() {

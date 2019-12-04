@@ -100,7 +100,7 @@
 
 <script>
 import {
-  get_judge_info, // 获取项目评审中的状态
+  get_judge_info, // 获取项目评标中的状态
   get_supply_file_list, // 获取商务技术附件和价格附件
   get_bid_purchase_file // 获取招标附件
 } from '@admin/api/judge'

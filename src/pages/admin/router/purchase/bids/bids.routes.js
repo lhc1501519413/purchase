@@ -140,6 +140,16 @@ export default [
     }
   },
   {
+    path: '/Bid/bid_result',
+    name: '/Bid/bid_result',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_result'),
+    meta: {
+      title: '开标评标管理',
+      permission: true
+    }
+  },
+  {
     path: '/Bid/open_bid',
     name: '/Bid/open_bid',
     component: () =>

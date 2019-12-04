@@ -437,10 +437,11 @@
           <a-textarea
             style="width:100%;"
             v-show="!edit_read"
+            :placeholder='deschelp'
             :rows="4"
             v-decorator="[
             'desc',
-            { rules: [{ required: true, message: '公司介绍必填' }],initialValue:formData.desc||deschelp }
+            { rules: [{ required: true, message: '公司介绍必填' }],initialValue:formData.desc }
           ]"
           />
         </a-form-item>

@@ -39,7 +39,7 @@ export function check_judge_next(bid_code,step) {
     data:{bid_code,step}
   })
 }
-/* 获取项目评审中的状态 */
+/* 获取项目评标中的状态 */
 export function get_judge_info(bid_code) {
   return request({
     method: 'GET',

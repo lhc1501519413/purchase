@@ -2,7 +2,7 @@
   <div id="open_bid">
     <h5>
       招标管理 / 开标评标管理
-      <a-button type="primary" v-if="judge_info.status==14&&judge_info.bid_status!=20&&judge_info.bid_status!=21" @click="submit">提交</a-button>
+      <a-button type="primary" v-if="judge_info.status==14&&judge_info.bid_status!=18&&judge_info.bid_status!=20&&judge_info.bid_status!=21" @click="submit">提交</a-button>
     </h5>
     <section class="content">
       <h4>项目基本信息</h4>
@@ -189,7 +189,7 @@
         </a-col>
         <a-col :span="12">
           <upload
-            v-if="judge_info.status<=14&&judge_info.bid_status!=20&&judge_info.bid_status!=21"
+            v-if="judge_info.status<=14&&judge_info.bid_status!=18&&judge_info.bid_status!=20&&judge_info.bid_status!=21"
             :disabled='judge_info.status<14'
             class="ml-10"
             @choose-file="result_file_list_change"
@@ -215,7 +215,7 @@
         </a-col>
         <a-col :span="12">
           <upload
-            v-if="judge_info.status<=14&&judge_info.bid_status!=20&&judge_info.bid_status!=21"
+            v-if="judge_info.status<=14&&judge_info.bid_status!=18&&judge_info.bid_status!=20&&judge_info.bid_status!=21"
             :disabled='judge_info.status<14'
             class="ml-10"
             @choose-file="confirm_file_list_change"
@@ -242,7 +242,7 @@
 <script>
 import { POST } from "@common/js/apis";
 import {
-  get_judge_info, // 获取项目评审中的状态
+  get_judge_info, // 获取项目评标中的状态
   submit_judge_result // 提交评审结果
 } from '@admin/api/open_bid';
 
@@ -285,7 +285,7 @@ export default {
     this.get_judge_info();
   },
   methods: {
-    get_judge_info(){ // 获取项目评审中的状态
+    get_judge_info(){ // 获取项目评标中的状态
       get_judge_info(this.bid_code).then(res=>{
         this.judge_info = res.data;
         this.$store.commit('SET_STATUS',res.data.status);

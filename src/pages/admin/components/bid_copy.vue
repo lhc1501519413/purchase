@@ -144,7 +144,7 @@ export default {
           return '待开标'
           break;
         case '16':
-          return '评审中'
+          return '评标中'
           break;
         case '17':
           return '采购人确认中'

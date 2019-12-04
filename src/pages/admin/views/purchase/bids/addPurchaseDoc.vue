@@ -218,9 +218,10 @@
                 ]"
               ></a-input>
             </a-form-item>
-            <h4>投标保证金</h4>
+            <h4>投标保证金与处罚信息</h4>
             <a-form-item label="是否需要缴纳投标保证金" v-bind="formItemLayout">
               <a-radio-group
+                @change="is_margin_change"
                 v-decorator="[
                   'is_margin',
                   {rules: [{ required: true,message: '请选择是否缴纳投标保证金' }],initialValue:formData.notice_info.is_margin!=''?+formData.notice_info.is_margin:'' }
@@ -229,6 +230,24 @@
                 <a-radio :value="1">是</a-radio>
                 <a-radio :value="0">否</a-radio>
               </a-radio-group>
+              <div v-if="formData.notice_info.is_margin==1">
+                <a-input
+                  style="width:30%;margin-right:5px;"
+                  placeholder="请输入投标保证金"
+                  v-model='margin'
+                ></a-input>元
+              </div>
+            </a-form-item>
+            <a-form-item label="处罚信息" v-bind="formItemLayout">
+              由于中标价格原因、配送能力等原因供应商当场放弃中标权利，饮食中心可对其处罚
+              <a-input
+                style="width:120px;margin-right:5px;"
+                placeholder="请输入处罚金额"
+                v-decorator="[
+                  'fine_money',
+                  {rules: [{ required: true,message: '请输入处罚金额' }],initialValue:formData.notice_info.fine_money }
+                ]"
+              ></a-input>元
             </a-form-item>
             <h4>公告附件</h4>
             <a-form-item label="附件" v-bind="formItemLayout">
@@ -737,6 +756,7 @@ export default {
         }
       },
       min_supply: "",
+      margin:'',
       point: require("@static/images/icon_point.png"),
       activeKey: "1",
       columns: [
@@ -874,6 +894,7 @@ export default {
         .then(res => {
           this.formData = res.data;
           this.min_supply = res.data.notice_info.min_supply;
+          this.margin = res.data.notice_info.margin;
           this.eval_standard_ext = res.data.eval_method_info
             .eval_standard_ext || {
             //评分标准扩展说明如下
@@ -939,6 +960,10 @@ export default {
       }
       this.min_supply = event.target.value;
     },
+    is_margin_change(e){
+      console.log(e)
+      this.formData.notice_info.is_margin = e.target.value;
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, fieldsValue) => {
@@ -958,7 +983,8 @@ export default {
               fieldsValue["open_time"] &&
               fieldsValue["open_time"].format("YYYY-MM-DD HH:mm:ss"),
             file_list: this.formData.notice_info.file_list,
-            bid_id: this.bid_id
+            bid_id: this.bid_id,
+            margin: this.margin,
           };
           save_bid_notice(values)
             .then(res => {

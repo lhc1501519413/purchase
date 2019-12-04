@@ -102,7 +102,7 @@
 <script>
 import { POST } from "@common/js/apis";
 import {
-  get_judge_info, // 获取项目评审中的状态
+  get_judge_info, // 获取项目评标中的状态
   get_open_supply_list, // 获取待解密供应商
   open_decrypt, // 开启解密
   open_bid_file // 开启标书
@@ -204,7 +204,7 @@ export default {
         });
     },
     get_judge_info() {
-      // 获取项目评审中的状态
+      // 获取项目评标中的状态
       get_judge_info(this.bid_code)
         .then(res => {
           this.judge_info = res.data;

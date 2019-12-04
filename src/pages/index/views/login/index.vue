@@ -148,11 +148,9 @@
 <script>
 import {login,login_by_mobile,yzm,base_info,valiYzm} from '@indexApi/user';
 export default {
-  components: {},
-  props: {},
   data() {
     return {
-      img_url:this.global.baseUrl+'?c=Login&a=verify',
+      img_url:'',
       bannerUrl:require("@static/images/banner_img.png"),
       form: this.$form.createForm(this),
       form2: this.$form.createForm(this),
@@ -175,6 +173,9 @@ export default {
     next(vm=>{
       vm.router = from;
     })
+  },
+  created(){
+    this.yzm();
   },
   methods: {
     yzm(){

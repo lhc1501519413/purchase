@@ -59,5 +59,15 @@ export default [
       permission: true
     }
   },
+  {
+    path: '/Sbid/bid_result',
+    name: '/Sbid/bid_result',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/bid_result'),
+    meta: {
+      title: '中标信息',
+      permission: true
+    }
+  },
   
 ]

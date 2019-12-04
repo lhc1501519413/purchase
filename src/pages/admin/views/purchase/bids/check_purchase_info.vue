@@ -87,7 +87,7 @@
                 </a-radio-group>
               </a-col>
             </a-row>
-            <a-row class="mb-10">
+            <a-row class="mb-10" v-show="radio==2">
               <a-col :span="4" class="text-right">审核意见：</a-col>
               <a-col :span="18">
                 <a-textarea class="pl-10" placeholder="审核意见" v-model="auditInfo" :rows="4" />

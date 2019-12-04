@@ -144,7 +144,7 @@ export default {
         { value: "0", label: "待开标" },
         { value: "1", label: "待签到" },
         { value: "2", label: "待评审" },
-        { value: "3", label: "评审中" },
+        { value: "3", label: "评标中" },
         { value: "20,21", label: "已流标" },
         { value: "14", label: "评审结束" }
       ],
@@ -221,7 +221,7 @@ export default {
           return "待评审";
           break;
         case "3":
-          return "评审中";
+          return "评标中";
           break;
         case "20":
           return "已流标";

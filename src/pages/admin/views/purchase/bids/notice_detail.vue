@@ -31,7 +31,12 @@
         <h3>七、开标评标时间和地址</h3>
         <div class="text-indent-35 mb-10">{{formData.start_time}}~{{formData.end_time}}</div>
         <h3>八、投标保证金</h3>
-        <div class="text-indent-35 mb-10">本项目不需要投标保证金</div>
+        <div v-if="formData.is_margin==1" class="text-indent-35 mb-10">
+          本次投标保证金为{{formData.margin}}元人民币（可以现金或转账支票形式），请用信封单独封好，信封封面写上投标项目名称并封口加盖投标人单位公章，并按投标文件提交的时间地点要求提交与招标人。投标人必须承诺现金和转账支票的真实有效性，否则责任自负。未中标当场退还，中标的则自动转为合同保证金，合同期满无息退还。
+        </div>
+        <div v-else class="text-indent-35 mb-10">
+          本项目不需要投标保证金
+        </div>
         <h3>九、其他事项</h3>
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>
         <h3>十、联系方式</h3>
