@@ -267,6 +267,12 @@
           {{formData.eval_method_info.standard_price_type_name}}
         </a-col>
       </a-row>
+      <a-row class="mb-10" v-if="formData.eval_method_info.middle_price_type!=0">
+        <a-col :span="5" class="text-right"></a-col>
+        <a-col :span="10">
+          {{formData.eval_method_info.middle_price_type_name}}
+        </a-col>
+      </a-row>
       <a-row class="mb-10">
         <a-col :span="5" class="text-right">
           <img class="img_point" :src="point" alt="必填" />

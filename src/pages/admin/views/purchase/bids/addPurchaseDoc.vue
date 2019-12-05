@@ -234,7 +234,7 @@
                 <a-input
                   style="width:30%;margin-right:5px;"
                   placeholder="请输入投标保证金"
-                  v-model='margin'
+                  v-model="margin"
                 ></a-input>元
               </div>
             </a-form-item>
@@ -332,7 +332,10 @@
                 placeholder="请输入地址"
                 v-decorator="[
                   'address',
-                  { initialValue:formData.notice_info.address }
+                  {
+                    rules: [{ required: true, message: '请输入地址' }],
+                    initialValue:formData.notice_info.address 
+                  }
                 ]"
               ></a-input>
             </a-form-item>
@@ -435,7 +438,7 @@
                 placeholder="请输入最高得分"
                 v-decorator="[
                   'max_score',
-                  { 
+                  {
                     rules: [{ required: true, message: '请输入最高得分' }],
                     initialValue:formData.eval_method_info.max_score 
                   }
@@ -454,6 +457,29 @@
                 }
               ]"
               />
+            </a-form-item>
+            <a-form-item
+              label
+              v-if="formData.eval_method_info.standard_price_type==3"
+              :label-col="{span:5}"
+              :wrapper-col="{span:11}"
+              class="middle_price_type"
+              style
+            >
+              <a-radio-group
+                v-decorator="[
+                'middle_price_type',
+                {
+                  initialValue:formData.eval_method_info.middle_price_type
+                }]"
+              >
+                <a-radio
+                  :style="radioStyle"
+                  v-for="(item,index) of eval_method_info.middle_price_type"
+                  :value="item.value"
+                  :key="index"
+                >{{item.label}}</a-radio>
+              </a-radio-group>
             </a-form-item>
             <a-form-item label="评分标准" v-bind="formItemLayout2">
               <a-radio-group
@@ -593,8 +619,11 @@
               style="right:0;top:0;"
               @click.stop="saveFile"
             >保存</a-button>
-            <p class="ml-10">支持 .png .jpg .pdf 格式</p>
+            <p class="ml-10">支持 .png .jpg .pdf .docx .doc格式</p>
           </div>
+          <a-button type="primary" @click="build_file">
+            <a-icon type="upload" />生成采购文件
+          </a-button>
           <a-upload
             class="ml-10"
             multiple
@@ -605,19 +634,19 @@
             <a-button type="primary">
               <a-icon type="upload" />上传文件
             </a-button>
-            <ul>
-              <li
-                class="mt-10"
-                @click.stop="del"
-                v-for="(item,index) of formData.purchase_file"
-                :key="index"
-              >
-                <svg-icon class="wenjian" icon-class="wenjian" />
-                <span class="ml-10 mr-10">{{item.file_name}}</span>
-                <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
-              </li>
-            </ul>
           </a-upload>
+          <ul>
+            <li
+              class="mt-10"
+              @click.stop="del"
+              v-for="(item,index) of formData.purchase_file"
+              :key="index"
+            >
+              <svg-icon class="wenjian" icon-class="wenjian" />
+              <span class="ml-10 mr-10">{{item.file_name}}</span>
+              <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+            </li>
+          </ul>
         </a-tab-pane>
       </a-tabs>
     </section>
@@ -756,7 +785,7 @@ export default {
         }
       },
       min_supply: "",
-      margin:'',
+      margin: "",
       point: require("@static/images/icon_point.png"),
       activeKey: "1",
       columns: [
@@ -863,12 +892,29 @@ export default {
           { value: "1", label: "基准价 / 投标报价*最大分值" },
           {
             value: "2",
-            label: "基准价得分-（投标人报价-基准价）/基准价*100%*每百分点分值"
+            label:
+              "基准价得分 -（投标人报价 - 基准价）/基准价*100%*每百分点分值"
           },
           {
             value: "3",
             label:
-              "最大分值- |  投标人报价-基准价  | / 基准价*100%*每百分点分值"
+              "最大分值 - |  投标人报价 - 基准价  | / 基准价*100%*每百分点分值"
+          }
+        ],
+        middle_price_type: [
+          { value: "1", label: "各商家报价的算术平均数" },
+          {
+            value: "2",
+            label: "【各商家报价之和 - 最高报价 - 最低报价】 / 报价商家数量-2"
+          },
+          {
+            value: "3",
+            label: "【次高报价+次低报价】 / 2"
+          },
+          {
+            value: "4",
+            label:
+              "【（次高报价+次次高报价）*40%+（次低报价+次次低报价）*60%】 / 2"
           }
         ]
       },
@@ -878,6 +924,11 @@ export default {
         per_percent_point: "",
         up_percent_point: "",
         down_percent_point: ""
+      },
+      radioStyle: {
+        display: "block",
+        height: "30px",
+        lineHeight: "30px"
       }
     };
   },
@@ -960,8 +1011,7 @@ export default {
       }
       this.min_supply = event.target.value;
     },
-    is_margin_change(e){
-      console.log(e)
+    is_margin_change(e) {
       this.formData.notice_info.is_margin = e.target.value;
     },
     handleSubmit(e) {
@@ -984,7 +1034,7 @@ export default {
               fieldsValue["open_time"].format("YYYY-MM-DD HH:mm:ss"),
             file_list: this.formData.notice_info.file_list,
             bid_id: this.bid_id,
-            margin: this.margin,
+            margin: this.margin
           };
           save_bid_notice(values)
             .then(res => {
@@ -1097,6 +1147,9 @@ export default {
           });
       } else this.$message.warn("请填写必填项");
     },
+    build_file() {
+      this.$message.info("生成采购文件功能尚未完成");
+    },
     customRequest(data) {
       var purchase_file = this.formData.purchase_file || [];
       const formData = new FormData();
@@ -1133,9 +1186,12 @@ export default {
       const isJPGPDF =
         file.type === "image/jpeg" ||
         file.type === "image/png" ||
-        file.type === "application/pdf";
+        file.type === "application/pdf" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        file.type === "application/msword";
       if (!isJPGPDF) {
-        this.$message.error("您只可以上传JPG,PNG,PDF格式的文件");
+        this.$message.error("您只可以上传JPG,PNG,PDF,DOCX,DOC格式的文件");
       }
       var isPicLt100KB;
       var isPdfLt2M;
@@ -1216,6 +1272,13 @@ export default {
             }
           };
           if (
+            values.eval_standard_type === "3" &&
+            values.middle_price_type == ""
+          ) {
+            this.$message.warn("请选择中位值选项");
+            return;
+          }
+          if (
             values.eval_standard_type === "2" &&
             values.eval_standard_ext.standard_price == ""
           ) {
@@ -1244,10 +1307,11 @@ export default {
             return;
           }
           save_bid_eval_method(values)
-            .then(res =>{
-              this.$message.success(res.msg)
+            .then(res => {
+              this.$message.success(res.msg);
               this.get_purchase_complete_info();
-            }).catch(error => this.$message.error(error));
+            })
+            .catch(error => this.$message.error(error));
         }
       });
     }
@@ -1273,6 +1337,10 @@ export default {
           margin-bottom: 2px;
         }
       }
+    }
+    .middle_price_type {
+      position: relative;
+      left: 31%;
     }
   }
   .radioStyle {

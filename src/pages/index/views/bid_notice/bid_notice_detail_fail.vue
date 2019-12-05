@@ -1,7 +1,7 @@
 <template>
   <div id="bid_notice_detail">
     <section class="bid_notice_detail mt-20">
-      <h4>项目公告 / 废标公告</h4>
+      <h4>项目公告 / 流标公告</h4>
       <div class="bigcontent">
         <h2 class="text-center mb-10">{{formData.title}}</h2>
         <h4 class="text-center mb-10">
@@ -14,10 +14,17 @@
         <h3>四、采购组织类型：自行采购</h3>
         <h3>五、采购方式：{{formData.bid_type_name}}</h3>
         <h3>六、采购公告发布日期：{{formData.create_time}}</h3>
-        <h3>七、废标原因</h3>
+        <h3>七、流标日期：{{formData.create_time}}</h3>
+        <h3>八、流标原因</h3>
         <div class="text-indent-35 mb-10">
           {{formData.reason}}
         </div>
+        <h3>九、
+          联系人：{{formData.contact_name}}
+          <span class="ml-20">
+            联系电话：{{formData.contact_number}}
+          </span>
+        </h3>
         <div class="text-center mb-10">{{formData.com_name}}</div>
         <div class="text-center mb-10">{{formData.create_time}}</div>
       </div>

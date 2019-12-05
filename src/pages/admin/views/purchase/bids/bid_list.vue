@@ -96,7 +96,7 @@ export default {
         {value:'11',label:'采购公告已发布'},
         {value:'15',label:'待开标'},
         {value:'16',label:'评标中'},
-        {value:'17',label:'采购人确认中'},
+        {value:'17',label:'采购方确认中'},
         {value:'18',label:'采购结果公告已发布'},
         {value:'19',label:'中标通知书已发布'},
         {value:'20,21',label:'已流标'}
@@ -176,7 +176,7 @@ export default {
         case '16':
           return '评标中'
         case '17':
-          return '采购人确认中'
+          return '采购方确认中'
         case '18':
           return '采购结果公告已发布'
         /* case '19':

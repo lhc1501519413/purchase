@@ -330,8 +330,10 @@
       @cancel="ModalVisibleArea = false"
       :footer='null'
     >
-      <a-input placeholder="模糊查询：公司名称" @keyup.13="get_stock_by_con_method" style="width:20%;" class="ml mr pl" v-model="keyword"></a-input>
-      <a-button type="primary" @click="get_stock_by_con_method">搜索</a-button>
+    <div class="text-center">
+      <a-input placeholder="模糊查询：公司名称" @keyup.13="get_all_shipping_region" style="width:40%;" class="pl mr-10" v-model="keyword"></a-input>
+      <a-button type="primary" @click="get_all_shipping_region">搜索</a-button>
+    </div>
       <a-table
         class="mt"
         :rowSelection="{
@@ -870,6 +872,10 @@ export default {
         return;
       }
       if(JSON.stringify(this.formData.area_list)==='[]'){
+        this.$message.warn('请添加片区')
+        return;
+      }
+      if(this.formData.area_list.some(elem=>elem.region_list.length==0)){
         this.$message.warn('请选择配送区域')
         return;
       }

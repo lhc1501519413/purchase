@@ -139,6 +139,11 @@ export default {
           width: "6%"
         },
         {
+          title:'产品参数',
+          dataIndex:'note',
+          width:'6%'
+        },
+        {
           title: "采购单位",
           dataIndex: "price_unit_name",
           width: "6%"
@@ -218,9 +223,9 @@ export default {
       get_bid_info(id)
         .then(res => {
           var formData = res.data || [];
-          this.columns_stock_list[5].children = [];
+          this.columns_stock_list[6].children = [];
           formData.area_list.forEach(elem => {
-            this.columns_stock_list[5].children.push({
+            this.columns_stock_list[6].children.push({
               title: elem.area_name,
               dataIndex: elem.area_key,
               align: "center",
@@ -230,7 +235,7 @@ export default {
           });
           /* 插入合计列 */
           if(formData.area_list.length>1){
-            this.columns_stock_list[5].children.push({
+            this.columns_stock_list[6].children.push({
               title:'合计数量',
               align:'center',
               dataIndex:'number',

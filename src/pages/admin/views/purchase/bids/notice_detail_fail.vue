@@ -1,6 +1,6 @@
 <template>
   <div id="bid_notice_detail">
-    <h5>招标管理 / 项目公告 / 废标公告
+    <h5>招标管理 / 项目公告 / 流标公告
       <a-button @click="$router.go(-1)">返回</a-button>
     </h5>
     <section class="bid_notice_detail mt-20 content">
@@ -16,10 +16,17 @@
         <h3>四、采购组织类型：自行采购</h3>
         <h3>五、采购方式：{{formData.bid_type_name}}</h3>
         <h3>六、采购公告发布日期：{{formData.create_time}}</h3>
-        <h3>七、废标原因</h3>
+        <h3>七、流标日期：{{formData.create_time}}</h3>
+        <h3>八、流标原因</h3>
         <div class="text-indent-35 mb-10">
           {{formData.reason}}
         </div>
+        <h3>九、
+          联系人：{{formData.contact_name}}
+          <span class="ml-20">
+            联系电话：{{formData.contact_number}}
+          </span>
+        </h3>
         <div class="text-center mb-10">{{formData.com_name}}</div>
         <div class="text-center mb-10">{{formData.create_time}}</div>
       </div>
@@ -30,6 +37,11 @@
 <script>
 import { get_notice_info } from '@admin/api/open_bid';
 export default {
+  props:{
+    father:{
+      type:Object
+    }
+  },
   data() {
     return {
       id:'',
@@ -37,6 +49,7 @@ export default {
     };
   },
   created() {
+    this.father.selectedKeys = ['/Bid/notice_list'];
     this.id = this.$route.query.id;
     this.get_notice_info_method()
   },

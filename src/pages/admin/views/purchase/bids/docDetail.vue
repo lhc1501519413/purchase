@@ -237,6 +237,60 @@
           审查内容
         </span>
       </a-table>
+      <h4>评分规则</h4>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right">
+          <img class="img_point" :src="point" alt="必填" />
+          计算公式：
+        </a-col>
+        <a-col :span="10">
+          自动计算报价得分
+        </a-col>
+      </a-row>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right">
+          <img class="img_point" :src="point" alt="必填" />
+          最高得分：
+        </a-col>
+        <a-col :span="10">
+          {{formData.eval_method_info.max_score}}
+        </a-col>
+      </a-row>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right">
+          <img class="img_point" :src="point" alt="必填" />
+          基准价：
+        </a-col>
+        <a-col :span="10">
+          {{formData.eval_method_info.standard_price_type_name}}
+        </a-col>
+      </a-row>
+      <a-row class="mb-10" v-if="formData.eval_method_info.middle_price_type!=0">
+        <a-col :span="5" class="text-right"></a-col>
+        <a-col :span="10">
+          {{formData.eval_method_info.middle_price_type_name}}
+        </a-col>
+      </a-row>
+      <a-row class="mb-10">
+        <a-col :span="5" class="text-right">
+          <img class="img_point" :src="point" alt="必填" />
+          评分标准：
+        </a-col>
+        <a-col :span="10">
+          {{formData.eval_method_info.eval_standard_type_name}}
+        </a-col>
+      </a-row>
+      <a-row class="mb-10">
+        <a-col :span="5"></a-col>
+        <a-col :span="10" v-if='formData.eval_method_info.eval_standard_type==2'>
+          <div class="mb-10">基准价得分：{{formData.eval_method_info.eval_standard_ext.standard_price}}</div>
+          <div>每百分点分值：{{formData.eval_method_info.eval_standard_ext.per_percent_point}}</div>
+        </a-col>
+        <a-col :span="10" v-else>
+          <div class="mb-10">正偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.up_percent_point}}</div>
+          <div>负偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.down_percent_point}}</div>
+        </a-col>
+      </a-row>
       <h4>资格评分要求</h4>
       <a-table
         class="ml-10" 
@@ -350,7 +404,7 @@ export default {
           update_time: ""
         },
         quality_info: [],
-        quality_eval_method_info: [],
+        quality_grade_info: [],
         purchase_file: [],
         eval_method_info: {
           id: "",

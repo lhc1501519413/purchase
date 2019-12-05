@@ -2,19 +2,36 @@
   <div id="tenderDoc">
     <h5>投标管理 / 查看投标文件</h5>
     <section class="content">
-      <h4>询价商品信息</h4>
+      <h4>商品信息</h4>
       <a-row>
         <a-col :span="6" :offset="1">采购类别：{{formData.bid_info.cat_name}}</a-col>
         <a-col :span="8">预计配送时间：{{formData.bid_info.shipping_days}}天</a-col>
       </a-row>
       <a-table
+        bordered
         class="mt-10 ml-10"
         rowKey="id"
         :columns="columnsStock"
         :dataSource="formData.stock_list"
         :pagination="paginationStock"
       >
-        <template slot="is_match" slot-scope="value">{{value=='1'?'是':'否'}}</template>
+        <template v-for="(item,index2) of formData.bid_info.area_list" :slot="String(item.area_key)" slot-scope="text,record">
+          <span :key='index2'>
+          {{record.area_stock_number[index2].number}}
+          </span>
+        </template>
+        <template slot="is_match" slot-scope="text,record">
+          {{text|is_match}}
+          <a-select style="width: 100px"
+            disabled
+            :value="record.is_match"
+          >
+            <a-select-option disabled value="">请选择偏离信息</a-select-option>
+            <a-select-option value="1">正偏离</a-select-option>
+            <a-select-option value="0">无偏离</a-select-option>
+            <a-select-option value="-1">负偏离</a-select-option>
+          </a-select>
+        </template>
       </a-table>
       <h4>资格审查要求</h4>
       <a-table
@@ -184,6 +201,12 @@ export default {
           align: "center"
         },
         {
+          title: "产品参数",
+          dataIndex: "note",
+          width: "6%",
+          align: "center"
+        },
+        {
           title: "采购单位",
           dataIndex: "price_unit_name",
           width: "6%",
@@ -191,32 +214,37 @@ export default {
         },
         {
           title: "预估采购数量",
-          dataIndex: "number",
-          width: "8%",
-          align: "center"
+          align: "center",
+          children:[]
         },
         {
           title: "单价（元）",
           dataIndex: "price",
-          width: "9%",
-          align: "center"
+          width: "8%",
+          align: "center",
         },
         {
           title: "响应品牌",
           dataIndex: "response_brand",
-          width: "9%",
-          align: "center"
+          width: "8%",
+          align: "center",
         },
         {
           title: "响应规格",
           dataIndex: "response_standard",
-          width: "9%",
-          align: "center"
+          width: "8%",
+          align: "center",
         },
         {
-          title: "是否符合",
-          dataIndex: "is_match",
+          title: "响应产品参数",
+          dataIndex: "response_note",
           width: "8%",
+          align: "center",
+        },
+        {
+          title: "偏离信息",
+          dataIndex: "is_match",
+          width: "15%",
           align: "center",
           scopedSlots: { customRender: "is_match" }
         }
@@ -321,13 +349,46 @@ export default {
       }
     };
   },
+  filters:{
+    is_match(key){
+      switch (key) {
+        case '1':
+          return '正偏离'
+        case '0':
+          return '无偏离'
+        case '-1':
+          return '负偏离'
+        default:
+          return '未知状态'
+          break;
+      }
+    }
+  },
   created() {
     this.bid_code = this.$route.query.code;
     this.father.selectedKeys = ["/Sbid/tender_list"];
     get_tender_info(this.bid_code)
       .then(res => {
-        this.formData = res.data;
-        this.formData.tender_file = res.data.tender_file || [];
+        var formData = res.data || {};
+        var columns=[];
+        formData.bid_info.area_list.forEach(elem=>{
+          this.columnsStock[6].children.push({
+            title:elem.area_name,
+            dataIndex:elem.area_key,
+            scopedSlots:{ customRender:elem.area_key },
+            width:'6%',
+            align:'center'
+          })
+        })
+        if(formData.bid_info.area_list.length>1){
+          this.columnsStock[6].children.push({
+            title:'合计数量',
+            dataIndex:'number',
+            width:'6%',
+            align:'center'
+          })
+        }
+        this.formData = formData;
       })
       .catch(error => {
         this.$message.error(error);

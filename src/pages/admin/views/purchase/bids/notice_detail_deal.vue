@@ -18,7 +18,7 @@
         <h3>五、采购方式：{{formData.bid_type_name}}</h3>
         <h3>六、采购公告发布日期：{{formData.create_time}}</h3>
         <h3>七、定标日期：{{formData.confirm_time}}</h3>
-        <h3>八、中标成交结果：</h3>
+        <h3>八、中标单位：</h3>
         <a-table
           class="mb-10"
           rowKey="supply_id"
@@ -28,13 +28,12 @@
         >
           <template slot="project_name">{{formData.project_name}}</template>
         </a-table>
-        <h3>九、评审小组成员名单：{{expert_list.slice(0,-1)}}</h3>
-        <h3>十、其他事项</h3>
+        <h3>九、其他事项</h3>
         <div class="text-indent-35 mb-10">
           自公告发出三个工作日内，商家可对中标结果以书面形式进行反映。
         </div>
         <div class="text-indent-35 mb-10">
-          书面投诉递交地址：【联系信息中地址】
+          书面投诉递交地址：【{{formData.address}}】
         </div>
         <a-row class="text-indent-35 mb-10">
           <a-col :span="6">联系人：{{formData.contact_name}}</a-col>
@@ -50,6 +49,11 @@
 <script>
 import { get_notice_info } from '@admin/api/open_bid';
 export default {
+  props:{
+    father:{
+      type:Object
+    }
+  },
   data() {
     return {
       id: "",
@@ -97,6 +101,7 @@ export default {
     };
   },
   created() {
+    this.father.selectedKeys = ['/Bid/notice_list'];
     this.id = this.$route.query.id;
     this.get_notice_info_method();
   },

@@ -79,7 +79,7 @@
             </template>
             <template slot="is_match" slot-scope="value,record">
               <span class="hide">{{record.is_match|is_match}}</span>
-              <a-select style="width: 100px"
+              <a-select style="width: 120px"
                 v-model="record.is_match"
               >
                 <a-select-option disabled value="">请选择偏离信息</a-select-option>
@@ -87,13 +87,6 @@
                 <a-select-option value="0">无偏离</a-select-option>
                 <a-select-option value="-1">负偏离</a-select-option>
               </a-select>
-            </template>
-            <template
-              v-for="(item,index2) of formData.area_list"
-              :slot="item.area_key"
-              slot-scope="text,record"
-            >
-              <div :key="index2">{{record.area_stock_number[index2].number}}</div>
             </template>
           </a-table>
         </a-tab-pane>
@@ -197,6 +190,9 @@
         </a-tab-pane>
         <a-tab-pane key="4">
           <div slot="tab">项目附件</div>
+          <div class="mb-10 ml-20">
+            上传的投标文件为签章后的文件，未签章文件视为无效文件。点击<a @click="sign">去签章</a>
+          </div>
           <div class="mb-10 ml-10 relative">
             <a-button type="primary" class="absolute" style="top:0;right:0;" @click.stop="saveFile">保存</a-button>
             <div>
@@ -253,6 +249,36 @@
         </a-tab-pane>
       </a-tabs>
     </section>
+    <a-modal
+      class="supply-purchase-info"
+      width="50%"
+      :afterClose='afterClose'
+      :destroyOnClose="false"
+      :visible="signModalVisible"
+      @ok="signModalVisible = false"
+      @cancel="signModalVisible = false"
+      :footer="null"
+      >
+      <h3 slot="title">签章</h3>
+      <div>
+        注意事项：
+      </div>
+      <div>
+        <p class="mb-10">1、请将投标文件转换为PDF格式。</p>
+        <p class="mb-10">2、签章将直接签署在您的原文件上，建议您将投标文件进行备份。</p>
+        <p class="mb-10">3、请将您的投标文件在本机的文件路径及文件名称填写到下框中，以便于将您的文件进行本地签章。</p>
+        <p class="mb-10">
+          文件路径：<a-input style='width:30%;margin:0 5px;' @keyup.enter="add_sign" v-model="file_path" />
+          <a-button type='primary' @click="add_sign">签章</a-button>
+        </p>
+        <p class="mb-10">
+          例：填写格式为
+          <span class="file-path-model">
+            /e:\pdf\投标文件.pdf
+          </span>
+        </p>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -504,7 +530,9 @@ export default {
       heart_beat_interval:null,
       ping:null,
       file_obj:{},
-      tabIndex:null
+      tabIndex:null,
+      signModalVisible:false,
+      file_path:''
     };
   },
   filters:{
@@ -619,7 +647,7 @@ export default {
         self.ws.onclose = function() {
           // clearInterval(self.heart_beat_interval);
         };
-        // self.heart_beat();
+        self.heart_beat();
       }else{
         self.$message.info("您的浏览器不支持webSocket链接");
       }
@@ -725,11 +753,9 @@ export default {
         return;
       }
       if (key4) {
-        this.$message.warn("请选择符合");
+        this.$message.warn("请选择偏离信息");
         return;
       }
-      console.log(data)
-      return;
       this.$confirm({
         title: "确认保存报价吗?",
         onOk() {
@@ -769,6 +795,16 @@ export default {
       .catch(error => {
         this.$message.error(error);
       });
+    },
+    sign(){
+      this.signModalVisible = true;
+      this.$message.info('电子签章尚未完成')
+    },
+    add_sign(){
+      open(`https://localhost:7688/index.html?file=${this.file_path}`)
+    },
+    afterClose(){
+      this.file_path='';
     },
     quality_grade_change(event, index) {
       // 添加资格评分要求文件
@@ -955,5 +991,10 @@ export default {
       width: 80%;
     }
   }
+}
+</style>
+<style lang="scss">
+.file-path-model{
+  color:$red;
 }
 </style>
