@@ -377,7 +377,6 @@ export default {
         });
     },
     changeMenuItem(e) {
-      console.log(e.key)
       if (e.key === "supply_info") {
         if(this.supply_info.step==2) window.open(this.global.host + "/index.html#/register/baseInfo");
         else if(this.supply_info.step==3) window.open(this.global.host + "/index.html#/register/dataComplete");

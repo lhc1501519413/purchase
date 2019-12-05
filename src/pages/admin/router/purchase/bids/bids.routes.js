@@ -342,4 +342,34 @@ export default [
       permission: true
     },
   },
+  {
+    path: '/Contract/get_bid_contract_list',
+    name: '/Contract/get_bid_contract_list',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/contract/contract_list'),
+    meta: {
+      title: '合同管理',
+      permission: true
+    },
+  },
+  {
+    path: '/Contract/add_contract',
+    name: '/Contract/add_contract',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/contract/add_contract'),
+    meta: {
+      title: '添加合同',
+      permission: true
+    },
+  },
+  {
+    path: '/Contract/contract_info',
+    name: '/Contract/contract_info',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/contract/contract_info'),
+    meta: {
+      title: '合同详情',
+      permission: true
+    },
+  },
 ]

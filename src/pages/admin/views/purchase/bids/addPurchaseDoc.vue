@@ -889,7 +889,7 @@ export default {
           { value: "3", label: "中位值" }
         ],
         eval_standard_type: [
-          { value: "1", label: "基准价 / 投标报价*最大分值" },
+          { value: "1", label: "（1 - | 商家报价 - 最低报价 | / 最低报价） * 最高得分" },
           {
             value: "2",
             label:
@@ -898,14 +898,14 @@ export default {
           {
             value: "3",
             label:
-              "最大分值 - |  投标人报价 - 基准价  | / 基准价*100%*每百分点分值"
+              "最高得分 - |  投标人报价 - 中位值  | / 中位值*100%*每百分点分值"
           }
         ],
         middle_price_type: [
           { value: "1", label: "各商家报价的算术平均数" },
           {
             value: "2",
-            label: "【各商家报价之和 - 最高报价 - 最低报价】 / 报价商家数量-2"
+            label: "【各商家报价之和 - 最高报价 - 最低报价】 / 报价商家数量 - 2"
           },
           {
             value: "3",

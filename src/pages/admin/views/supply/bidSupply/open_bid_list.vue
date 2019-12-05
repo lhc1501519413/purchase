@@ -71,6 +71,10 @@
           >
             中标信息
           </router-link>
+          <a v-if="priv.open_sbid_list.view&&(record.status==20||record.status==21)"
+            @click="show_bid_fail(record.bid_code)">
+            流标信息
+          </a>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -171,6 +175,59 @@
         </a-form-item>
       </a-form>
     </a-modal>
+    <a-modal
+      class="failure-modal"
+      :destroyOnClose="true"
+      style="top: 10%;"
+      width="55%"
+      :visible="ModalVisibleFail"
+      :maskClosable="false"
+      :footer="null"
+      @ok="ModalVisibleFail = false"
+      @cancel="ModalVisibleFail = false"
+      >
+      <h3 class="text-center">流标</h3>
+      <a-form :form="form" @submit="handleSubmit">
+        <h4>项目基本信息</h4>
+        <a-row class="mb-10">
+          <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
+          <a-col :span="4">{{modalData.custom_code}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
+          <a-col :span="4">{{modalData.title}}</a-col>
+        </a-row>
+        <a-row class="mb-10">
+          <a-col :span="5" class="text-right" :offset="1">采购单位：</a-col>
+          <a-col :span="4">{{modalData.com_name}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">采购方式：</a-col>
+          <a-col :span="4">{{modalData.bid_type_name}}</a-col>
+        </a-row>
+        <a-form-item label="流标原因" v-bind="formItemLayout">
+          <a-textarea
+            readOnly
+            style="width:65%"
+            :rows="4"
+            placeholder="请输入流标原因"
+            v-decorator="[
+              'reason',
+              { rules: [{ required: true, message: '请输入流标原因' }],initialValue:modalData.reason}
+            ]"
+          ></a-textarea>
+        </a-form-item>
+        <a-form-item label="附件" v-bind="formItemLayout">
+          <ul>
+            <li
+              class="file-list-item"
+              v-for="(item,index) of modalData.file_list"
+              :key="index"
+            >
+              <svg-icon class="wenjian" icon-class="wenjian" />
+              <span class="ml-10 mr-10">{{item.file_name}}</span>
+              <a :href="item.full_path" target="_blank">预览文件</a>
+            </li>
+          </ul>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -185,6 +242,9 @@ import {
   get_decrypt_info // 获取解密详情
 } from "@admin/api/open_bid_supply";
 import { encryption } from "@/common/js/ESign";
+import {
+  get_bid_fail // 流标详情
+} from "@admin/api/open_bid";
 export default {
   props: {
     father: {
@@ -208,7 +268,7 @@ export default {
         { value: "12", label: "评标中" },
         { value: "13", label: "待采购方确认" },
         { value: "14", label: "采购结果公告已发布" },
-        { value: "20,21", label: "已流标" }
+        { value: "20", label: "已流标" }
       ],
       bid_type: "0",
       bid_type_list: [{ value: "0", title: "全部" }],
@@ -294,7 +354,12 @@ export default {
       webSocketUrl: this.global.webSocketUrl,
       ws: null,
       heart_beat_interval: null,
-      ping: null
+      ping: null,
+      ModalVisibleFail:false,
+      modalData: {
+        reason: "",
+        file_list: []
+      }
     };
   },
   filters: {
@@ -475,7 +540,13 @@ export default {
       this.decrypt_btn_ctrl = false;
       this.decrypted_file = [];
       clearInterval(this.decrypt_time_interval);
-    }
+    },
+    show_bid_fail(bid_code){
+      get_bid_fail({bid_code}).then(res=>{
+        this.modalData = res.data;
+        this.ModalVisibleFail = true;
+      }).catch(error=>this.$message.error(error))
+    },
   }
 };
 </script>
@@ -506,6 +577,27 @@ export default {
   .wenjian {
     width: 17px;
     height: 17px;
+  }
+}
+</style>
+<style lang="scss">
+.failure-modal {
+  h4 {
+    border-left: 4px solid $primary2;
+    @extend .pl-10;
+    @extend .ml-40;
+    @extend .mb-10;
+  }
+  .wenjian {
+    width: 17px;
+    height: 17px;
+  }
+  .ant-input {
+    padding-left: 5px;
+  }
+  .file-list-item {
+    height: 20px;
+    margin-top: 5px;
   }
 }
 </style>

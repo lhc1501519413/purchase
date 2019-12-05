@@ -25,13 +25,17 @@
             <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
             <a v-if="priv.spurchase_list.acquire" @click="get_supply_purchase_info(text.bid_code)" href="javascript:;">获取</a>
           </div>
-          <div v-if="text.status==2||text.status==4||text.status==20"><!-- 待审核，待采购方发送，已流标 -->
+          <div v-if="text.status==2||text.status==4||text.status==20||text.status==21"><!-- 待审核，待采购方发送，已流标，评标过程中流标 -->
             <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
           </div>
           <div v-if="text.status==5"><!-- 已获取 -->
             <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
             <a v-if="priv.spurchase_list.acquire" @click="download(text.bid_id)" href="javascript:;">下载采购文件</a>
           </div>
+          <a v-if="text.status==20||text.status==21"
+            @click="show_bid_fail(text.bid_code)">
+            流标信息
+          </a>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -207,6 +211,59 @@
         <a-button class="mr-10" @click="ModalVisibleFile = false">取消</a-button>
       </div>
     </a-modal>
+    <a-modal
+      class="failure-modal"
+      :destroyOnClose="true"
+      style="top: 10%;"
+      width="55%"
+      :visible="ModalVisibleFail"
+      :maskClosable="false"
+      :footer="null"
+      @ok="ModalVisibleFail = false"
+      @cancel="ModalVisibleFail = false"
+      >
+      <h3 class="text-center">流标</h3>
+      <a-form :form="form" @submit="handleSubmit">
+        <h4>项目基本信息</h4>
+        <a-row class="mb-10">
+          <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
+          <a-col :span="4">{{modalData.custom_code}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
+          <a-col :span="4">{{modalData.title}}</a-col>
+        </a-row>
+        <a-row class="mb-10">
+          <a-col :span="5" class="text-right" :offset="1">采购单位：</a-col>
+          <a-col :span="4">{{modalData.com_name}}</a-col>
+          <a-col :span="5" class="text-right" :offset="1">采购方式：</a-col>
+          <a-col :span="4">{{modalData.bid_type_name}}</a-col>
+        </a-row>
+        <a-form-item label="流标原因" v-bind="formItemLayout">
+          <a-textarea
+            readOnly
+            style="width:65%"
+            :rows="4"
+            placeholder="请输入流标原因"
+            v-decorator="[
+              'reason',
+              { rules: [{ required: true, message: '请输入流标原因' }],initialValue:modalData.reason}
+            ]"
+          ></a-textarea>
+        </a-form-item>
+        <a-form-item label="附件" v-bind="formItemLayout">
+          <ul>
+            <li
+              class="file-list-item"
+              v-for="(item,index) of modalData.file_list"
+              :key="index"
+            >
+              <svg-icon class="wenjian" icon-class="wenjian" />
+              <span class="ml-10 mr-10">{{item.file_name}}</span>
+              <a :href="item.full_path" target="_blank">预览文件</a>
+            </li>
+          </ul>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -223,6 +280,9 @@ import {
   get_bid_purchase_file // 获取附件列表
 } from "@admin/api/bids";
 import { POST } from "@common/js/apis";
+import {
+  get_bid_fail // 流标详情
+} from "@admin/api/open_bid";
 export default {
   components: {
     "search-condition": () => import("@admin/components/searchCondition")
@@ -375,6 +435,11 @@ export default {
           return `共${this.fileList.length}条数据`;
         }
       },
+      ModalVisibleFail:false,
+      modalData: {
+        reason: "",
+        file_list: []
+      }
     };
   },
   filters: {
@@ -396,6 +461,9 @@ export default {
           return "已获取";
           break;
         case "20":
+          return "已流标";
+          break;
+        case "21":
           return "已流标";
           break;
         default:
@@ -532,6 +600,12 @@ export default {
         this.$forceUpdate();
       }
     },
+    show_bid_fail(bid_code){
+      get_bid_fail({bid_code}).then(res=>{
+        this.modalData = res.data;
+        this.ModalVisibleFail = true;
+      }).catch(error=>this.$message.error(error))
+    },
   }
 };
 </script>
@@ -558,6 +632,27 @@ export default {
   .wenjian {
     width: 17px;
     height: 17px;
+  }
+}
+</style>
+<style lang="scss">
+.failure-modal {
+  h4 {
+    border-left: 4px solid $primary2;
+    @extend .pl-10;
+    @extend .ml-40;
+    @extend .mb-10;
+  }
+  .wenjian {
+    width: 17px;
+    height: 17px;
+  }
+  .ant-input {
+    padding-left: 5px;
+  }
+  .file-list-item {
+    height: 20px;
+    margin-top: 5px;
   }
 }
 </style>

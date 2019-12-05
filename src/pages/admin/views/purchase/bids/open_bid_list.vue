@@ -239,7 +239,6 @@ export default {
         wrapperCol: { span: 18 }
       },
       ModalVisible:false,
-      del_icon: require("@static/icon/icon_close.png"),
       formData: {
         reason: "",
         file_list: []

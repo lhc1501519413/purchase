@@ -191,7 +191,7 @@
         <a-tab-pane key="4">
           <div slot="tab">项目附件</div>
           <div class="mb-10 ml-20">
-            上传的投标文件为签章后的文件，未签章文件视为无效文件。点击<a @click="sign">去签章</a>
+            上传的投标文件为签章后的文件，未签章文件视为无效文件。点击<a @click="signModalVisible = true">去签章</a>
           </div>
           <div class="mb-10 ml-10 relative">
             <a-button type="primary" class="absolute" style="top:0;right:0;" @click.stop="saveFile">保存</a-button>
@@ -268,13 +268,13 @@
         <p class="mb-10">2、签章将直接签署在您的原文件上，建议您将投标文件进行备份。</p>
         <p class="mb-10">3、请将您的投标文件在本机的文件路径及文件名称填写到下框中，以便于将您的文件进行本地签章。</p>
         <p class="mb-10">
-          文件路径：<a-input style='width:30%;margin:0 5px;' @keyup.enter="add_sign" v-model="file_path" />
+          文件路径：<a-input style='width:30%;margin:0 5px;' class="pl-10" @keyup.enter="add_sign" v-model="file_path" />
           <a-button type='primary' @click="add_sign">签章</a-button>
         </p>
         <p class="mb-10">
           例：填写格式为
           <span class="file-path-model">
-            /e:\pdf\投标文件.pdf
+            e:\pdf\投标文件.pdf
           </span>
         </p>
       </div>
@@ -589,7 +589,6 @@ export default {
     connect_webSocket(){
       var self = this;
       if ("WebSocket" in window) {
-        // self.ws = new WebSocket(`ws://192.168.2.144:9797/ws`);
         self.ws = new WebSocket(self.webSocketUrl);
         self.ws.onopen = function(e) {};
         self.ws.onerror = function(e) {
@@ -789,19 +788,11 @@ export default {
         bid_code:this.bid_code,
         quality_file_list
       }
-      save_bid_quality_file(obj).then(res => {
-        this.$message.success(res.msg);
-      })
-      .catch(error => {
-        this.$message.error(error);
-      });
-    },
-    sign(){
-      this.signModalVisible = true;
-      this.$message.info('电子签章尚未完成')
+      save_bid_quality_file(obj).then(res => this.$message.success(res.msg))
+      .catch(error => this.$message.error(error));
     },
     add_sign(){
-      open(`https://localhost:7688/index.html?file=${this.file_path}`)
+      open(`https://localhost:7688/index.html?file=/${this.file_path}`)
     },
     afterClose(){
       this.file_path='';

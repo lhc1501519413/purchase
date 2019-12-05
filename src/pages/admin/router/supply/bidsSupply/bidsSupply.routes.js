@@ -69,5 +69,35 @@ export default [
       permission: true
     }
   },
+  {
+    path: '/Scontract/get_bid_scontract_list',
+    name: '/Scontract/get_bid_scontract_list',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/scontract_list'),
+    meta: {
+      title: '合同管理',
+      permission: true
+    }
+  },
+  {
+    path: '/Scontract/contract_info',
+    name: '/Scontract/contract_info',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/contract_info'),
+    meta: {
+      title: '合同详情',
+      permission: true
+    }
+  },
+  {
+    path: '/Scontract/edit_contract',
+    name: '/Scontract/edit_contract',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/edit_contract'),
+    meta: {
+      title: '合同管理',
+      permission: true
+    }
+  },
   
 ]
