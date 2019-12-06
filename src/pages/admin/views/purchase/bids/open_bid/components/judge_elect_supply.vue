@@ -4,7 +4,7 @@
       <a-table class="table" :dataSource="judge_elect" :columns="columns" rowKey="supply_id">
         <template slot-scope="text,record" slot="area_key">
           <a-select style="width: 100px"
-            :disabled="bid_status==18||bid_status==20||bid_status==21"
+            :disabled="bid_status>17"
             v-model="record.area_key"
           >
             <a-select-option v-for="item of area_list" :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
@@ -29,7 +29,6 @@ export default {
   },
   data() {
     return {
-      status:this.$store.getters.judgeStatus,
       bid_status:this.father.judge_info.bid_status,
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
@@ -119,11 +118,11 @@ export default {
       submit_supply_area({
         bid_code:this.bid_code,
         supply_list:this.judge_elect
-      }).then(res=> this.$message.success(res.msg))
+      }).then(res=> {
+        this.$message.success(res.msg)
+        this.$router.push({path:'/Bid/open_bid',query:{bid_code:this.bid_code}})
+      })
       .catch(error => this.$message.error(error));
-    },
-    next(){
-      this.$router.push({path:'/Bid/open_bid',query:{bid_code:this.bid_code}})
     }
   }
 };

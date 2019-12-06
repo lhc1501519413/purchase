@@ -86,7 +86,11 @@ export default {
       .catch(error => this.$message.error(error));
     },
     next() {
-      this.$router.push({ path: "/Bid/judge_match", query:{bid_code: this.bid_code }});
+      if(this.$store.getters.judgeStatus>=5){
+        this.$router.push({ path: "/Bid/judge_match", query:{bid_code: this.bid_code }});
+      }else{
+        this.$message.info('尚未进行到此阶段')
+      }
     },
     callback(name) {
       this.activeKey = name;

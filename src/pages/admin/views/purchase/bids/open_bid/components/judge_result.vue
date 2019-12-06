@@ -134,7 +134,7 @@ export default {
       .catch(error => this.$message.error(error));
     },
     next() {
-      if(this.status>13){ // 得分汇总完成
+      if(this.status>=15){ // 得分汇总完成
         this.$router.push({path:'/Bid/judge_elect_supply',query:{bid_code:this.bid_code}})
       }else{
         confirm_bid_judge({bid_code:this.bid_code}).then(res => {

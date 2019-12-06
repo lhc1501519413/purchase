@@ -18,8 +18,8 @@
           </span>
         </template>
         <template slot="operation" slot-scope="text">
-          <div v-if="text.status==5">
-            <router-link v-if="priv.tender_list.edit" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
+          <div v-if="text.status==5||text.status==7">
+            <router-link v-if="priv.tender_list.edit&&text.bid_status==15&&text.add_chance" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
               制作
             </router-link>
             <router-link v-if="priv.tender_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
@@ -65,7 +65,8 @@ export default {
       statusList:[
         {value:'0',label:'全部'},
         {value:'5',label:'待制作'},
-        {value:'8',label:'已制作'},
+        {value:'7',label:'已制作'},
+        {value:'8',label:'已上传'},
       ],
       bid_type:'',
       bid_type_list:[
@@ -120,8 +121,11 @@ export default {
         case '5':
           return '待制作'
           break;
-        case '8':
+        case '7':
           return '已制作'
+          break;
+        case '8':
+          return '已上传'
           break;
         default:
           return '未知状态'
@@ -159,6 +163,9 @@ export default {
       tender_list(params).then(res=>{
         this.dataSource = res.data.list;
         this.total = +res.data.total_count;
+        this.dataSource.forEach(elem=>{
+          elem.add_chance = new Date(elem.open_time).getTime() > new Date().getTime();
+        })
       }).catch(error=>this.$message.error(error))
     },
     paginationChange(page) {

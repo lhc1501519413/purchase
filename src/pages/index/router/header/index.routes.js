@@ -14,7 +14,7 @@ export default [
         name: 'index',
         component: () => import( /*webpackChunkName:whiteList*/ '@indexViews/index/index'),
         meta: {
-          title: '在线询价',
+          title: '首页',
           permission: true
         }
       },

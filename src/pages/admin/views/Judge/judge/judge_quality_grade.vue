@@ -5,7 +5,7 @@
       <a-table class="table" :dataSource="judge_quality_grade" :columns="columns" rowKey="id"></a-table>
       <h4>评审意见</h4>
       <a-row>
-        <a-col :span="3" class="text-right">【{{user_name}}】评审意见：</a-col>
+        <a-col :span="3" class="text-right">【{{username}}】评审意见：</a-col>
         <a-col :span="13">
           <a-textarea
             v-model="opinion"
@@ -171,7 +171,7 @@ export default {
     return {
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
-      user_name: this.$store.getters.username,
+      username: localStorage.getItem('username'),
       opinion: "",
       judge_quality_grade: [],
       columns: [

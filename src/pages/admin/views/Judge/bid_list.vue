@@ -62,7 +62,7 @@
         <a-row>
           <a-col :span="10" :offset="1">
             <a-form-item label="专家姓名" v-bind="formItemLayout">
-              {{user_name}}
+              {{sign_info.realname}}
             </a-form-item>
           </a-col>
           <a-col :span="11">
@@ -202,7 +202,6 @@ export default {
         }
       ],
       total: 10,
-      user_name: this.$store.getters.username,
       judge_info: {},
       sign_info: {},
       ModalVisible: false

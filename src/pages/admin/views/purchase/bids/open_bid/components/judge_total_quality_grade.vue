@@ -27,7 +27,6 @@ export default {
   },
   data() {
     return {
-      status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
       judge_total_quality_grade: [],
@@ -73,7 +72,7 @@ export default {
         .catch(error => this.$message.error(error));
     },
     next() {
-      if(this.status>8){ // 如已技术结果公布完成，则直接跳转，否则需发送请求判断再进行跳转
+      if(this.$store.getters.judgeStatus>=9){ // 如已技术结果公布完成，则直接跳转，否则需发送请求判断再进行跳转
         this.$router.push({path:'/Bid/business_result',query:{bid_code:this.bid_code}})
       }else{
         publish_business_result({bid_code:this.bid_code}).then(res => {

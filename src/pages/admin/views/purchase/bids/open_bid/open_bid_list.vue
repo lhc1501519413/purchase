@@ -66,7 +66,11 @@
               :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
             >确认</router-link>
             <router-link
-              v-if="priv.open_bid_list.open&&(record.status==15||record.status==16)"
+              v-if="priv.open_bid_list.open&&record.status==15"
+              :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
+            >开标评标</router-link>
+            <router-link
+              v-if="priv.open_bid_list.open&&record.status==16"
               :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
             >开标评标</router-link>
             <router-link

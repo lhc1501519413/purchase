@@ -6,11 +6,12 @@
       </div>
       <div>
         <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
-        <a-button v-if="(judge_info.status==13||judge_info.status==14)&&current==8" type="primary" @click="submit">提交</a-button>
+        <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="submit">提交</a-button>
+        <a-button v-if="judge_info.status==15&&current==9" type="primary" @click="submit">提交</a-button>
         <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
         <a-button type="primary" @click="refresh">刷新</a-button>
-        <a-button type="primary" v-if="judge_info.status<=14" @click="next">下一步</a-button>
+        <a-button type="primary" v-if="judge_info.status<15" @click="next">下一步</a-button>
       </div>
     </h5>
     <section class="content">
@@ -47,13 +48,13 @@
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="judge_info.status>=8?$router.push({path:'/Bid/business_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
+        <a-step @click="judge_info.status>=9?$router.push({path:'/Bid/business_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             商务技术结果公布
             <span class="open">开</span>
           </div>
         </a-step>
-        <a-step @click="judge_info.status>=9?$router.push({path:'/Bid/supply_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
+        <a-step @click="judge_info.status>=10?$router.push({path:'/Bid/supply_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             开标记录
             <br />
@@ -73,7 +74,7 @@
             <span class="judge">评</span>
           </div>
         </a-step>
-        <a-step @click="judge_info.status>=14?$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}}):$message.info('尚未进行到此阶段')">
+        <a-step @click="judge_info.status>=15?$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
             结果公布
             <span class="open">开</span>

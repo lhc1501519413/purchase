@@ -108,7 +108,7 @@
           </a-menu>
         </a-dropdown>
         <a-dropdown placement="bottomCenter">
-          <span class="ant-dropdown-link mr-10 color pointer">{{user_name}}</span>
+          <span class="ant-dropdown-link mr-10 color pointer">{{username}}</span>
           <a-menu slot="overlay" @click="user_method">
             <a-menu-item key="logout">
               <span class="color">退出登录</span>
@@ -205,7 +205,7 @@ export default {
       type: null,
       menu_list:[],
       collapsed: false,
-      user_name: this.$store.getters.username,
+      username: localStorage.getItem('username'),
       selectedKeys: ["panel"],
       defaultOpenKeys: ["//online_inquiry","//bid_mangge","//project_eval","sub1","sub2","sub3"],
       panelCount: "",
@@ -309,6 +309,7 @@ export default {
           JSON.stringify(res.data.supply_info)
         );
         this.type = res.data.type;
+        this.username = res.data.username;
         this.com_info = res.data.com_info || null;
         this.supply_info = res.data.supply_info || null;
         this.$store.commit('SET_PRIV',res.data.priv);

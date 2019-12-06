@@ -364,7 +364,7 @@ export default {
         },
         {
           title: "品牌",
-          dataIndex: "brand",
+          dataIndex: "brand_name",
           width: "5%",
           align: "center"
         },

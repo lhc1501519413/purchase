@@ -19,7 +19,7 @@
             rowKey="supply_id"
           >
             <template slot="status" slot-scope="text">
-              {{text==1?'符合':'不符合'}}
+              {{text|status}}
             </template>
           </a-table>
         </a-tab-pane>
@@ -70,6 +70,18 @@ export default {
       ]
     };
   },
+  filters:{
+    status(key){
+      switch (key) {
+        case '1':
+          return '符合'
+        case '2':
+          return '不符合'
+        default:
+          return ''
+      }
+    }
+  },
   created() {
     this.father.current = 7;
     this.refresh();
@@ -84,10 +96,13 @@ export default {
       .catch(error => this.$message.error(error));
     },
     next() {
-      this.$router.push({
-        path: "/Bid/judge_result",
-        query: { bid_code: this.bid_code }
-      });
+      if(this.$store.getters.judgeStatus>=13){
+        this.$router.push({path:'/Bid/judge_result',query:{bid_code:this.bid_code}})
+      }else{
+        open_report_judge({bid_code:this.bid_code}).then(res => {
+          this.$router.push({path:'/Bid/judge_result',query:{bid_code:this.bid_code}})
+        }).catch(error => this.$message.error(error));
+      }
     },
     callback(name) {
       this.activeKey = name;

@@ -65,12 +65,12 @@
             href="javascript:;"
             @click="showModal(record.bid_code)"
           >解密</a>
-          <router-link
+          <!-- <router-link
             v-if="priv.open_sbid_list.view&&record.status==12"
             :to="{path:'/Sbid/bid_result',query:{id:record.id}}"
           >
             中标信息
-          </router-link>
+          </router-link> -->
           <a v-if="priv.open_sbid_list.view&&(record.status==20||record.status==21)"
             @click="show_bid_fail(record.bid_code)">
             流标信息
@@ -465,12 +465,12 @@ export default {
             clearInterval(this.decrypt_time_interval);
           })
         })
-        .catch(error => this.$message.info(error));
+        .catch(error => this.$message.error(error));
       get_decrypt_file(bid_code)
         .then(res => {
           this.decrypt_file = res.data || [];
         })
-        .catch(error => this.$message.info(error));
+        .catch(error => this.$message.error(error));
       this.ModalVisible = true;
     },
     handleSubmit(e) {
@@ -490,7 +490,7 @@ export default {
           encryption(formData)
             .then(res => {
               if (res.data.result != "") {
-                self.$message.error("解密中，请稍候");
+                self.$message.info("解密中，请稍候");
                 let obj = {
                   id: self.decrypt_file[0].id,
                   secret_key: res.data.result
@@ -522,7 +522,7 @@ export default {
                                 self.open_bid_list_method2();
                               }, 1500);
                             })
-                            .catch(error => self.$message.warn(error));
+                            .catch(error => self.$message.error(error));
                         }
                       })
                       .catch(error => self.$message.error(error));

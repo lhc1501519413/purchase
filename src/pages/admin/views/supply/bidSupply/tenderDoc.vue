@@ -21,7 +21,6 @@
           </span>
         </template>
         <template slot="is_match" slot-scope="text,record">
-          {{text|is_match}}
           <a-select style="width: 100px"
             disabled
             :value="record.is_match"

@@ -8,7 +8,7 @@
         rowKey="supply_id"
       >
         <template slot="operation">
-          <a-select defaultValue="1" disabled style="width: 120px" @change="handleChange">
+          <a-select defaultValue="1" disabled style="width: 120px">
             <a-select-option value="1">符合</a-select-option>
             <a-select-option value="2">不符合</a-select-option>
           </a-select>
@@ -31,7 +31,6 @@ export default {
   },
   data() {
     return {
-      status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
       bid_code:this.$route.query.bid_code,
       dataSource: [],
@@ -62,9 +61,8 @@ export default {
       .catch(error => this.$message.error(error));
   },
   methods: {
-    handleChange() {},
     next(){
-      if(this.status>3){
+      if(this.$store.getters.judgeStatus>=4){
         this.$router.push({path:'/Bid/judge_quality',query:{bid_code:this.bid_code}})
       }else{
         start_judge(this.bid_code).then(res => {

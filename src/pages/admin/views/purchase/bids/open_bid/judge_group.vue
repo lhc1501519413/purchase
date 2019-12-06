@@ -88,6 +88,7 @@ export default {
     leader_change(id) {
       this.dataSource.forEach(elem => {
         elem.group_leader = elem.id == id;
+        if(elem.id == id) elem.is_join = true;
       });
     },
     save() {

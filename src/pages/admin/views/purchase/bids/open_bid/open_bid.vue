@@ -109,9 +109,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=8?$router.push({path:'/Bid/business_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
+        <li @click="judge_info.status>=9?$router.push({path:'/Bid/business_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
-            <p :class="{bg:judge_info.status>=8}">6</p>
+            <p :class="{bg:judge_info.status>=9}">6</p>
             <span>
               <span>
                 商务技术结果公布
@@ -123,9 +123,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=9?$router.push({path:'/Bid/supply_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
+        <li @click="judge_info.status>=10?$router.push({path:'/Bid/supply_report',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
-            <p :class="{bg:judge_info.status>=9}">7</p>
+            <p :class="{bg:judge_info.status>=10}">7</p>
             <span>
               <span>
                 开标记录（报价）
@@ -165,9 +165,9 @@
           </div>
           <a-icon type="right"/>
         </li>
-        <li @click="judge_info.status>=14?$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}}):$message.info('尚未进行到此阶段')">
+        <li @click="judge_info.status>=15?$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div>
-            <p :class="{bg:judge_info.status>=14}">10</p>
+            <p :class="{bg:judge_info.status>=15}">10</p>
             <span>
               <span>
                 结果公布
@@ -189,8 +189,7 @@
         </a-col>
         <a-col :span="12">
           <upload
-            v-if="judge_info.status<=14&&judge_info.bid_status!=18&&judge_info.bid_status!=20&&judge_info.bid_status!=21"
-            :disabled='judge_info.status<14'
+            v-if="judge_info.bid_status<=17"
             class="ml-10"
             @choose-file="result_file_list_change"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
@@ -203,7 +202,7 @@
             <li @click.stop="del" class="mb-10" v-for="(item,index) of result_file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
-              <img v-if="judge_info.status<=14" :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+              <img v-if="judge_info.bid_status<=17" :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
               <a v-else :href="item.full_path" target='_blank' class="ml-10">预览</a>
             </li>
           </ul>
@@ -215,8 +214,7 @@
         </a-col>
         <a-col :span="12">
           <upload
-            v-if="judge_info.status<=14&&judge_info.bid_status!=18&&judge_info.bid_status!=20&&judge_info.bid_status!=21"
-            :disabled='judge_info.status<14'
+            v-if="judge_info.bid_status<=17"
             class="ml-10"
             @choose-file="confirm_file_list_change"
             accept="image/png, image/jpg, image/jpeg, application/pdf"
@@ -229,7 +227,7 @@
             <li @click.stop="del2" class="mb-10" v-for="(item,index) of confirm_file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
               <span>{{item.file_name}}</span>
-              <img v-if="judge_info.status<=14" :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+              <img v-if="judge_info.bid_status<=17" :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
               <a v-else :href="item.full_path" target='_blank' class="ml-10">预览</a>
             </li>
           </ul>
