@@ -3,7 +3,7 @@ export default [
     path: '/Bid/bid_list',
     name: '/Bid/bid_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_manage/bid_list'),
     meta: {
       title: '项目管理',
       permission: true
@@ -13,7 +13,7 @@ export default [
     path: '/addBids',
     name: 'addBids',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/addBids'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_manage/addBids'),
     meta: {
       title: '招标新增项目',
       permission: true
@@ -23,7 +23,7 @@ export default [
     path: '/auditBid',
     name: 'auditBid',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/auditBid'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_manage/auditBid'),
     meta: {
       title: '审核招标项目',
       permission: true
@@ -33,7 +33,7 @@ export default [
     path: '/bidDetail',
     name: 'bidDetail',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bidDetail'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_manage/bidDetail'),
     meta: {
       title: '招标项目详情',
       permission: true
@@ -43,7 +43,7 @@ export default [
     path: '/Bid/ask_purchase_list',
     name: '/Bid/ask_purchase_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/ask_purchase_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/ask_purchase/ask_purchase_list'),
     meta: {
       title: '获取采购文件管理',
       permission: true
@@ -53,7 +53,7 @@ export default [
     path: '/Bid/check_purchase_info',
     name: '/Bid/check_purchase_info',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/check_purchase_info'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/ask_purchase/check_purchase_info'),
     meta: {
       title: '查看获取信息',
       permission: true
@@ -63,7 +63,7 @@ export default [
     path: '/Bid/purchase_list',
     name: '/Bid/purchase_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/purchase_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/purchase_list/purchase_list'),
     meta: {
       title: '采购文件管理',
       permission: true
@@ -73,7 +73,7 @@ export default [
     path: '/addPurchaseDoc',
     name: 'addPurchaseDoc',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/addPurchaseDoc'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/purchase_list/addPurchaseDoc'),
     meta: {
       title: '制作采购文件',
       permission: true
@@ -83,7 +83,7 @@ export default [
     path: '/auditPurchaseDoc',
     name: 'auditPurchaseDoc',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/auditPurchaseDoc'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/purchase_list/auditPurchaseDoc'),
     meta: {
       title: '审核采购文件',
       permission: true
@@ -93,7 +93,7 @@ export default [
     path: '/docDetail',
     name: 'docDetail',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/docDetail'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/purchase_list/docDetail'),
     meta: {
       title: '采购文件详情',
       permission: true
@@ -103,7 +103,7 @@ export default [
     path: '/Expert/expert_list',
     name: '/Expert/expert_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/expert_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/experts/expert_list'),
     meta: {
       title: '专家列表',
       permission: true
@@ -113,7 +113,7 @@ export default [
     path: '/Bid/experts_draw_list',
     name: '/Bid/experts_draw_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/experts_draw_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/experts/experts_draw_list'),
     meta: {
       title: '专家抽取',
       permission: true
@@ -123,7 +123,7 @@ export default [
     path: '/Bid/experts_draw',
     name: '/Bid/experts_draw',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/experts_draw'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/experts/experts_draw'),
     meta: {
       title: '专家抽取',
       permission: true
@@ -133,7 +133,7 @@ export default [
     path: '/Bid/open_bid_list',
     name: '/Bid/open_bid_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/open_bid_list'),
     meta: {
       title: '开标评标管理',
       permission: true
@@ -143,7 +143,7 @@ export default [
     path: '/Bid/bid_result',
     name: '/Bid/bid_result',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_result'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/bid_result'),
     meta: {
       title: '开标评标管理',
       permission: true
@@ -306,7 +306,7 @@ export default [
     path: '/Bid/notice_list',
     name: '/Bid/notice_list',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_list'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice/notice_list'),
     meta: {
       title: '公告',
       permission: true
@@ -316,7 +316,7 @@ export default [
     path: '/Bid/notice_detail',
     name: '/Bid/notice_detail',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_detail'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice/notice_detail'),
     meta: {
       title: '公告详情',
       permission: true
@@ -326,7 +326,7 @@ export default [
     path: '/Bid/notice_detail_fail',
     name: '/Bid/notice_detail_fail',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_detail_fail'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice/notice_detail_fail'),
     meta: {
       title: '公告详情',
       permission: true
@@ -336,7 +336,7 @@ export default [
     path: '/Bid/notice_detail_deal',
     name: '/Bid/notice_detail_deal',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice_detail_deal'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/notice/notice_detail_deal'),
     meta: {
       title: '公告详情',
       permission: true
