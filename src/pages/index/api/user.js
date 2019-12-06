@@ -1,4 +1,3 @@
-import global from '@common/js/global';
 import request from '@utils/request';
 /* 注册 */
 export function register(data) {
@@ -36,7 +35,7 @@ export function login_by_mobile(data) {
 export function logout() {
   return request({
     method: 'POST',
-    params:{c:'User',a:'logout',token:global.token},
+    params:{c:'User',a:'logout',token:localStorage.getItem('token')},
   })
 }
 /* 重置密码 */
@@ -51,7 +50,7 @@ export function reset_password(data) {
 export function base_info() {
   return request({
     method: 'GET',
-    params:{c:'User',a:'base_info',token:global.token}
+    params:{c:'User',a:'base_info',token:localStorage.getItem('token')}
   })
 }
 /* 验证码 */
@@ -65,7 +64,7 @@ export function yzm() {
 export function save_base_info(data) {
   return request({
     method: 'POST',
-    params:{c:'Supply',a:'save_base_info',token:global.token},
+    params:{c:'Supply',a:'save_base_info',token:localStorage.getItem('token')},
     data
   })
 }
@@ -73,41 +72,41 @@ export function save_base_info(data) {
 export function get_base_info() {
   return request({
     method: 'GET',
-    params:{c:'Supply',a:'get_base_info',token:global.token}
+    params:{c:'Supply',a:'get_base_info',token:localStorage.getItem('token')}
   })
 }
 /* 获取供应商基本模块列表 */
 export function get_main_base_list() {
   return request({
     method: 'GET',
-    params:{c:'Supply',a:'get_main_base_list',token:global.token}
+    params:{c:'Supply',a:'get_main_base_list',token:localStorage.getItem('token')}
   })
 }
 /* 提交审核 */
 export function apply() {
   return request({
     method: 'GET',
-    params:{c:'Supply',a:'apply',token:global.token}
+    params:{c:'Supply',a:'apply',token:localStorage.getItem('token')}
   })
 }
 /* 申请信息详情 */
 export function apply_info() {
   return request({
     method: 'GET',
-    params:{c:'Supply',a:'apply_info',token:global.token}
+    params:{c:'Supply',a:'apply_info',token:localStorage.getItem('token')}
   })
 }
 /* 撤回申请 */
 export function re_back() {
   return request({
     method: 'POST',
-    params:{c:'Apply',a:'re_back',token:global.token}
+    params:{c:'Apply',a:'re_back',token:localStorage.getItem('token')}
   })
 }
 /* 判断供应商是否符合报价要求 */
 export function judge_supply_report(inquiry_code) {
   return request({
     method: 'GET',
-    params:{c:'Supplyinquiry',a:'judge_supply_report',token:global.token,inquiry_code}
+    params:{c:'Supplyinquiry',a:'judge_supply_report',token:localStorage.getItem('token'),inquiry_code}
   })
 }

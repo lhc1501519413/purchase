@@ -202,7 +202,7 @@ export default {
         }
       ],
       total: 10,
-      user_name: this.global.username,
+      user_name: this.$store.getters.username,
       judge_info: {},
       sign_info: {},
       ModalVisible: false

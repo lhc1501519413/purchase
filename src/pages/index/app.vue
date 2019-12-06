@@ -48,34 +48,37 @@ export default {
   data(){
     return{
       zh_CN:this.global.zh_CN,
+      logined:false
     }
   },
   created(){
-    this.$store.commit('SET_TOKEN',this.global.token);
-    this.$store.commit('SET_TYPE',this.global.type);
-    this.$store.commit('SET_USERNAME',this.global.username);
+    this.$store.commit('SET_TOKEN',localStorage.getItem('token'));
+    this.$store.commit('SET_TYPE',localStorage.getItem('type'));
+    this.$store.commit('SET_USERNAME',localStorage.getItem('username'));
+    this.check_expire_time();
   },
   computed:{
     username:function(){
       return this.$store.getters.username||'';
-    },
-    logined:function(){
-      return this.$store.getters.token||'';
     }
   },
-  mounted() {
-    // window.onbeforeunload = function(e) {
-    //   e = e || window.event;
-    //   if (e) {
-    //     e.returnValue = "关闭提示";
-    //   }
-    //   return "关闭提示";
-    // };
+  watch:{
+    $route(to,from){
+      if(to.path=='/'||to.path=='/index'){
+        this.check_expire_time();
+      }
+    }
   },
   methods:{
+    check_expire_time(){
+      var expire_time = new Date(localStorage.getItem('expire_time')).getTime();
+      var now = new Date().getTime();
+      if(now < expire_time) this.logined = true;
+    },
     my_work(){
       var self = this;
       var token = localStorage.getItem('token');
+      var type = localStorage.getItem('type');
       if(!token){
         self.$store.commit('SET_TOKEN',null);
         self.$store.commit('SET_TYPE',null);
@@ -91,12 +94,12 @@ export default {
           onCancel() {},
         });
       }else{
-        if(this.global.type==1){
-          window.open(this.global.host+"/admin.html#/panel");
-        }else if(this.global.type==0){
-          window.open(this.global.host+"/admin.html#/panelSupply");
-        }else if(this.global.type==2){
-          window.open(this.global.host+"/admin.html#/Judge/bid_list");
+        if(type==1){
+          open(this.global.host+"/admin.html#/panel");
+        }else if(type==0){
+          open(this.global.host+"/admin.html#/panelSupply");
+        }else if(type==2){
+          open(this.global.host+"/admin.html#/Judge/bid_list");
         }
       }
     },
@@ -111,12 +114,7 @@ export default {
             self.$store.commit('SET_TOKEN',null);
             self.$store.commit('SET_USERNAME',null);
             self.$store.commit('SET_TYPE',null);
-            self.global.token = null;
-            self.global.realname = null;
-            self.global.type = null;
-            self.global.username = null;
-            self.global.supply_info = null;
-            self.global.com_info = null;
+            self.logined = false;
             localStorage.clear();
             self.$message.success(res.msg);
           }).catch(error=>{

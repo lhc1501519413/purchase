@@ -205,7 +205,7 @@ export default {
       type: null,
       menu_list:[],
       collapsed: false,
-      user_name: this.global.username,
+      user_name: this.$store.getters.username,
       selectedKeys: ["panel"],
       defaultOpenKeys: ["//online_inquiry","//bid_mangge","//project_eval","sub1","sub2","sub3"],
       panelCount: "",
@@ -308,11 +308,6 @@ export default {
           "supply_info",
           JSON.stringify(res.data.supply_info)
         );
-        this.global.realname = res.data.realname;
-        this.global.type = res.data.type;
-        this.global.username = res.data.username;
-        this.global.com_info = res.data.com_info || null;
-        this.global.supply_info = res.data.supply_info || null;
         this.type = res.data.type;
         this.com_info = res.data.com_info || null;
         this.supply_info = res.data.supply_info || null;
@@ -378,9 +373,9 @@ export default {
     },
     changeMenuItem(e) {
       if (e.key === "supply_info") {
-        if(this.supply_info.step==2) window.open(this.global.host + "/index.html#/register/baseInfo");
-        else if(this.supply_info.step==3) window.open(this.global.host + "/index.html#/register/dataComplete");
-        else window.open(this.global.host + "/index.html#/register/dataAudit");
+        if(this.supply_info.step==2) open(this.global.host + "/index.html#/register/baseInfo");
+        else if(this.supply_info.step==3) open(this.global.host + "/index.html#/register/dataComplete");
+        else open(this.global.host + "/index.html#/register/dataAudit");
       } else {
         if (this.$route.name === e.key) {
           this.reload();
@@ -412,12 +407,6 @@ export default {
               self.$store.commit("SET_TOKEN", null);
               self.$store.commit("SET_USERNAME", null);
               self.$store.commit("SET_TYPE", null);
-              self.global.token = null;
-              self.global.realname = null;
-              self.global.type = null;
-              self.global.username = null;
-              self.global.supply_info = null;
-              self.global.com_info = null;
               localStorage.clear();
               self.$message.success(res.msg);
               location.href = self.global.host + "/index.html#/index";

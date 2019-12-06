@@ -1,4 +1,3 @@
-import global from '@common/js/global';
 import request from '@utils/request'
 /* 获取公告列表 */
 export function get_notice_list(params) {

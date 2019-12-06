@@ -361,7 +361,7 @@ export default {
       });
     },
     showContract(){
-      window.open(this.global.baseUrl + "?c=Pcontract&a=pre_view&code="+this.formData.code);
+      open(this.global.baseUrl + "?c=Pcontract&a=pre_view&code="+this.formData.code);
     },
     downloadContract(){
       open(this.global.baseUrl+"?c=Pcontract&a=download&code="+this.formData.code);

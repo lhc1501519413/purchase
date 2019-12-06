@@ -627,7 +627,7 @@ export default {
       }
     },
     handleEdit(path) {
-      window.open(this.global.host + "/admin.html#/" + path);
+      open(this.global.host + "/admin.html#/" + path);
     },
     showDialog(e) {
       let key = e.target.dataset.key;

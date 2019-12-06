@@ -77,13 +77,10 @@
               v-if="priv.open_bid_list.view&&record.status==18"
               :to="{path:'/Bid/bid_result',query:{id:record.id}}"
             >中标信息</router-link>
-            <a v-if="priv.open_bid_list.view&&record.status==20"
+            <a v-if="priv.open_bid_list.view&&(record.status==20||record.status==21)"
               @click="show_bid_fail(record.code)">
               流标信息
             </a>
-            <a v-if="priv.open_bid_list.view&&record.status==21"
-              @click="show_bid_fail(record.code)">
-            流标信息</a>
             <router-link
               v-if="priv.open_bid_list.view&&record.status==21"
               :to="{path:'/Bid/scrap',query:{bid_code:record.code}}"

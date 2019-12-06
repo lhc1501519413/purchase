@@ -293,7 +293,6 @@ export default {
             } else {
               this.selectedRowKeys.remove(record.user_id);
             }
-            console.log(this.selectedRowKeys)
             var list = this.selectedRowKeys.merge(data, "user_id");
             this.formData.expert_list = list;
           }

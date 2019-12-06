@@ -83,10 +83,9 @@ export default {
       }
     },
     search_online(e) {
-      window.open(this.global.host+"/admin.html#/addEnquiry");
+      open(this.global.host+"/admin.html#/addEnquiry");
     },
     // choose_item(e) {
-    //   console.log(e.key);
     // }
   }
 };

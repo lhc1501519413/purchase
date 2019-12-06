@@ -3,10 +3,10 @@
     <div class="panel-content">
       <div class="header-status">
         <h3 class="header-status-title">基本信息</h3>
-        <button @click="back_to_front1">window.open("/index.html");</button>
-        <button @click="back_to_front2">window.open("/index.html#/login");</button>
-        <button @click="back_to_front3">window.open(this.global.host + "/index.html");</button>
-        <button @click="back_to_front4">window.open(this.global.host + "/index.html#/login");</button>
+        <button @click="back_to_front1">open("/index.html");</button>
+        <button @click="back_to_front2">open("/index.html#/login");</button>
+        <button @click="back_to_front3">open(this.global.host + "/index.html");</button>
+        <button @click="back_to_front4">open(this.global.host + "/index.html#/login");</button>
         <button @click="back_to_front5">location.href = "/index.html";</button>
         <button @click="back_to_front6">location.href = "/index.html#/login";</button>
         <button @click="back_to_front7">location.href = this.global.host + "/index.html";</button>
@@ -139,16 +139,16 @@ export default {
       this.$router.push({ name: "basic_info", params: { division } });
     },
     back_to_front1() {
-      window.open("/index.html");
+      open("/index.html");
     },
     back_to_front2() {
-      window.open("/index.html#/login");
+      open("/index.html#/login");
     },
     back_to_front3() {
-      window.open(this.global.host + "/index.html");
+      open(this.global.host + "/index.html");
     },
     back_to_front4() {
-      window.open(this.global.host + "/index.html#/login");
+      open(this.global.host + "/index.html#/login");
     },
     back_to_front5() {
       location.href = "/index.html";

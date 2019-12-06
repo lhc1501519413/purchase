@@ -376,8 +376,6 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault();
-      // if(this.global.supply_info.step){
-      // }
       this.form.validateFieldsAndScroll((err, fieldsValue) => {
         if (!err) {
           const values = {

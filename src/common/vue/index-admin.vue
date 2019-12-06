@@ -4,14 +4,14 @@
       <router-view />
     </a-locale-provider>
       <button @click="request">request</button>
-      <button @click="jump1">window.open("/admin.html")</button>
-      <button @click="jump2">window.open("/admin.html#/enterlist")</button>
-      <button @click="jump3">window.open(this.global.host + "/admin.html")</button>
-      <button @click="jump4">window.open(this.global.host + "/admin.html#/enterlist")</button>
-      <button @click="jump5">window.location.href="/admin.html"</button>
-      <button @click="jump6">window.location.href="/admin.html#/enterlist"</button>
-      <button @click="jump7">window.location.href=this.global.host + "/admin.html"</button>
-      <button @click="jump8">window.location.href=this.global.host + "/admin.html#/enterlist"</button>
+      <button @click="jump1">open("/admin.html")</button>
+      <button @click="jump2">open("/admin.html#/enterlist")</button>
+      <button @click="jump3">open(this.global.host + "/admin.html")</button>
+      <button @click="jump4">open(this.global.host + "/admin.html#/enterlist")</button>
+      <button @click="jump5">location.href="/admin.html"</button>
+      <button @click="jump6">location.href="/admin.html#/enterlist"</button>
+      <button @click="jump7">location.href=this.global.host + "/admin.html"</button>
+      <button @click="jump8">location.href=this.global.host + "/admin.html#/enterlist"</button>
   </div>
 </template>
 
@@ -28,8 +28,8 @@ export default {
     this.add_routes();
   },
   mounted() {
-    // window.onbeforeunload = function(e) {
-    //   e = e || window.event;
+    // onbeforeunload = function(e) {
+    //   e = e || event;
     //   if (e) {
     //     e.returnValue = "关闭提示";
     //   }
@@ -44,28 +44,28 @@ export default {
       }
     },
     jump1(){
-      window.open("/admin.html")
+      open("/admin.html")
     },
     jump2(){
-      window.open("/admin.html#/enterlist")
+      open("/admin.html#/enterlist")
     },
     jump3(){
-      window.open(this.global.host + "/admin.html")
+      open(this.global.host + "/admin.html")
     },
     jump4(){
-      window.open(this.global.host + "/admin.html#/enterlist")
+      open(this.global.host + "/admin.html#/enterlist")
     },
     jump5(){
-      window.location.href="/admin.html"
+      location.href="/admin.html"
     },
     jump6(){
-      window.location.href="/admin.html#/enterlist"
+      location.href="/admin.html#/enterlist"
     },
     jump7(){
-      window.location.href=this.global.host + "/admin.html"
+      location.href=this.global.host + "/admin.html"
     },
     jump8(){
-      window.location.href=this.global.host + "/admin.html#/enterlist"
+      location.href=this.global.host + "/admin.html#/enterlist"
     },
     request(){
       all_city({"c":"public","a":"get_all_city"}).then(res=>{

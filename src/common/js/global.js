@@ -1,23 +1,12 @@
-// const host = window.location.protocol+"//"+window.location.host + '/bid';
-// const baseUrl = window.location.protocol+"//"+window.location.host+'/bid/cloud.php';
-// const host = window.location.protocol+"//"+window.location.host + '/purchases';
-// const baseUrl = window.location.protocol+"//"+window.location.host+'/cloud.php';
-// const host = window.location.protocol+"//"+window.location.host + '/purchase';
-// const baseUrl = window.location.protocol+"//"+window.location.host+'/cloud.php';
-const host = window.location.protocol+"//"+window.location.host;
+// const host = location.protocol+"//"+location.host + '/bid';
+// const baseUrl = location.protocol+"//"+location.host+'/bid/cloud.php';
+// const host = location.protocol+"//"+location.host + '/purchases';
+// const baseUrl = location.protocol+"//"+location.host+'/cloud.php';
+// const host = location.protocol+"//"+location.host + '/purchase';
+// const baseUrl = location.protocol+"//"+location.host+'/cloud.php';
+const host = location.protocol+"//"+location.host;
 const baseUrl = process.env.API;
 const webSocketUrl = 'ws://127.0.0.1:9797/ws';
-var token,realname,username,type,supplyInfo,comInfo,com_info,supply_info;
-token=localStorage.getItem('token')||'';
-realname=localStorage.getItem('realname')||'';
-username=localStorage.getItem('username')||'';
-type=localStorage.getItem('type')||'';
-supplyInfo= localStorage.getItem('supply_info');
-comInfo= localStorage.getItem('com_info');
-if(comInfo !== 'undefined') com_info = JSON.parse(comInfo);
-else com_info = '';
-if(supplyInfo !== 'undefined') supply_info = JSON.parse(supplyInfo);
-else supply_info = '';
 const RexConfig = {
   RexUserName:/^(?=.*[a-zA-Z])(?=.*[0-9]).*$/,
 	RexPassword: /^\w{8,16}$/, //修改密码正则表达式
@@ -29,11 +18,5 @@ export default{
   host,
   webSocketUrl,
   RexConfig,
-  token,
-  realname,
-  username,
-  type,
-  supply_info,
-  com_info,
   zh_CN
 }

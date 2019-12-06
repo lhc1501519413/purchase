@@ -2,7 +2,6 @@ import axios from 'axios'
 import { message } from 'ant-design-vue'
 import store from '@indexStore'
 import global from '@common/js/global';
-import vm from '@admin/admin.js';
 // create an axios instance
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // 生产环境url
@@ -49,12 +48,6 @@ service.interceptors.response.use(
         store.commit('SET_TOKEN',null);
         store.commit('SET_USERNAME',null);
         store.commit('SET_TYPE',null);
-        global.token = null;
-        global.realname = null;
-        global.type = null;
-        global.username = null;
-        global.supply_info = null;
-        global.com_info = null;
         localStorage.clear();
         setTimeout(()=>{
           location.href = global.host + "/index.html#/login"

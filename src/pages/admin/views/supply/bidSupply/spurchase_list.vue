@@ -32,10 +32,10 @@
             <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
             <a v-if="priv.spurchase_list.acquire" @click="download(text.bid_id)" href="javascript:;">下载采购文件</a>
           </div>
-          <a v-if="text.status==20||text.status==21"
+          <!-- <a v-if="text.status==20||text.status==21"
             @click="show_bid_fail(text.bid_code)">
             流标信息
-          </a>
+          </a> -->
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />

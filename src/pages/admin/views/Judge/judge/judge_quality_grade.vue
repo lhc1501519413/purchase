@@ -171,7 +171,7 @@ export default {
     return {
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
-      user_name: this.global.username,
+      user_name: this.$store.getters.username,
       opinion: "",
       judge_quality_grade: [],
       columns: [

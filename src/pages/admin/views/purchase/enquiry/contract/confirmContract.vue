@@ -372,7 +372,7 @@ export default {
       });
     },
     showContract(){
-      window.open(this.global.baseUrl + "?c=Pcontract&a=pre_view&code="+this.formData.code);
+      open(this.global.baseUrl + "?c=Pcontract&a=pre_view&code="+this.formData.code);
     },
     confirm(){
       var self = this;

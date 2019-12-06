@@ -13,9 +13,6 @@ export default {
     return {
       zh_CN:this.global.zh_CN,
     }
-  },
-  created(){
-    // console.log(this.$store.getters.token)
   }
 }
 </script>

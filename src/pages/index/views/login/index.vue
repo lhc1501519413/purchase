@@ -196,7 +196,7 @@ export default {
           login(values).then((res=>{
             this.$message.success('登录成功')
             localStorage.setItem('token',res.data.token);
-            this.global.token = res.data.token;
+            localStorage.setItem('expire_time',res.data.expire_time);
             this.$store.commit('SET_TOKEN',res.data.token);
             base_info().then(res=>{
               localStorage.setItem('realname',res.data.realname);
@@ -204,11 +204,6 @@ export default {
               localStorage.setItem('username',res.data.username);
               localStorage.setItem('supply_info',JSON.stringify(res.data.supply_info));
               localStorage.setItem('com_info',JSON.stringify(res.data.com_info));
-              this.global.realname = res.data.realname;
-              this.global.type = res.data.type;
-              this.global.username = res.data.username;
-              this.global.supply_info = res.data.supply_info || null;
-              this.global.com_info = res.data.com_info || null;
               this.$store.commit('SET_TYPE',res.data.type);
               this.$store.commit('SET_USERNAME',res.data.username);
               this.$store.commit('SET_PRIV',res.data.priv);
@@ -260,7 +255,6 @@ export default {
           login_by_mobile(values).then((res=>{
             this.$message.success('登录成功')
             localStorage.setItem('token',res.data.token);
-            this.global.token = res.data.token;
             this.$store.commit('SET_TOKEN',res.data.token);
             base_info().then(res=>{
               localStorage.setItem('realname',res.data.realname);
@@ -268,11 +262,6 @@ export default {
               localStorage.setItem('username',res.data.username);
               localStorage.setItem('supply_info',JSON.stringify(res.data.supply_info));
               localStorage.setItem('com_info',JSON.stringify(res.data.com_info));
-              this.global.realname = res.data.realname;
-              this.global.type = res.data.type;
-              this.global.username = res.data.username;
-              this.global.supply_info = res.data.supply_info || null;
-              this.global.com_info = res.data.com_info || null;
               this.$store.commit('SET_TYPE',res.data.type);
               this.$store.commit('SET_USERNAME',res.data.username);
               this.$store.commit('SET_PRIV',res.data.priv);

@@ -273,7 +273,7 @@ export default {
         });
     },
     showContract() {
-      window.open(
+      open(
         this.global.baseUrl +
           "?c=Pcontract&a=pre_view&code=" +
           this.formData.code

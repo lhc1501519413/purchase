@@ -43,6 +43,6 @@ const router = new Router({
 })
 router.beforeEach((to,from,next) => {
   next()
-  window.scrollTo(0,0)
+  scrollTo(0,0)
 })
 export default router;

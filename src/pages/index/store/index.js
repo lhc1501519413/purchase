@@ -15,7 +15,7 @@ const store = new Vuex.Store({
   },
   getters,
   plugins: [createPersistedState({
-		storage: window.sessionStorage
+		storage: sessionStorage
 	})]
 })
 
