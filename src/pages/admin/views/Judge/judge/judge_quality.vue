@@ -87,7 +87,7 @@
       @ok="ModalVisible2 = false"
       @cancel="ModalVisible2 = false"
       >
-      <h3 class="text-center">流标</h3>
+      <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
         <h4>项目基本信息</h4>
         <a-row class="mb-10">

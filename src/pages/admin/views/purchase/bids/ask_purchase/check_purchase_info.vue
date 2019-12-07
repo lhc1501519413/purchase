@@ -3,8 +3,8 @@
     <h5>
       <span>招标管理 / 获取采购文件管理 / 查看获取信息</span>
       <div class="btn-container">
-        <a-button type="primary" class="mr-10" @click="failure">流标</a-button>
-        <a-button type="primary" @click="sendFile">发送采购文件</a-button>
+        <a-button type="primary" :disabled="formData.status==20||formData.status==21" class="mr-10" @click="failure">流标</a-button>
+        <a-button type="primary" :disabled="formData.status==20||formData.status==21" @click="sendFile">发送采购文件</a-button>
       </div>
     </h5>
     <section class="content">
@@ -81,7 +81,7 @@
                 <span>审核结果：</span>
               </a-col>
               <a-col :span="10">
-                <a-radio-group v-model="radio">
+                <a-radio-group v-model="radio" :disabled="formData.status==20||formData.status==21">
                   <a-radio :value="1">通过</a-radio>
                   <a-radio :value="2">不通过</a-radio>
                 </a-radio-group>
@@ -107,7 +107,7 @@
             </ul>
           </div>
           <div v-if="supply_info.status==2" class="text-right" style="width:92%;">
-            <a-button type="primary" @click="save">保存</a-button>
+            <a-button type="primary" :disabled="formData.status==20||formData.status==21" @click="save">保存</a-button>
           </div>
         </a-col>
       </a-row>
@@ -123,7 +123,7 @@
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
       >
-      <h3 class="text-center">流标</h3>
+      <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
         <h4>项目基本信息</h4>
         <a-row class="mb-10">

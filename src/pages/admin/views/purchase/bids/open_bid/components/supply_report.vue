@@ -50,6 +50,7 @@ export default {
   },
   created() {
     this.father.current = 6;
+    this.father.get_judge_info();
     this.get_supply_report();
   },
   methods: {

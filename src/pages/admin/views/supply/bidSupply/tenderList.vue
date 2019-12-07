@@ -19,7 +19,7 @@
         </template>
         <template slot="operation" slot-scope="text">
           <div v-if="text.status==5||text.status==7">
-            <router-link v-if="priv.tender_list.edit&&text.bid_status==15&&text.add_chance" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
+            <router-link v-if="priv.tender_list.edit&&text.bid_status==15&&text.add_chance&&text.bid_status!=20&&text.bid_status!=21" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
               制作
             </router-link>
             <router-link v-if="priv.tender_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
@@ -120,16 +120,12 @@ export default {
       switch (key) {
         case '5':
           return '待制作'
-          break;
         case '7':
           return '已制作'
-          break;
         case '8':
           return '已上传'
-          break;
         default:
           return '未知状态'
-          break;
       }
     }
   },

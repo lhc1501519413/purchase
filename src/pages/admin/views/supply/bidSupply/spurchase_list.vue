@@ -20,18 +20,10 @@
         <template slot="status" slot-scope="value">
           <span>{{value|status}}</span>
         </template>
-        <template slot="operation" slot-scope="text">
-          <div v-if="text.status==1||text.status==3"><!-- 待获取，已驳回 -->
-            <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
-            <a v-if="priv.spurchase_list.acquire" @click="get_supply_purchase_info(text.bid_code)" href="javascript:;">获取</a>
-          </div>
-          <div v-if="text.status==2||text.status==4||text.status==20||text.status==21"><!-- 待审核，待采购方发送，已流标，评标过程中流标 -->
-            <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
-          </div>
-          <div v-if="text.status==5"><!-- 已获取 -->
-            <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
-            <a v-if="priv.spurchase_list.acquire" @click="download(text.bid_id)" href="javascript:;">下载采购文件</a>
-          </div>
+        <template slot="operation" slot-scope="text,record">
+          <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
+          <a v-if="priv.spurchase_list.acquire&&(text.status==1||text.status==3)" @click="get_supply_purchase_info(text.bid_code,record)" href="javascript:;">获取</a><!-- 待获取，已驳回 -->
+          <a v-if="priv.spurchase_list.acquire&&text.status==5" @click="download(text.bid_id)">下载采购文件</a>
           <!-- <a v-if="text.status==20||text.status==21"
             @click="show_bid_fail(text.bid_code)">
             流标信息
@@ -84,7 +76,7 @@
                 placeholder="请输入联系人姓名"
                 v-decorator="[
               'contact_name',
-              { rules: [{ required: true, message: '请输入证件编号' }],initialValue:supply_purchase_info.supply_info.contact_name}
+              { rules: [{ required: true, message: '请输入联系人姓名' }],initialValue:supply_purchase_info.supply_info.contact_name}
             ]"
               />
             </a-form-item>
@@ -179,7 +171,7 @@
             <p v-if="item.com_id!=0">审核意见：{{item.remark}}</p>
           </li>
         </ul>
-        <a-form-item class="text-center" v-if="supply_purchase_info.supply_info.status!=3">
+        <a-form-item class="text-center" v-if="bid_status!=20&&bid_status!=21">
           <a-button class="mr-10" @click="ModalVisible = false">取消</a-button>
           <a-button class="ml-10" type="primary" html-type="submit">确定</a-button>
         </a-form-item>
@@ -211,7 +203,7 @@
         <a-button class="mr-10" @click="ModalVisibleFile = false">取消</a-button>
       </div>
     </a-modal>
-    <a-modal
+    <!-- <a-modal
       class="failure-modal"
       :destroyOnClose="true"
       style="top: 10%;"
@@ -222,7 +214,7 @@
       @ok="ModalVisibleFail = false"
       @cancel="ModalVisibleFail = false"
       >
-      <h3 class="text-center">流标</h3>
+      <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
         <h4>项目基本信息</h4>
         <a-row class="mb-10">
@@ -263,7 +255,7 @@
           </ul>
         </a-form-item>
       </a-form>
-    </a-modal>
+    </a-modal> -->
   </div>
 </template>
 
@@ -307,11 +299,12 @@ export default {
         { value: "0", label: "全部" },
         { value: "1", label: "待获取" },
         { value: "2", label: "待审核" },
-        { value: "3", label: "已驳回" },
         { value: "4", label: "待采购方发送" },
         { value: "5", label: "已获取" },
-        { value: "20", label: "已流标" },
+        { value: "3", label: "已驳回" },
+        { value: "6", label: "已截止" },
       ],
+      bid_status:"",
       bid_type: "",
       bid_type_list: [{ value: "0", title: "全部" }],
       page: "",
@@ -341,17 +334,22 @@ export default {
         {
           title: "采购方式",
           dataIndex: "bid_type_name",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "采购类别",
           dataIndex: "cat_name",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "开标时间",
           dataIndex: "open_time",
-          width: "15%"
+          width: "10%"
+        },
+        {
+          title: "获取截止时间",
+          dataIndex: "end_time",
+          width: "10%"
         },
         {
           title: "状态",
@@ -447,28 +445,16 @@ export default {
       switch (key) {
         case "1":
           return "待获取";
-          break;
         case "2":
           return "待审核";
-          break;
         case "3":
           return "已驳回";
-          break;
         case "4":
           return "待采购方发送";
-          break;
         case "5":
           return "已获取";
-          break;
-        case "20":
-          return "已流标";
-          break;
-        case "21":
-          return "已流标";
-          break;
-        default:
-          return "未知状态";
-          break;
+        case "6":
+          return "已截止";
       }
     }
   },
@@ -513,8 +499,9 @@ export default {
       this.page = page;
       this.spurchase_list_method();
     },
-    get_supply_purchase_info(bid_code) {
+    get_supply_purchase_info(bid_code,record) {
       this.bid_code = bid_code;
+      this.bid_status = record.bid_status;
       get_supply_purchase_info(bid_code)
         .then(res => {
           this.supply_purchase_info = res.data;

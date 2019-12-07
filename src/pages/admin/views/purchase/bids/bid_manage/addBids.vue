@@ -518,7 +518,7 @@ export default {
       ModalVisibleArea:false,
       com_id:'',
       keyword:'',
-      region_list_index:0,
+      region_list_index:'',
       all_shipping_region:[], // 全部公司价格配送区域
       all_shipping_region_copy:[],
       pagination_shipping:{
@@ -662,8 +662,21 @@ export default {
       var com_id = this.com_id;
       get_all_shipping_region({com_id,keyword})
         .then(res => {
-          this.all_shipping_region = res.data||[];
-          this.all_shipping_region_copy = JSON.parse(JSON.stringify(res.data));
+          if(this.region_list_index!==''){
+            var other_region_list = [];
+            this.formData.area_list.forEach((elem,i)=>{
+              if(this.region_list_index==i)return;
+              other_region_list = [...other_region_list,...elem.region_list];
+            })
+            let all_shipping_region = res.data||[];
+            var arr2 = all_shipping_region.uniqueObj(other_region_list,'id');
+            this.all_shipping_region = arr2;
+            this.all_shipping_region_copy = JSON.parse(JSON.stringify(res.data));
+            this.ModalVisibleArea = true;
+          }else{
+            this.all_shipping_region = res.data||[];
+            this.all_shipping_region_copy = JSON.parse(JSON.stringify(res.data));
+          }
         })
         .catch();
     },
@@ -728,16 +741,17 @@ export default {
       }
     },
     add_area(index){
-      var other_region_list = [];
-      this.formData.area_list.forEach((elem,i)=>{
-        if(index==i)return;
-        other_region_list = [...other_region_list,...elem.region_list];
-      })
-      let all_shipping_region_copy = JSON.parse(JSON.stringify(this.all_shipping_region_copy));
-      var arr2 = all_shipping_region_copy.uniqueObj(other_region_list,'id');
-      this.all_shipping_region = arr2;
+      // var other_region_list = [];
+      // this.formData.area_list.forEach((elem,i)=>{
+      //   if(index==i)return;
+      //   other_region_list = [...other_region_list,...elem.region_list];
+      // })
+      // let all_shipping_region_copy = JSON.parse(JSON.stringify(this.all_shipping_region_copy));
+      // var arr2 = all_shipping_region_copy.uniqueObj(other_region_list,'id');
+      // this.all_shipping_region = arr2;
       this.region_list_index = index;
-      this.ModalVisibleArea = true;
+      this.get_all_shipping_region();
+      // this.ModalVisibleArea = true;
     },
     del_line(index){
       this.formData.area_list[index].region_list.forEach(elem=>{

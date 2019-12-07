@@ -85,6 +85,7 @@
               @click="show_bid_fail(record.code)">
               流标信息
             </a>
+            <a disabled v-if="priv.open_bid_list.view&&(record.status==20||record.status==21)">开标评标</a>
             <router-link
               v-if="priv.open_bid_list.view&&record.status==21"
               :to="{path:'/Bid/scrap',query:{bid_code:record.code}}"
@@ -104,7 +105,7 @@
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
       >
-      <h3 class="text-center">流标</h3>
+      <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
         <h4>项目基本信息</h4>
         <a-row class="mb-10">
@@ -251,25 +252,18 @@ export default {
       switch (key) {
         case "15":
           return "待开标";
-          break;
         case "16":
           return "评标中";
-          break;
         case "17":
           return "待确认";
-          break;
         case "18":
           return "已确认";
-          break;
         case "20":
           return "已流标";
-          break;
         case "21":
           return "已流标";
-          break;
         default:
           return "未知状态";
-          break;
       }
     }
   },

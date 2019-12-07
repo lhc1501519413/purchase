@@ -65,13 +65,13 @@
             href="javascript:;"
             @click="showModal(record.bid_code)"
           >解密</a>
-          <!-- <router-link
-            v-if="priv.open_sbid_list.view&&record.status==12"
-            :to="{path:'/Sbid/bid_result',query:{id:record.id}}"
+          <router-link
+            v-if="priv.open_sbid_list.view&&record.status==14&&(record.bid_status!=20||record.bid_status!=21)"
+            :to="{path:'/Sbid/bid_result',query:{id:record.bid_id}}"
           >
             中标信息
-          </router-link> -->
-          <a v-if="priv.open_sbid_list.view&&(record.status==20||record.status==21)"
+          </router-link>
+          <a v-if="priv.open_sbid_list.view&&(record.bid_status==20||record.bid_status==21)&&(record.status==8||record.status==12)"
             @click="show_bid_fail(record.bid_code)">
             流标信息
           </a>
@@ -186,7 +186,7 @@
       @ok="ModalVisibleFail = false"
       @cancel="ModalVisibleFail = false"
       >
-      <h3 class="text-center">流标</h3>
+      <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
         <h4>项目基本信息</h4>
         <a-row class="mb-10">
@@ -265,10 +265,10 @@ export default {
         { value: "0", label: "全部" },
         { value: "8", label: "待开标" },
         { value: "9", label: "待解密" },
+        { value: "10", label: "未解密" },
         { value: "12", label: "评标中" },
         { value: "13", label: "待采购方确认" },
-        { value: "14", label: "采购结果公告已发布" },
-        { value: "20", label: "已流标" }
+        { value: "14", label: "评标结束" },
       ],
       bid_type: "0",
       bid_type_list: [{ value: "0", title: "全部" }],
@@ -367,28 +367,18 @@ export default {
       switch (key) {
         case "8":
           return "待开标";
-          break;
         case "9":
           return "待解密";
-          break;
+        case "10":
+          return "未解密";
         case "12":
           return "评标中";
-          break;
         case "13":
           return "待采购方确认";
-          break;
         case "14":
-          return "采购结果公告已发布";
-          break;
-        case "20":
-          return "已流标";
-          break;
-        case "21":
-          return "已流标";
-          break;
+          return "评标结束";
         default:
           return "未知状态";
-          break;
       }
     }
   },

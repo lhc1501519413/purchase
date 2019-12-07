@@ -403,14 +403,14 @@ export default {
           dataIndex: "response_brand",
           width: "8%",
           align: "center",
-          scopedSlots: { customRender: "response_brand" }
+          // scopedSlots: { customRender: "response_brand" }
         },
         {
           title: "响应规格",
           dataIndex: "response_standard",
           width: "8%",
           align: "center",
-          scopedSlots: { customRender: "response_standard" }
+          // scopedSlots: { customRender: "response_standard" }
         },
         {
           title: "响应产品参数",
@@ -739,14 +739,14 @@ export default {
         this.$message.warn("请填写正确的数据格式");
         return;
       }
-      if (key2) {
+      /* if (key2) {
         this.$message.warn("响应品牌不能为空");
         return;
       }
       if (key3) {
         this.$message.warn("响应规格不能为空");
         return;
-      }
+      } */
       if (key6) {
         this.$message.warn("响应产品参数不能为空");
         return;
