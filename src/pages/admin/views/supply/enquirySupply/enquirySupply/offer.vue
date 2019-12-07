@@ -189,7 +189,7 @@ const columns = [
     align:'center'
   },
   {
-    title:'单价',
+    title:'单价（元）',
     dataIndex: 'price',
     width:'9%',
     align:'center',

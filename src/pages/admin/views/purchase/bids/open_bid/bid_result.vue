@@ -155,7 +155,7 @@ export default {
           width: "50%"
         },
         {
-          title: "单价",
+          title: "单价（元）",
           dataIndex: "price",
           width: "6%"
         }

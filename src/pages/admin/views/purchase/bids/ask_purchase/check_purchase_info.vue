@@ -102,7 +102,7 @@
                 <p v-if="item.com_id!=0">审核时间：{{item.create_time}}</p>
                 <p v-else>提交时间：{{item.create_time}}</p>
                 <p v-if="item.com_id!=0">审核结果：{{item.desc}}</p>
-                <p v-if="item.com_id!=0">审核意见：{{item.remark}}</p>
+                <p v-if="item.com_id!=0&&item.remark">审核意见：{{item.remark}}</p>
               </li>
             </ul>
           </div>

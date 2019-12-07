@@ -2,7 +2,7 @@
   <div id="open_bid">
     <h5>
       招标管理 / 开标评标管理
-      <a-button type="primary" v-if="judge_info.status==14&&judge_info.bid_status!=18&&judge_info.bid_status!=20&&judge_info.bid_status!=21" @click="submit">提交</a-button>
+      <a-button type="primary" v-if="judge_info.status==16&&judge_info.bid_status==17" @click="submit">提交</a-button>
     </h5>
     <section class="content">
       <h4>项目基本信息</h4>

@@ -99,9 +99,7 @@ export default {
       if(this.$store.getters.judgeStatus>=13){
         this.$router.push({path:'/Bid/judge_result',query:{bid_code:this.bid_code}})
       }else{
-        open_report_judge({bid_code:this.bid_code}).then(res => {
-          this.$router.push({path:'/Bid/judge_result',query:{bid_code:this.bid_code}})
-        }).catch(error => this.$message.error(error));
+        this.$message.info('尚未进行到此阶段')
       }
     },
     callback(name) {

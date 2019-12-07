@@ -77,6 +77,9 @@
         rowKey="stock_id"
         :pagination="pagination_shipping"
       >
+      <template slot="note" slot-scope="text">
+        <span class="line-wrap" :title="text">{{text}}</span>
+      </template>
         <template
           v-for="(item,index2) of formData.area_list"
           :slot="item.area_key"
@@ -141,7 +144,8 @@ export default {
         {
           title:'产品参数',
           dataIndex:'note',
-          width:'6%'
+          width:'6%',
+          scopedSlots:{ customRender:'note' }
         },
         {
           title: "采购单位",
@@ -256,5 +260,9 @@ export default {
 #bid {
   width: 100% !important;
   @include component;
+  .line-wrap{
+    @extend .mult-line-ellipsis;
+    -webkit-line-clamp: 2;
+  }
 }
 </style>

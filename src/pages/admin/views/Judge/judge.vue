@@ -5,8 +5,8 @@
       <div class="btn-container">
         <a-button @click="$router.replace({path:'/Judge/bid_list'})">返回</a-button>
         <a-button @click="get_judge_info">刷新</a-button>
-        <a-button v-if="current==0||current==1||current==2||current==4" @click="download_tender_file">下载投标文件</a-button>
-        <a-button v-if="current!=5" @click="download_bid_file">下载采购文件</a-button>
+        <a-button @click="download_tender_file">下载投标文件</a-button>
+        <a-button @click="download_bid_file">下载采购文件</a-button>
         <a-button class='primary' type="primary" v-if="status==4&&current==0" @click="online_judge_quality">在线资格评审</a-button>
         <a-button class='primary' type="primary" v-if="status==6&&current==2" @click="online_judge_quality_grade">在线电子评标</a-button>
         <a-button class='primary' type="primary" v-if="status==12&&current==4" @click="online_judge_report">在线报价评审</a-button>
@@ -147,6 +147,12 @@ export default {
           break;
         case 2:
           step = '6'
+          break;
+        case 3:
+          step = '6'
+          break;
+        case 4:
+          step = '12'
           break;
         case 5:
           step = '12'

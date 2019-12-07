@@ -15,6 +15,7 @@
         <a-col :span="3" class="text-right">比较和评价：</a-col>
         <a-col :span="13">
           <a-textarea
+            :disabled="status == '14'"
             v-model="opinion"
             placeholder="请输入为什么选择这个供应商？"
             :autosize="{ minRows: 3, maxRows: 6 }"
@@ -87,7 +88,12 @@ export default {
       return {
         selectedRowKeys,
         columnTitle:'推荐中标',
-        onChange: selectedRowKeys => this.selectedRowKeys = selectedRowKeys
+        onChange: selectedRowKeys => this.selectedRowKeys = selectedRowKeys,
+        getCheckboxProps: () => ({
+          props: {
+            disabled: this.status == '14'
+          },
+        }),
       }
     }
   },
@@ -114,6 +120,7 @@ export default {
         .then(res => {
           this.judge_result = res.data.supply_list||[];
           this.opinion_list = res.data.opinion_list||[];
+          this.opinion = res.data.opinion;
           this.selectedRowKeys=[];
           this.judge_result.forEach(elem=>{
             if(elem.is_elect==1) this.selectedRowKeys.push(elem.supply_id)

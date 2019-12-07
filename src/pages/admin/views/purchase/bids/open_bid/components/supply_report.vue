@@ -3,7 +3,7 @@
     <section class="content">
       <a-table class="table" :dataSource="supply_report" :columns="columns" rowKey="supply_id">
         <template slot="report_money" slot-scope='text'>
-          {{text}}万元
+          {{text}}
         </template>
       </a-table>
     </section>

@@ -2,10 +2,11 @@
   <div class="judge_elect">
     <section class="content">
       <a-table class="table" :dataSource="judge_elect" :columns="columns" rowKey="supply_id">
-        <template slot-scope="text,record" slot="area_key">
+        <template slot="area_key" slot-scope="text,record,rowIndex">
           <a-select style="width: 100px"
-            :disabled="bid_status>17"
-            v-model="record.area_key"
+            @change="select_change(rowIndex,$event)"
+            :disabled="status>=16"
+            :value="record.area_key"
           >
             <a-select-option v-for="item of area_list" :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
           </a-select>
@@ -29,7 +30,7 @@ export default {
   },
   data() {
     return {
-      bid_status:this.father.judge_info.bid_status,
+      status:this.$store.getters.judgeStatus,
       priv: this.$store.getters.priv,
       bid_code: this.$route.query.bid_code,
       judge_elect: [],
@@ -81,38 +82,26 @@ export default {
   },
   created() {
     this.father.current = 9;
-    this.get_judge_elect_supply();
+    this.refresh();
     this.get_area_list();
   },
   methods: {
-    get_area_list(){
-      get_area_list({bid_code:this.bid_code}).then(res => {
-          this.area_list = res.data||[
-            {
-              "id":'1',
-              "area_key":'1',
-              "area_name":'片区1',
-            },
-            {
-              "id":'2',
-              "area_key":'2',
-              "area_name":'片区2',
-            },
-            {
-              "id":'3',
-              "area_key":'3',
-              "area_name":'片区3',
-            }
-          ]
-        })
-        .catch(error => this.$message.error(error));
-    },
-    get_judge_elect_supply() {
+    refresh() {
       get_judge_elect_supply(this.bid_code)
-        .then(res => {
-          this.judge_elect = res.data.supply_list||[];
-        })
-        .catch(error => this.$message.error(error));
+      .then(res => this.judge_elect = res.data.supply_list||[])
+      .catch(error => this.$message.error(error));
+    },
+    get_area_list(){
+      get_area_list({bid_code:this.bid_code}).then(res => this.area_list = res.data||[])
+      .catch(error => this.$message.error(error));
+    },
+    select_change(rowIndex,value){
+      var index = this.judge_elect.indexOfObj('area_key',value);
+      if(index==-1){
+        this.judge_elect[rowIndex].area_key = value;
+      }else{
+        this.$message.warn('当前片区已选择')
+      }
     },
     submit(){ // 提交分配片区
       submit_supply_area({

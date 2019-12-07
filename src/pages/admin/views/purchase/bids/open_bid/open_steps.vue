@@ -5,13 +5,13 @@
         招标管理 / <span class="pointer" @click="$router.push({path:'/Bid/open_bid',query:{bid_code}})">开标评标管理</span> / 评标
       </div>
       <div>
+        <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
+        <a-button type="primary" @click="refresh">刷新</a-button>
+        <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
         <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
         <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="submit">提交</a-button>
         <a-button v-if="judge_info.status==15&&current==9" type="primary" @click="submit">提交</a-button>
-        <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
-        <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
-        <a-button type="primary" @click="refresh">刷新</a-button>
-        <a-button type="primary" v-if="judge_info.status<15" @click="next">下一步</a-button>
+        <a-button type="primary" v-if="current!=9" @click="next">下一步</a-button>
       </div>
     </h5>
     <section class="content">

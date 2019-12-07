@@ -211,7 +211,7 @@ const columns = [
     align:'center'
   },
   {
-    title:'报价单价',
+    title:'报价单价（元）',
     dataIndex: 'price',
     width:'9%',
     align:'center',
