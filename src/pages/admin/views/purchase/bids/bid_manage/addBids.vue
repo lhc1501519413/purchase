@@ -134,7 +134,7 @@
               <a-icon type="plus-circle" @click="add_area(index)"/>
               <ul>
                 <li v-for="item of record.region_list" :key="item.id">
-                  {{item.name}}，
+                  {{item.name}}
                 </li>
               </ul>
             </template>

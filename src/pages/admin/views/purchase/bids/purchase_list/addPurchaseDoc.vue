@@ -183,7 +183,7 @@
                 placeholder="请输入投标文件递交地址"
                 v-decorator="[
                   'submit_address',
-                  {initialValue:formData.notice_info.submit_address }
+                  {rules: [{ required: true, message: '请输入投标文件递交地址' }],initialValue:formData.notice_info.submit_address }
                 ]"
               ></a-input>
             </a-form-item>
@@ -247,7 +247,7 @@
                   'fine_money',
                   {rules: [{ required: true,message: '请输入处罚金额' }],initialValue:formData.notice_info.fine_money }
                 ]"
-              ></a-input>元
+              ></a-input>万元
             </a-form-item>
             <h4>公告附件</h4>
             <a-form-item label="附件" v-bind="formItemLayout">
@@ -257,7 +257,7 @@
                 :beforeUpload="beforeUpload"
                 v-decorator="[
                   'file_path',
-                  { rules: [{ required: true, message: '请选择附件' }],initialValue:formData.notice_info.file_list }
+                  { initialValue:formData.notice_info.file_list }
                 ]"
               >
                 <a-button>

@@ -39,7 +39,7 @@
           >
             <template slot="region_list" slot-scope="text,record">
               <ul>
-                <li v-for="item of record.region_list" :key="item.id">{{item.name}}</li>
+                <li v-for="item of record.region_list" :key="item.id">{{item.name}}，</li>
               </ul>
             </template>
           </a-table>

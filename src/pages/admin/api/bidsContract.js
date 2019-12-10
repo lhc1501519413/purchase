@@ -14,6 +14,22 @@ export function submit_bid_contract(data) {
     data
   })
 }
+/* 导入合同 */
+export function import_bid_contract(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Contract', a: 'import_bid_contract', token: localStorage.getItem('token') },
+    data
+  })
+}
+/* 结束合同 */
+export function end_bid_contract(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Contract', a: 'end_bid_contract', token: localStorage.getItem('token') },
+    data
+  })
+}
 /* 添加 / 编辑合同 */
 export function save_bid_contract_info(data) {
   return request({

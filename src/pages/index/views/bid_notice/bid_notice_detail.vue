@@ -16,8 +16,8 @@
         <h3>三、采购方式：{{formData.bid_type_name}}</h3>
         <h3>四、招标商品信息</h3>
         <div class="text-indent-35 mb-10">采购类别：{{formData.cat_name}}</div>
-        <div class="text-indent-35 mb-10">预估采购金额：{{formData.expert_money}}</div>
-        <div class="text-indent-35 mb-10">需求商家数：{{formData.min_supply}}</div>
+        <div class="text-indent-35 mb-10">预估采购金额：{{formData.expert_money}}元</div>
+        <div class="text-indent-35 mb-10">需求商家数：{{formData.min_supply}}家</div>
         <div class="text-indent-35 mb-10 area">
           <span>配送区域：</span>
           <ul class="inline-block">
@@ -32,7 +32,7 @@
         <div class="text-indent-35 mb-10">{{formData.qualifications}}</div>
         <h3>六、供应商获取采购文件要求</h3>
         <div class="text-indent-35 mb-10">采购文件获取时间：{{formData.start_time}} ~ {{formData.end_time}}</div>
-        <div class="text-indent-35 mb-10">采购文件获取方式：在线直接获取</div>
+        <div class="text-indent-35 mb-10">采购文件获取方式：后勤物资采购云平台网上注册后按获取流程下载采购文件</div>
         <div class="text-indent-35 mb-10">
           供应商通过平台
           <a
@@ -60,9 +60,11 @@
           class="text-indent-35 mb-10"
         >本次投标保证金为{{formData.margin}}元人民币（可以现金或转账支票形式），请用信封单独封好，信封封面写上投标项目名称并封口加盖投标人单位公章，并按投标文件提交的时间地点要求提交与招标人。投标人必须承诺现金和转账支票的真实有效性，否则责任自负。未中标当场退还，中标的则自动转为合同保证金，合同期满无息退还。</div>
         <div v-else class="text-indent-35 mb-10">无</div>
-        <h3>九、其他事项</h3>
+        <h3>九、特别说明</h3>
+        
+        <h3>十、其他事项</h3>
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>
-        <h3>十、联系方式</h3>
+        <h3>十一、联系方式</h3>
         <a-row class="text-indent-35 mb-10">
           <a-col :span="15">采购单位：{{formData.com_name}}</a-col>
         </a-row>
@@ -71,10 +73,16 @@
           <a-col :span="6" :offset="3">联系方式：{{formData.contact_number}}</a-col>
         </a-row>
         <a-row class="text-indent-35 mb-10">
-          <a-col :span="6">地址：{{formData.address}}</a-col>
+          <a-col :span="20">地址：{{formData.address}}</a-col>
         </a-row>
         <div class="text-right pr-20">{{formData.com_name}}</div>
         <div class="text-right pr-20">{{formData.create_time}}</div>
+        <h3>附件信息</h3>
+        <ul class="ml-30">
+          <li v-for="item of formData.fileList" :key='item.id'>
+            <a>{{item.file_name}}</a>{{item.file_size}}
+          </li>
+        </ul>
         <div class="text-center">
           <a-button @click="addSPurchase" type="primary">我要投标</a-button>
         </div>

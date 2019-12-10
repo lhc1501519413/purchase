@@ -20,6 +20,9 @@
           {{record.area_stock_number[index2].number}}
           </span>
         </template>
+        <template slot="price" slot-scope="value,record">
+          {{record.new_price}}
+        </template>
         <template slot="is_match" slot-scope="text,record">
           <a-select style="width: 100px"
             disabled
@@ -49,7 +52,8 @@
           <ul>
             <li class="mt-10" v-for="(item,index) of record.file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
-              <a  class="ml-10" :href="item.full_path" target="_blank">{{item.file_name}}</a>
+              <!-- <a  class="ml-10" :href="item.full_path" target="_blank">{{item.file_name}}</a> -->
+              <span class="ml-10">{{item.file_name}}</span>
             </li>
           </ul>
         </template>
@@ -83,7 +87,8 @@
           <ul>
             <li class="mt-10" v-for="(item,index) of record.file_list" :key="index">
               <svg-icon class="wenjian" icon-class="wenjian" />
-              <a class="ml-10" :href="item.full_path" target="_blank">{{item.file_name}}</a>
+              <!-- <a class="ml-10" :href="item.full_path" target="_blank">{{item.file_name}}</a> -->
+              <span class="ml-10">{{item.file_name}}</span>
             </li>
           </ul>
         </template>
@@ -100,7 +105,7 @@
           >
             <svg-icon class="wenjian" icon-class="wenjian" />
             <span class="ml-10">{{item.file_name}}</span>
-            <a class="ml-10" :href="item.full_path" target="_blank">下载投标文件</a>
+            <!-- <a class="ml-10" :href="item.full_path" target="_blank">下载投标文件</a> -->
           </li>
         </ul>
       </div>
@@ -115,7 +120,7 @@
           >
             <svg-icon class="wenjian" icon-class="wenjian" />
             <span class="ml-10">{{item.file_name}}</span>
-            <a class="ml-10" :href="item.full_path" target="_blank">下载投标文件</a>
+            <!-- <a class="ml-10" :href="item.full_path" target="_blank">下载投标文件</a> -->
           </li>
         </ul>
       </div>
@@ -127,6 +132,8 @@
 import {
   get_tender_info // 获取采购文件全部详情
 } from "@admin/api/bidsSupply";
+import { encryptAes, decryptAes, } from '@common/js/des';
+import { encryption } from "@/common/js/ESign";
 export default {
   props: {
     father: {
@@ -173,6 +180,7 @@ export default {
         tender_file: false,
         price_file: false
       },
+      secret:'',
       point: require("@static/images/icon_point.png"),
       columnsStock: [
         {
@@ -221,6 +229,7 @@ export default {
           dataIndex: "price",
           width: "8%",
           align: "center",
+          scopedSlots: { customRender: "price" }
         },
         {
           title: "响应品牌",
@@ -345,7 +354,11 @@ export default {
             0;
           return `共${length}条数据`;
         }
-      }
+      },
+      webSocketUrl:this.global.webSocketUrl,
+      ws:null,
+      heart_beat_interval:null,
+      ping:null,
     };
   },
   filters:{
@@ -387,16 +400,128 @@ export default {
             align:'center'
           })
         }
+        /* 候选是否设置 */
+        formData.stock_list.forEach(elem=> elem.new_price = elem.secret_price==''?'':'***')
+        this.secret = formData.bid_info.secret;
+        this.secretKey = formData.bid_info.secret;
+        if(formData.bid_info.secret){
+          encryption({
+            serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+            funcName: "DecryptDigitalEnvelope",
+            param: `{"digitalEnvelopeB64":"${formData.bid_info.secret}"}`
+          }).then(res => {
+            if (res.data.result != "") {
+              this.secret = res.data.result.slice(0,16);
+              formData.stock_list.forEach(elem=>{
+                elem.new_price = this.$common.toDecimal(decryptAes(elem.secret_price,this.secret),2)
+              })
+            } else {
+              this.$message.error("请检查是否插入U盾");
+            }
+          }).catch(error=>{
+            this.$message.error(error);
+          })
+        }
         this.formData = formData;
       })
       .catch(error => {
         this.$message.error(error);
       });
   },
+  mounted(){
+    // console.log(decryptAes('a2pVWVFQdTF0eWRuWDZVWEV4alJUZz09','q/CRGdXKR/C27AH6nbA3Ew=='))
+    this.connect_webSocket();
+  },
+  beforeDestroy(){
+    if (this.ws && this.ws.readyState == 1) this.ws.close()
+  },
   methods: {
     downloadFile(e){
       open(e.target.dataset.fullpath)
-    }
+    },
+    connect_webSocket(){
+      var self = this;
+      if ("WebSocket" in window) {
+        self.ws = new WebSocket(self.webSocketUrl);
+        self.ws.onopen = function(e) {
+          if(!self.secret){
+            self.ws.send(JSON.stringify({
+              c:"getEncryptKey",
+              i:0,
+              m:{
+                id:new Date().Format("YYYYMMDDhhmmssS")+self.$common.getUnix(parseInt(Math.random()*1000)),
+                file:"",
+                key:''
+              }
+            }));
+          }
+        };
+        self.ws.onerror = function(e) {
+          self.$message.error('加密程序连接失败，请打开加密程序')
+        };
+        self.ws.onmessage = function(e) {
+          var result,controls,code,msg;
+          result = JSON.parse(e.data);
+          controls = result.c;
+          code = result.m.code;
+          msg = result.m.msg;
+          if(code == 200){
+            switch (controls) {
+              case 'getEncryptKey':
+                if(!self.secret){
+                  self.secretKey = result.m.key; // 密文
+                  encryption({
+                    serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+                    funcName: "DecryptDigitalEnvelope",
+                    param: `{"digitalEnvelopeB64":"${result.m.key}"}`
+                  }).then(res => {
+                    if (res.data.result != "") {
+                      self.secret = res.data.result.slice(0,16);
+                    } else {
+                      self.$message.error("请检查是否插入U盾");
+                    }
+                  }).catch(error=>self.$message.error('请输入口令后再次执行解密'))
+                }
+              case 'ping':
+                self.ping = 0;
+              default:
+                // self.ws.close();
+                break;
+            }
+          }else{
+            self.$message.warn(msg);
+          }
+        };
+        self.ws.onclose = function() {
+          clearInterval(self.heart_beat_interval);
+        };
+        self.heart_beat();
+      }else{
+        self.$message.info("您的浏览器不支持webSocket链接");
+      }
+    },
+    heart_beat() {
+      // 心跳包
+      let self = this;
+      self.heart_beat_interval = setInterval(function() {
+        //每隔30秒钟发送一次心跳，避免websocket连接因超时而自动断开
+        if (
+          self.ws &&
+          self.ws.readyState == 1 &&
+          self.ping < 2
+        ) {
+          // 分为两种，断开即刻重连，未断开未响应，12秒重连
+          self.ws.send(JSON.stringify({ c: "ping", i: 0, m: {} }));
+          self.ping++;
+        } else {
+          clearInterval(self.heart_beat_interval);
+          self.connect_webSocket();
+        }
+      }, 12000);
+      self.$once("hook:beforeDestroy", () => {
+        clearInterval(self.heart_beat_interval);
+      });
+    },
   }
 };
 </script>

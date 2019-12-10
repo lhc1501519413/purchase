@@ -37,7 +37,7 @@
             </a-tooltip>
             <div class="absolute no-margin" style="right:0;top:0;">
               <a-button @click="download_excel" type="primary">下载报价文件</a-button>
-              <a-button @click="save_stock_list" type="primary">保存</a-button>
+              <a-button @click="save_stock_list" :disabled='secret.length!=16' type="primary">保存</a-button>
             </div>
           </h4>
           <a-row>
@@ -58,11 +58,11 @@
               </span>
             </template>
             <template slot="price" slot-scope="value,record">
-              <span class="hide">{{record.price}}</span>
+              <span class="hide">{{record.new_price}}</span>
               <input
                 type="text"
                 oninput="value=value.replace(/[^\d.)]/g, '')"
-                v-model="record.price"
+                v-model="record.new_price"
               />
             </template>
             <template slot="response_brand" slot-scope="value,record">
@@ -78,7 +78,6 @@
               <input type="text" v-model="record.response_note" />
             </template>
             <template slot="is_match" slot-scope="value,record">
-              <span class="hide">{{record.is_match|is_match}}</span>
               <a-select style="width: 120px"
                 v-model="record.is_match"
               >
@@ -190,9 +189,15 @@
         </a-tab-pane>
         <a-tab-pane key="4">
           <div slot="tab">项目附件</div>
-          <div class="mb-10 ml-20 info">
-            上传的投标文件为签章后的文件，未签章文件视为无效文件。点击<a @click="signModalVisible = true">去签章</a>
-          </div>
+          <a-alert
+            class="info"
+            type="warning"
+            showIcon
+          >
+            <span slot="message">
+              上传的投标文件为签章后的文件，未签章文件视为无效文件。点击<a @click="signModalVisible = true">去签章</a>
+            </span>
+          </a-alert>
           <div class="mb-10 ml-10 relative">
             <a-button type="primary" class="absolute" style="top:0;right:0;" @click.stop="saveFile">保存</a-button>
             <div>
@@ -260,13 +265,18 @@
       :footer="null"
       >
       <h3 slot="title">签章</h3>
+      <a-alert
+        message="注意事项："
+        type="warning"
+        showIcon
+      >
+        <div slot="description">
+          <p>1、请将投标文件转换为PDF格式。</p>
+          <p>2、签章将直接签署在您的原文件上，建议您将投标文件进行备份。</p>
+          <p>3、请将您的投标文件在本机的文件路径及文件名称填写到下框中，以便于将您的文件进行本地签章。</p>
+        </div>
+      </a-alert>
       <div>
-        注意事项：
-      </div>
-      <div>
-        <p class="mb-10">1、请将投标文件转换为PDF格式。</p>
-        <p class="mb-10">2、签章将直接签署在您的原文件上，建议您将投标文件进行备份。</p>
-        <p class="mb-10">3、请将您的投标文件在本机的文件路径及文件名称填写到下框中，以便于将您的文件进行本地签章。</p>
         <p class="mb-10">
           文件路径：<a-input style='width:30%;margin:0 5px;' class="pl-10" @keyup.enter="add_sign" v-model="file_path" />
           <a-button type='primary' @click="add_sign">签章</a-button>
@@ -576,6 +586,7 @@ export default {
             align:'center'
           })
         }
+        formData.stock_list.forEach(elem=> elem.new_price = elem.secret_price==''?'':'***')
         this.secret = formData.bid_info.secret;
         this.secretKey = formData.bid_info.secret;
         if(formData.bid_info.secret){
@@ -587,7 +598,7 @@ export default {
             if (res.data.result != "") {
               this.secret = res.data.result.slice(0,16);
               formData.stock_list.forEach(elem=>{
-                elem.price = this.$common.toDecimal(decryptAes(elem.secret_price,this.secret,this.secret),2)
+                elem.new_price = this.$common.toDecimal(decryptAes(elem.secret_price,this.secret,this.secret),2)
               })
             } else {
               this.$message.error("请检查是否插入U盾");
@@ -624,7 +635,7 @@ export default {
           }
         };
         self.ws.onerror = function(e) {
-          self.$message.warn('加密协议连接失败，请打开加密程序')
+          self.$message.error('加密程序连接失败，请打开加密程序')
         };
         self.ws.onmessage = function(e) {
           var result,controls,code,msg;
@@ -767,15 +778,14 @@ export default {
         stock_list: JSON.parse(JSON.stringify(this.formData.stock_list))
       };
       secret = this.secret; // 明文secret
-      key1 = data.stock_list.some(elem => elem.price === "");
+      key1 = data.stock_list.some(elem => elem.new_price === "");
       key4 = data.stock_list.some(elem => elem.is_match === "");
       key6 = data.stock_list.some(elem => elem.response_note === "");
       data.stock_list.forEach(elem => {
-        elem.secret_price = encryptAes(elem.price, secret);
-        let length = this.$common.isArray(elem.price.match(/\./g))
-          ? elem.price.match(/\./g).length
+        elem.secret_price = encryptAes(elem.new_price, secret);
+        let length = this.$common.isArray(elem.new_price.match(/\./g))
+          ? elem.new_price.match(/\./g).length
           : 0;
-          elem.price = '';
         if (length > 1) key5 = true;
       });
       if (key1) {
@@ -986,12 +996,9 @@ export default {
     }
   }
   .info{
-    font-size: 21px;
-    font-weight: bold;
-    a{
-      font-weight: bold;
-      font-size: 27px;
-    }
+    margin: 10px 0;
+    margin-left: 20px;
+    width: 55%;
   }
   .tab-bg {
     background-color: $primary2;
@@ -1032,7 +1039,16 @@ export default {
 }
 </style>
 <style lang="scss">
-.file-path-model{
-  color:$red;
+.supply-purchase-info{
+  .ant-alert{
+    width: 85% !important;
+    margin-bottom: 20px !important;
+    p{
+      font-size: 12px !important;
+    }
+  }
+  .file-path-model{
+    color:$red;
+  }
 }
 </style>

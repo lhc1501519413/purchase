@@ -486,38 +486,53 @@ export default {
                   secret_key: res.data.result
                 };
                 self.decrypted_file = [...self.decrypted_file, obj];
-                self.decrypt_file.forEach((elem, i, arr) => {
-                  if (i > 0) {
-                    let formData = {
-                      serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
-                      funcName: "DecryptDigitalEnvelope",
-                      param: `{"digitalEnvelopeB64":"${elem.secret}"}`
-                    };
-                    encryption(formData)
-                      .then(res => {
-                        let obj = {
-                          id: elem.id,
-                          secret_key: res.data.result
-                        };
-                        self.decrypted_file = [...self.decrypted_file, obj];
-                        if (self.decrypted_file.length == arr.length) {
-                          decrypt_bid({
-                            bid_code: self.bid_code,
-                            file_list: self.decrypted_file
-                          })
-                            .then(res => {
-                              self.$message.success(res.msg);
-                              let time = setTimeout(() => {
-                                self.ModalVisible = false;
-                                self.open_bid_list_method2();
-                              }, 1500);
+                if(self.decrypt_file.length==1){ // 如文件长度为1，直接进行前后端交互
+                  decrypt_bid({
+                    bid_code: self.bid_code,
+                    file_list: self.decrypted_file
+                  })
+                    .then(res => {
+                      self.$message.success(res.msg);
+                      let time = setTimeout(() => {
+                        self.ModalVisible = false;
+                        self.open_bid_list_method2();
+                      }, 1500);
+                    })
+                    .catch(error => self.$message.error(error));
+                }else{
+                  self.decrypt_file.forEach((elem, i, arr) => {
+                    if (i > 0) {
+                      let formData = {
+                        serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+                        funcName: "DecryptDigitalEnvelope",
+                        param: `{"digitalEnvelopeB64":"${elem.secret}"}`
+                      };
+                      encryption(formData)
+                        .then(res => {
+                          let obj = {
+                            id: elem.id,
+                            secret_key: res.data.result
+                          };
+                          self.decrypted_file = [...self.decrypted_file, obj];
+                          if (self.decrypted_file.length == arr.length) {
+                            decrypt_bid({
+                              bid_code: self.bid_code,
+                              file_list: self.decrypted_file
                             })
-                            .catch(error => self.$message.error(error));
-                        }
-                      })
-                      .catch(error => self.$message.error(error));
-                  }
-                });
+                              .then(res => {
+                                self.$message.success(res.msg);
+                                let time = setTimeout(() => {
+                                  self.ModalVisible = false;
+                                  self.open_bid_list_method2();
+                                }, 1500);
+                              })
+                              .catch(error => self.$message.error(error));
+                          }
+                        })
+                        .catch(error => self.$message.error(error));
+                    }
+                  });
+                }
               } else {
                 self.$message.error("请检查是否插入U盾");
               }

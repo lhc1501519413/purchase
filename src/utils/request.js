@@ -49,6 +49,7 @@ service.interceptors.response.use(
         store.commit('SET_TOKEN',null);
         store.commit('SET_USERNAME',null);
         store.commit('SET_TYPE',null);
+        store.commit('SET_LOGINED',false);
         localStorage.clear();
         setTimeout(()=>{
           location.href = global.host + "/index.html#/login"

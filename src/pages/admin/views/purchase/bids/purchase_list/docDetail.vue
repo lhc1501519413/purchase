@@ -61,11 +61,12 @@
       <a-row class="mb-10">
         <a-col :span="5" class="text-right vertical-middle">中标执行价格：</a-col>
         <a-col :span="10">
-          <a-radio-group
+          <a-radio checked>{{formData.notice_info.exec_price_type_name}}</a-radio>
+          <!-- <a-radio-group
             v-if="formData.notice_info.exec_price_type<=4"
             :value='formData.notice_info.exec_price_type'
             >
-            <a-radio class="radioStyle" v-for="item of exec_price_type.slice(0,4)" :key='item.id' :value="item.id">{{item.name}}</a-radio>
+            <a-radio class="radioStyle" v-for="item of exec_price_type.slice(0,4)" v-if="formData.notice_info.exec_price_type==item.id" :key='item.id' :value="item.id">{{item.name}}</a-radio>
           </a-radio-group>
           <a-radio-group
             v-else
@@ -76,7 +77,7 @@
               <span class="color ml-10 mr-10">{{item.name.indexOf('N')!=-1?formData.notice_info.min_supply:''}}</span>
               {{item.name.split('N')[1]}}
             </a-radio>
-          </a-radio-group>
+          </a-radio-group> -->
         </a-col>
       </a-row>
       <h4>开标评标时间地址</h4>
@@ -105,7 +106,10 @@
         </a-col>
       </a-row>
       <a-row class="mb-10">
-        <a-col :span="5" class="text-right vertical-middle">投标文件递交地址：</a-col>
+        <a-col :span="5" class="text-right vertical-middle">
+          <img class="img_point" :src="point" alt="必填" />
+          投标文件递交地址：
+        </a-col>
         <a-col :span="10">
           <a-input readOnly :value="formData.notice_info.submit_address"></a-input>
         </a-col>
@@ -165,7 +169,7 @@
             readOnly
             style="width:120px;margin-right:5px;"
             :value='formData.notice_info.fine_money'
-          ></a-input>元
+          ></a-input>万元
         </a-col>
       </a-row>
       <h4>公告附件</h4>
@@ -177,8 +181,8 @@
         >
           <svg-icon class="wenjian" icon-class="wenjian" />
           <span class="ml-10 mr-10">{{item.file_name}}</span>
-          <a href="JavaScript:;" @click="showFile(item.full_path)">预览采购文件</a>
-          <a href="JavaScript:;" @click="downloadFile(item.full_path)">下载采购文件</a>
+          <a href="JavaScript:;" @click="showFile(item.full_path)">预览</a>
+          <a href="JavaScript:;" @click="downloadFile(item.full_path)">下载</a>
         </li>
       </ul>
       <h4>其他事项</h4>

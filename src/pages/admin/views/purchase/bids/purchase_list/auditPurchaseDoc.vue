@@ -107,7 +107,10 @@
         </a-col>
       </a-row>
       <a-row class="mb-10">
-        <a-col :span="5" class="text-right vertical-middle">投标文件递交地址：</a-col>
+        <a-col :span="5" class="text-right vertical-middle">
+          <img class="img_point" :src="point" alt="必填" />
+          投标文件递交地址：
+        </a-col>
         <a-col :span="10">
           <a-input readOnly :value="formData.notice_info.submit_address"></a-input>
         </a-col>
@@ -167,7 +170,7 @@
             readOnly
             style="width:120px;margin-right:5px;"
             :value='formData.notice_info.fine_money'
-          ></a-input>元
+          ></a-input>万元
         </a-col>
       </a-row>
       <h4>公告附件</h4>
@@ -179,8 +182,8 @@
         >
           <svg-icon class="wenjian" icon-class="wenjian" />
           <span class="ml-10 mr-10">{{item.file_name}}</span>
-          <a href="JavaScript:;" @click="showFile(item.full_path)">预览采购文件</a>
-          <a href="JavaScript:;" @click="downloadFile(item.full_path)">下载采购文件</a>
+          <a href="JavaScript:;" @click="showFile(item.full_path)">预览</a>
+          <a href="JavaScript:;" @click="downloadFile(item.full_path)">下载</a>
         </li>
       </ul>
       <h4>其他事项</h4>
@@ -288,7 +291,7 @@
           <div class="mb-10">基准价得分：{{formData.eval_method_info.eval_standard_ext.standard_price}}</div>
           <div>每百分点分值：{{formData.eval_method_info.eval_standard_ext.per_percent_point}}</div>
         </a-col>
-        <a-col :span="10" v-else>
+        <a-col :span="10" v-if='formData.eval_method_info.eval_standard_type==3'>
           <div class="mb-10">正偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.up_percent_point}}</div>
           <div>负偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.down_percent_point}}</div>
         </a-col>

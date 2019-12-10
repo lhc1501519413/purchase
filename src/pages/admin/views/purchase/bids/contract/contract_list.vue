@@ -40,17 +40,17 @@
           </span>
         </template>
         <template slot="operation" slot-scope="text">
-          <router-link v-if='priv.contract_list.edit && text.status==1' :to="{path:'/addContract',query:{code:text.code}}">
+          <router-link v-if='priv.bid_contract_list.edit && text.status==1' :to="{path:'/Contract/add_contract',query:{code:text.code}}">
             起草
           </router-link>
           <a v-if='text.status==1||text.status==3' @click="submit(text.code)" href="javascript:;">提交</a>
-          <router-link v-if='priv.contract_list.view && text.status==2||text.status==3||text.status==8' :to="{path:'/contractDetail',query:{code:text.code}}">
+          <router-link v-if='priv.bid_contract_list.view && text.status==2||text.status==3||text.status==8' :to="{path:'/Contract/contract_info',query:{code:text.code}}">
             详情
           </router-link>
-          <router-link v-if='priv.contract_list.edit && text.status==3' :to="{path:'/addContract',query:{code:text.code}}">
+          <router-link v-if='priv.bid_contract_list.edit && text.status==3' :to="{path:'/Contract/add_contract',query:{code:text.code}}">
             编辑
           </router-link>
-          <router-link v-if='priv.contract_list.confirm && text.status==4' :to="{path:'/confirmContract',query:{code:text.code}}">
+          <router-link v-if='priv.bid_contract_list.confirm && text.status==4' :to="{path:'/Contract/confirm_contract',query:{code:text.code}}">
             确认
           </router-link>
         </template>
@@ -145,22 +145,16 @@ export default {
       switch (key) {
         case '1':
           return '待起草'
-          break;
         case '2':
           return '待供应商确认'
-          break;
         case '3':
           return '供应商已退回'
-          break;
         case '4':
           return '待确认'
-          break;
         case '8':
           return '已完成'
-          break;
         default:
           return '未知状态'
-          break;
       }
     }
   },

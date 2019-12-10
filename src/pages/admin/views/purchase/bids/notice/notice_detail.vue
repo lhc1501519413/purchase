@@ -16,8 +16,8 @@
         <h3>三、采购方式：{{formData.bid_type_name}}</h3>
         <h3>四、招标商品信息</h3>
         <div class="text-indent-35 mb-10">采购类别：{{formData.cat_name}}</div>
-        <div class="text-indent-35 mb-10">预估采购金额：{{formData.expert_money}}</div>
-        <div class="text-indent-35 mb-10">需求商家数：{{formData.min_supply}}</div>
+        <div class="text-indent-35 mb-10">预估采购金额：{{formData.expert_money}}元</div>
+        <div class="text-indent-35 mb-10">需求商家数：{{formData.min_supply}}家</div>
         <div class="text-indent-35 mb-10 area">
           <span>配送区域：</span>
           <ul class="inline-block">
@@ -33,7 +33,7 @@
           采购文件获取时间：{{formData.start_time}}  ~  {{formData.end_time}}
         </div>
         <div class="text-indent-35 mb-10">
-          采购文件获取方式：在线直接获取
+          采购文件获取方式：后勤物资采购云平台网上注册后按获取流程下载采购文件
         </div>
         <div class="text-indent-35 mb-10">
           供应商通过平台<a class="ml-10 mr-10" href="http://smart.acuit.net/bid/#/index" target="_blank">http://smart.acuit.net/bid/#/index</a>商家入驻模块，注册账号、完善信息后提交入驻，经平台审核通过后，可通过项目公告页面的【获取入口】直接在线申请获取采购文件，经采购方审核通过，即可下载采购文件。
@@ -61,9 +61,11 @@
         <div v-else class="text-indent-35 mb-10">
           无
         </div>
-        <h3>九、其他事项</h3>
+        <h3>九、特别说明</h3>
+        
+        <h3>十、其他事项</h3>
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>
-        <h3>十、联系方式</h3>
+        <h3>十一、联系方式</h3>
         <a-row class="text-indent-35 mb-10">
           <a-col :span="15">采购单位：{{formData.com_name}}</a-col>
         </a-row>
@@ -72,10 +74,16 @@
           <a-col :span="6" :offset="3">联系方式：{{formData.contact_number}}</a-col>
         </a-row>
         <a-row class="text-indent-35 mb-10">
-          <a-col :span="6">地址：{{formData.address}}</a-col>
+          <a-col :span="20">地址：{{formData.address}}</a-col>
         </a-row>
         <div class="text-right pr-20">{{formData.com_name}}</div>
         <div class="text-right pr-20">{{formData.create_time}}</div>
+        <h3>附件信息</h3>
+        <ul class="ml-30">
+          <li v-for="item of formData.fileList" :key='item.id'>
+            <a>{{item.file_name}}</a>{{item.file_size}}
+          </li>
+        </ul>
       </div>
     </section>
   </div>
