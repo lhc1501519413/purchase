@@ -1148,7 +1148,8 @@ export default {
       } else this.$message.warn("请填写必填项");
     },
     build_file() {
-      this.$message.info("生成采购文件功能尚未完成");
+      var bid_id = this.formData.bid_info.id;
+      open(`${this.global.baseUrl}/Down/down?bid_id=${bid_id}`)
     },
     customRequest(data) {
       var purchase_file = this.formData.purchase_file || [];

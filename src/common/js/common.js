@@ -277,6 +277,16 @@ Object.defineProperty(Object.prototype,"extend",{ // 定义object.prototype.exte
     }
   }
 })
+String.prototype.encode = function() {
+  var encode = encodeURI(this);
+  var base64 = btoa(encode);
+  return base64;
+}
+String.prototype.decode = function() {
+  var decode = atob(this);
+  var str = decodeURI(decode);
+  return str;
+}
 function isFunction(fn) {
   return toString.call(fn) === "[object Function]";
 };
@@ -332,7 +342,7 @@ function day(num) {
       break;
   }
 }
-function toDecimal(x) {
+function toDecimal(x,len) {
   var f = parseFloat(x);
   if (isNaN(f)) {
     return false;
@@ -344,7 +354,7 @@ function toDecimal(x) {
     rs = s.length;
     s += '.';
   }
-  while (s.length <= rs + 2) {
+  while (s.length <= rs + len) {
     s += '0';
   }
   return s;

@@ -34,5 +34,12 @@ export function get_Pbid_notice_info(params) {
     params: Object.assign({ c: 'Pbid', a: 'get_notice_info' },params)
   })
 }
+/* 判断供应商是否符合报价要求 */
+export function judge_supply_report(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Sbid', a: 'judge_supply_report',token:localStorage.getItem('token') },params)
+  })
+}
 
 

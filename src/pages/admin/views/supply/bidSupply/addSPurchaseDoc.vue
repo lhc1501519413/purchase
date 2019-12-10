@@ -190,7 +190,7 @@
         </a-tab-pane>
         <a-tab-pane key="4">
           <div slot="tab">项目附件</div>
-          <div class="mb-10 ml-20">
+          <div class="mb-10 ml-20 info">
             上传的投标文件为签章后的文件，未签章文件视为无效文件。点击<a @click="signModalVisible = true">去签章</a>
           </div>
           <div class="mb-10 ml-10 relative">
@@ -295,6 +295,8 @@ import {
   submit_tender // 提交投标文件
 } from "@admin/api/bidsSupply";
 import { POST } from "@common/js/apis";
+import { encryptAes, decryptAes, } from '@common/js/des';
+import { encryption } from "@/common/js/ESign";
 export default {
   components: {
     upload
@@ -347,6 +349,7 @@ export default {
           price_file_list:[]
         }
       },
+      secret:'',
       point: require("@static/images/icon_point.png"),
       activeKey: "1",
       columnsStock: [
@@ -573,11 +576,28 @@ export default {
             align:'center'
           })
         }
+        this.secret = formData.bid_info.secret;
+        this.secretKey = formData.bid_info.secret;
+        if(formData.bid_info.secret){
+          encryption({
+            serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+            funcName: "DecryptDigitalEnvelope",
+            param: `{"digitalEnvelopeB64":"${formData.bid_info.secret}"}`
+          }).then(res => {
+            if (res.data.result != "") {
+              this.secret = res.data.result.slice(0,16);
+              formData.stock_list.forEach(elem=>{
+                elem.price = this.$common.toDecimal(decryptAes(elem.secret_price,this.secret,this.secret),2)
+              })
+            } else {
+              this.$message.error("请检查是否插入U盾");
+            }
+          }).catch(error=>{
+            this.$message.error(error);
+          })
+        }
         this.formData = formData;
-      })
-      .catch(error => {
-        this.$message.error(error);
-      });
+      }).catch(error=>this.$message.error(error))
   },
   mounted(){
     this.connect_webSocket();
@@ -590,7 +610,19 @@ export default {
       var self = this;
       if ("WebSocket" in window) {
         self.ws = new WebSocket(self.webSocketUrl);
-        self.ws.onopen = function(e) {};
+        self.ws.onopen = function(e) {
+          if(!self.secret){
+            self.ws.send(JSON.stringify({
+              c:"getEncryptKey",
+              i:0,
+              m:{
+                id:new Date().Format("YYYYMMDDhhmmssS")+self.$common.getUnix(parseInt(Math.random()*1000)),
+                file:"",
+                key:''
+              }
+            }));
+          }
+        };
         self.ws.onerror = function(e) {
           self.$message.warn('加密协议连接失败，请打开加密程序')
         };
@@ -604,7 +636,7 @@ export default {
           if(code == 200){
             switch (controls) {
               case 'encryptFile':
-                POST({ c: "Upload", a: "upload_one_base64" },self.file_obj)
+                  POST({ c: "Upload", a: "upload_one_base64" },self.file_obj)
                   .then(res => {
                     let obj = {
                       file_name: res.data.name,
@@ -633,6 +665,21 @@ export default {
                     self.$message.error(error);
                   });
                 break;
+              case 'getEncryptKey':
+                if(!self.secret){
+                  self.secretKey = result.m.key; // 密文
+                  encryption({
+                    serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
+                    funcName: "DecryptDigitalEnvelope",
+                    param: `{"digitalEnvelopeB64":"${result.m.key}"}`
+                  }).then(res => {
+                    if (res.data.result != "") {
+                      self.secret = res.data.result.slice(0,16);
+                    } else {
+                      self.$message.error("请检查是否插入U盾");
+                    }
+                  }).catch(error=>self.$message.error('请输入口令后再次执行解密'))
+                }
               case 'ping':
                 self.ping = 0;
               default:
@@ -644,7 +691,7 @@ export default {
           }
         };
         self.ws.onclose = function() {
-          // clearInterval(self.heart_beat_interval);
+          clearInterval(self.heart_beat_interval);
         };
         self.heart_beat();
       }else{
@@ -708,27 +755,27 @@ export default {
     },
     save_stock_list() {
       // 保存报价
-      var self, data, key1, key2, key3, key4, key5, key6;
+      var self, data, key1, key4, key5, key6, secret;
       self = this;
       key1 = false;
-      key2 = false;
-      key3 = false;
       key4 = false;
       key5 = false;
       key6 = false;
       data = {
         bid_code: this.bid_code,
-        stock_list: this.formData.stock_list
+        secret: this.secretKey, // 密文secret
+        stock_list: JSON.parse(JSON.stringify(this.formData.stock_list))
       };
+      secret = this.secret; // 明文secret
       key1 = data.stock_list.some(elem => elem.price === "");
-      key2 = data.stock_list.some(elem => elem.response_brand === "");
-      key3 = data.stock_list.some(elem => elem.response_standard === "");
       key4 = data.stock_list.some(elem => elem.is_match === "");
       key6 = data.stock_list.some(elem => elem.response_note === "");
       data.stock_list.forEach(elem => {
+        elem.secret_price = encryptAes(elem.price, secret);
         let length = this.$common.isArray(elem.price.match(/\./g))
           ? elem.price.match(/\./g).length
           : 0;
+          elem.price = '';
         if (length > 1) key5 = true;
       });
       if (key1) {
@@ -739,14 +786,6 @@ export default {
         this.$message.warn("请填写正确的数据格式");
         return;
       }
-      /* if (key2) {
-        this.$message.warn("响应品牌不能为空");
-        return;
-      }
-      if (key3) {
-        this.$message.warn("响应规格不能为空");
-        return;
-      } */
       if (key6) {
         this.$message.warn("响应产品参数不能为空");
         return;
@@ -944,6 +983,14 @@ export default {
     li {
       @extend .mr-10;
       @extend .text-center;
+    }
+  }
+  .info{
+    font-size: 21px;
+    font-weight: bold;
+    a{
+      font-weight: bold;
+      font-size: 27px;
     }
   }
   .tab-bg {

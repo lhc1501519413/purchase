@@ -36,7 +36,7 @@
       </div>
     </header>
     <a-locale-provider :locale="zh_CN">
-      <router-view />
+      <router-view :father='this'/>
     </a-locale-provider>
   </div>
 </template>
@@ -73,7 +73,10 @@ export default {
     check_expire_time(){
       var expire_time = new Date(localStorage.getItem('expire_time')).getTime();
       var now = new Date().getTime();
-      if(now < expire_time) this.logined = true;
+      if(now < expire_time) {
+        this.logined = true;
+        this.$store.commit('SET_LOGINED',true);
+      }
     },
     my_work(){
       var self = this;
@@ -114,6 +117,7 @@ export default {
             self.$store.commit('SET_TOKEN',null);
             self.$store.commit('SET_USERNAME',null);
             self.$store.commit('SET_TYPE',null);
+            self.$store.commit('SET_LOGINED',false);
             self.logined = false;
             localStorage.clear();
             self.$message.success(res.msg);

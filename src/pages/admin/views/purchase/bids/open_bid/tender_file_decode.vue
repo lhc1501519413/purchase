@@ -174,16 +174,14 @@ export default {
       switch (key) {
         case "8":
           return "待解密";
-          break;
         case "9":
           return "待解密";
-          break;
+        case "10":
+          return "未解密";
         case "12":
           return "已解密";
-          break;
         default:
           return "未知状态";
-          break;
       }
     }
   },

@@ -72,7 +72,7 @@ export default {
   },
   data() {
     return {
-      keyword:'',
+      keyword:this.father.keyword||'',
       status:this.statusKey,
       bid_type:'0',
     };

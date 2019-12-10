@@ -148,6 +148,11 @@
 <script>
 import {login,login_by_mobile,yzm,base_info,valiYzm} from '@indexApi/user';
 export default {
+  props:{
+    father:{
+      type:Object
+    }
+  },
   data() {
     return {
       img_url:'',
@@ -176,6 +181,9 @@ export default {
   },
   created(){
     this.yzm();
+  },
+  beforeDestroy(){
+    this.father.check_expire_time()
   },
   methods: {
     yzm(){
@@ -255,6 +263,7 @@ export default {
           login_by_mobile(values).then((res=>{
             this.$message.success('登录成功')
             localStorage.setItem('token',res.data.token);
+            localStorage.setItem('expire_time',res.data.expire_time);
             this.$store.commit('SET_TOKEN',res.data.token);
             base_info().then(res=>{
               localStorage.setItem('realname',res.data.realname);

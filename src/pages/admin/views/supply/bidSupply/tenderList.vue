@@ -132,6 +132,7 @@ export default {
   created() {
     this.father.selectedKeys = ['/Sbid/tender_list'];
     this.status = this.$route.params.status || '0';
+    this.keyword = this.$route.query.bid_code || '';
     this.tender_list_method();
     this.get_tree_data();
   },
@@ -157,7 +158,7 @@ export default {
       params.status = this.status;
       params.bid_type = this.bid_type;
       tender_list(params).then(res=>{
-        this.dataSource = res.data.list;
+        this.dataSource = res.data.list||[];
         this.total = +res.data.total_count;
         this.dataSource.forEach(elem=>{
           elem.add_chance = new Date(elem.open_time).getTime() > new Date().getTime();

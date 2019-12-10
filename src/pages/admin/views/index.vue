@@ -408,6 +408,7 @@ export default {
               self.$store.commit("SET_TOKEN", null);
               self.$store.commit("SET_USERNAME", null);
               self.$store.commit("SET_TYPE", null);
+              self.$store.commit('SET_LOGINED',false);
               localStorage.clear();
               self.$message.success(res.msg);
               location.href = self.global.host + "/index.html#/index";

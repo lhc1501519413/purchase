@@ -12,12 +12,12 @@
         </ul>
       </div>
       <div class="announce">
-        <h4>Hi, {{username}} ~</h4>
+        <h4 v-if="logined">Hi, {{username}} ~</h4>
         <h4>欢迎来到采购云平台</h4>
-        <router-link to="/login" class='show' v-if="!token">
+        <router-link to="/login" class='show' v-if="!logined">
           <a-button type="primary">用户登录</a-button>
         </router-link>
-        <router-link to="/register/reg" class='show' v-if="!token">
+        <router-link to="/register/reg" class='show' v-if="!logined">
           <a-button>商家入驻</a-button>
         </router-link>
       </div>
@@ -209,6 +209,7 @@ import {
   get_Pbid_notice_list, // 公告列表
 } from "@indexApi/common";
 export default {
+  props:['father'],
   data() {
     return {
       logo: require("@static/images/logo.png"),
@@ -250,11 +251,8 @@ export default {
     this.get_list();
   },
   computed:{
-    token(){
-      return this.$store.getters.token
-    },
-    type(){
-      return this.$store.getters.type
+    logined(){
+      return this.$store.getters.logined;
     },
     username(){
       return this.$store.getters.username;
@@ -275,19 +273,14 @@ export default {
       switch (value) {
         case '6':
           return '已撤销'
-          break;
         case '8':
           return '已成交'
-          break;
         case '9':
           return '重新询价'
-          break;
         case '10':
           return '取消询价'
-          break;
-      
         default:
-          break;
+          return '未知状态'
       }
     },
     status2: value => {
@@ -370,7 +363,7 @@ export default {
       this.isActive=event.target.dataset.isactive;
       this.get_Pbid_notice_list(event.target.dataset.isactive)
     },
-    get_Pbid_notice_list(type){
+    get_Pbid_notice_list(type){ // type 控制公告类型
       get_Pbid_notice_list({page_size:4,type}).then(res=>{
         this.Pbid_notice_list = res.data.list||[];
       }).catch(error=>{

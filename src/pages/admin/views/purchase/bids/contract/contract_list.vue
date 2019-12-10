@@ -31,7 +31,7 @@
       >
         <template slot="titleRender" slot-scope="value">
           <span>
-            {{value}}的在线询价合同
+            {{value}}
           </span>
         </template>
         <template slot="status" slot-scope="value">
@@ -91,14 +91,13 @@ export default {
         {
           title:'序号',
           customRender: (text,record,index)=>`${index+1}`,
-          width:'7%',
+          width:'6%',
           align:'center'
         },
         {
           title: '合同编号',
           dataIndex: 'code',
-          width:'8%',
-          scopedSlots: { customRender: 'code' },
+          width:'10%',
         },
         {
           title: '合同名称',
@@ -108,13 +107,13 @@ export default {
         },
         {
           title: '项目编号',
-          dataIndex: 'inquiry_code',
+          dataIndex: 'custom_code',
           width:'8%',
         },
         {
           title: '项目名称',
-          dataIndex: 'inquiry_title',
-          width:'16%',
+          dataIndex: 'custom_title',
+          width:'14%',
         },
         {
           title: '采购单位',
@@ -124,7 +123,7 @@ export default {
         {
           title: '供应商名称',
           dataIndex: 'supply_name',
-          width:'10%',
+          width:'15%',
         },
         {
           title: '状态',
@@ -181,7 +180,7 @@ export default {
       params.status = this.status;
       params.page = this.page;
       get_bid_contract_list(params).then(res=>{
-        this.dataSource = res.data.list;
+        this.dataSource = res.data.list||[];
         this.total = +res.data.total_count;
       }).catch(error=>this.$message.error(error))
     },
