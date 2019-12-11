@@ -80,22 +80,22 @@ export default [
     }
   },
   {
-    path: '/Scontract/contract_info',
-    name: '/Scontract/contract_info',
+    path: '/Scontract/contract_detail',
+    name: '/Scontract/contract_detail',
     component: () =>
-      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/contract_info'),
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/contract_detail'),
     meta: {
       title: '合同详情',
       permission: true
     }
   },
   {
-    path: '/Scontract/edit_contract',
-    name: '/Scontract/edit_contract',
+    path: '/Scontract/confirm_contract',
+    name: '/Scontract/confirm_contract',
     component: () =>
-      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/edit_contract'),
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/scontract/confirm_contract'),
     meta: {
-      title: '合同管理',
+      title: '确认合同',
       permission: true
     }
   },

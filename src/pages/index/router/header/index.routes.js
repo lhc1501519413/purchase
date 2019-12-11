@@ -86,7 +86,7 @@ export default [
         name: 'bid_notice_detail_fail',
         component: () => import( /*webpackChunkName:notice*/ '@indexViews/bid_notice/bid_notice_detail_fail'),
         meta: { 
-          title: '废标公告详情', 
+          title: '流标公告详情', 
           permission: true 
         }
       },

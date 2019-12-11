@@ -363,12 +363,22 @@ export default [
     },
   },
   {
-    path: '/Contract/contract_info',
-    name: '/Contract/contract_info',
+    path: '/Contract/contract_detail',
+    name: '/Contract/contract_detail',
     component: () =>
-      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/contract/contract_info'),
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/contract/contract_detail'),
     meta: {
       title: '合同详情',
+      permission: true
+    },
+  },
+  {
+    path: '/Contract/confirm_contract',
+    name: '/Contract/confirm_contract',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/contract/confirm_contract'),
+    meta: {
+      title: '确认合同',
       permission: true
     },
   },

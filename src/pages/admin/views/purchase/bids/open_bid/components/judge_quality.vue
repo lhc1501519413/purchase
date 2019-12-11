@@ -12,7 +12,13 @@
         <a-tab-pane v-for="item of judge_quality" :key='item.user_id'>
           <h4>资格审查</h4>
           <div slot="tab">{{item.username}}</div>
-          <a-table class="table" :dataSource="item.quality_info" :columns="columns" rowKey="supply_id">
+          <a-table 
+            v-if='item.quality_info&&item.quality_info.length>0'
+            class="table" 
+            :dataSource="item.quality_info" 
+            :columns="columns" 
+            rowKey="supply_id"
+            >
             <template slot="status" slot-scope="text">
               <a-select :defaultValue="text" disabled style="width: 120px">
                 <a-select-option value="1">符合</a-select-option>
@@ -23,6 +29,9 @@
               <a-input :value="text" disabled></a-input>
             </template>
           </a-table>
+          <div class="ml-20" v-else>
+            本次招标资格审查已在供应商入驻环节完成
+          </div>
         </a-tab-pane>
       </a-tabs>
     </section>

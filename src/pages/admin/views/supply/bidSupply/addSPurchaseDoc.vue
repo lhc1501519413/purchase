@@ -81,7 +81,6 @@
               <a-select style="width: 120px"
                 v-model="record.is_match"
               >
-                <a-select-option disabled value="">请选择偏离信息</a-select-option>
                 <a-select-option value="1">正偏离</a-select-option>
                 <a-select-option value="0">无偏离</a-select-option>
                 <a-select-option value="-1">负偏离</a-select-option>
@@ -130,7 +129,7 @@
               </template>
             </a-table>
             <div class="ml-20" v-else>
-              本次招标暂无资格审查要求
+              本次招标资格审查已在供应商入驻环节完成
             </div>
           </div>
         </a-tab-pane>
@@ -360,6 +359,7 @@ export default {
         }
       },
       secret:'',
+      secretKey:'',
       point: require("@static/images/icon_point.png"),
       activeKey: "1",
       columnsStock: [
@@ -588,7 +588,6 @@ export default {
         }
         formData.stock_list.forEach(elem=> elem.new_price = elem.secret_price==''?'':'***')
         this.secret = formData.bid_info.secret;
-        this.secretKey = formData.bid_info.secret;
         if(formData.bid_info.secret){
           encryption({
             serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
@@ -771,7 +770,7 @@ export default {
       key1 = false;
       key4 = false;
       key5 = false;
-      key6 = false;
+      // key6 = false;
       data = {
         bid_code: this.bid_code,
         secret: this.secretKey, // 密文secret
@@ -780,7 +779,7 @@ export default {
       secret = this.secret; // 明文secret
       key1 = data.stock_list.some(elem => elem.new_price === "");
       key4 = data.stock_list.some(elem => elem.is_match === "");
-      key6 = data.stock_list.some(elem => elem.response_note === "");
+      // key6 = data.stock_list.some(elem => elem.response_note === "");
       data.stock_list.forEach(elem => {
         elem.secret_price = encryptAes(elem.new_price, secret);
         let length = this.$common.isArray(elem.new_price.match(/\./g))
@@ -796,10 +795,10 @@ export default {
         this.$message.warn("请填写正确的数据格式");
         return;
       }
-      if (key6) {
-        this.$message.warn("响应产品参数不能为空");
-        return;
-      }
+      // if (key6) {
+      //   this.$message.warn("响应产品参数不能为空");
+      //   return;
+      // }
       if (key4) {
         this.$message.warn("请选择偏离信息");
         return;

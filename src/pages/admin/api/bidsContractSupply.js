@@ -6,6 +6,13 @@ export function get_bid_scontract_list(params) {
     params: Object.assign({ c: 'Scontract', a: 'get_bid_scontract_list', token: localStorage.getItem('token') },params),
   })
 }
+/* 合同详情 */
+export function get_bid_base_info(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Scontract', a: 'get_bid_base_info', token: localStorage.getItem('token') },params),
+  })
+}
 /* 编辑合同 */
 export function save_bid_scontract_info(data) {
   return request({

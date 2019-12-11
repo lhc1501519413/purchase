@@ -334,11 +334,14 @@
             <template slot="description">
               <div class="step-item">
                 <span class="one">
-                  {{item.supply_name}}
+                  {{item.supply_name||item.com_name}}
                 </span>
                 <span class="mr-10 two">
                   {{item.desc}}
                 </span>
+              </div>
+              <div class="step-item" v-if="item.remark">
+                {{item.remark}}
               </div>
             </template>
           </a-step>

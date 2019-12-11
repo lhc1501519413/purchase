@@ -20,7 +20,7 @@
         <a-select v-model="noticeType" style="width: 180px" @change="get_notice_list_method2">
           <a-select-option value="1">采购公告</a-select-option>
           <a-select-option value="2">中标成交公告</a-select-option>
-          <a-select-option value="3">废标公告</a-select-option>
+          <a-select-option value="3">流标公告</a-select-option>
         </a-select>
       </div>
       <div class="notice-content">

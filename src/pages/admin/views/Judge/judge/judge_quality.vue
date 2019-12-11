@@ -2,7 +2,13 @@
   <div class="judge_quality">
     <section class="content">
       <h4>资格审查</h4>
-      <a-table class="table" :dataSource="judge_quality" :columns="columns" rowKey="supply_id">
+      <a-table 
+        v-if='judge_quality&&judge_quality.length>0'
+        class="table" 
+        :dataSource="judge_quality" 
+        :columns="columns" 
+        rowKey="supply_id"
+        >
         <template slot="status" slot-scope="text,record">
           <a-select disabled v-model="record.status" style="width: 120px">
             <a-select-option disabled value=''>---请选择---</a-select-option>
@@ -14,6 +20,9 @@
           <a-input v-model="record.desc"></a-input>
         </template>
       </a-table>
+      <div class="ml-20" v-else>
+        本次招标资格审查已在供应商入驻环节完成
+      </div>
     </section>
     <a-modal
       class="judge-modal"

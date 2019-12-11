@@ -247,6 +247,9 @@
                   {{item.desc}}
                 </span>
               </div>
+              <div class="step-item" v-if="item.remark">
+                {{item.remark}}
+              </div>
             </template>
           </a-step>
         </a-steps>

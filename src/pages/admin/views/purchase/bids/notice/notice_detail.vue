@@ -29,40 +29,74 @@
         <h3>五、供应商资格要求</h3>
         <div class="text-indent-35 mb-10">{{formData.qualifications}}</div>
         <h3>六、供应商获取采购文件要求</h3>
+        <div class="text-indent-35 mb-10">采购文件获取时间：{{formData.start_time}} ~ {{formData.end_time}}</div>
+        <div class="text-indent-35 mb-10">采购文件获取方式：后勤物资采购云平台网上注册后按获取流程下载采购文件</div>
+        <div class="text-indent-35 mb-10">采购文件售价：人民币0元</div>
+        <div class="text-indent-35 mb-10">获取流程：</div>
         <div class="text-indent-35 mb-10">
-          采购文件获取时间：{{formData.start_time}}  ~  {{formData.end_time}}
+          （1）尚未注册后勤物资采购云平台（网址：
+          <a
+            class="ml-10 mr-10"
+            href="http://smart.acuit.net/bid/#/index"
+            target="_blank"
+          >http://smart.acuit.net/bid/#/index</a>
+          ）正式供应商的应先进行注册申请，注册流程详见“后勤物资采购云平台—服务中心—入驻指南”，或网址：
+          <a
+            class="ml-10 mr-10"
+            href="http://smart.acuit.net/bid/#/help"
+            target="_blank"
+          >http://smart.acuit.net/bid/#/help</a>。
         </div>
         <div class="text-indent-35 mb-10">
-          采购文件获取方式：后勤物资采购云平台网上注册后按获取流程下载采购文件
+          （2）供应商注册成功后，登录平台选择对应项目的项目公告中点击【我要获取】或者点击“我的工作台”，进入“获取采购文件”菜单，点击对应项目中的”获取“按钮，填写获取采购文件的申请信息【联系人姓名、手机号、邮箱、地址为必填项】，填写完整后点击右下角“确定”按钮提交，待采购方审核通过后可下载采购文件。
         </div>
-        <div class="text-indent-35 mb-10">
-          供应商通过平台<a class="ml-10 mr-10" href="http://smart.acuit.net/bid/#/index" target="_blank">http://smart.acuit.net/bid/#/index</a>商家入驻模块，注册账号、完善信息后提交入驻，经平台审核通过后，可通过项目公告页面的【获取入口】直接在线申请获取采购文件，经采购方审核通过，即可下载采购文件。
-        </div>
-        <div class="text-indent-35 mb-10">
-          采购文件售价：人民币0元
-        </div>
+        <div class="text-indent-35 mb-10">采购文件售价：人民币0元</div>
         <h3>七、开标评标时间和地址</h3>
+        <div class="text-indent-35 mb-10">开标时间：{{formData.open_time}}</div>
+        <div class="text-indent-35 mb-10">开标地址：{{formData.open_address}}</div>
+        <div class="text-indent-35 mb-10">投标文件递交方式：</div>
         <div class="text-indent-35 mb-10">
-          开标时间：{{formData.open_time}}
+          ①须在线提交电子投标文件、投标文件的备份电子文件（U盘）和纸质投标文件；
         </div>
         <div class="text-indent-35 mb-10">
-          开标地址：{{formData.open_address}}
+          ②在线提交电子投标文件：投标截止时间前在后勤物资采购云平台（网址：<a
+            class="ml-10 mr-10"
+            href="http://smart.acuit.net/bid/#/index"
+            target="_blank"
+          >http://smart.acuit.net/bid/#/index</a>）完成电子投标文件的加密传输提交；
         </div>
         <div class="text-indent-35 mb-10">
-          投标文件递交地址：供应商通过平台<a class="ml-10 mr-10" href="http://smart.acuit.net/bid/#/index" target="_blank">http://smart.acuit.net/bid/#/index</a>在线提交投标文件。
+          ③投标文件的备份电子文件和纸质投标文件：投标截止时间前，提交投标文件的备份电子文件一份（U盘，勿加密）和纸质投标文件一份，提交地址为【投标文件递交地址】
         </div>
         <div class="text-indent-35 mb-10">
-          注：供应商需注册并审核通过，并且在规定时间内在线成功获取采购文件后，可在【投标文件管理】模块在线提交投标文件。
+          投标文件递交地址：供应商通过平台
+          <a
+            class="ml-10 mr-10"
+            href="http://smart.acuit.net/bid/#/index"
+            target="_blank"
+          >http://smart.acuit.net/bid/#/index</a>在线提交投标文件。
         </div>
+        <div class="text-indent-35 mb-10">注：供应商需注册并审核通过，并且在规定时间内在线成功获取采购文件后，可在【投标文件管理】模块在线提交投标文件。</div>
         <h3>八、投标保证金</h3>
-        <div v-if="formData.is_margin==1" class="text-indent-35 mb-10">
-          本次投标保证金为{{formData.margin}}元人民币（可以现金或转账支票形式），请用信封单独封好，信封封面写上投标项目名称并封口加盖投标人单位公章，并按投标文件提交的时间地点要求提交与招标人。投标人必须承诺现金和转账支票的真实有效性，否则责任自负。未中标当场退还，中标的则自动转为合同保证金，合同期满无息退还。
-        </div>
-        <div v-else class="text-indent-35 mb-10">
-          无
-        </div>
+        <div
+          v-if="formData.is_margin==1"
+          class="text-indent-35 mb-10"
+        >本次投标保证金为{{formData.margin}}元人民币（可以现金或转账支票形式），请用信封单独封好，信封封面写上投标项目名称并封口加盖投标人单位公章，并按投标文件提交的时间地点要求提交与招标人。投标人必须承诺现金和转账支票的真实有效性，否则责任自负。未中标当场退还，中标的则自动转为合同保证金，合同期满无息退还。</div>
+        <div v-else class="text-indent-35 mb-10">无</div>
         <h3>九、特别说明</h3>
-        
+        <div class="text-indent-35 mb-10">
+          1.本项目实行电子投标，应按照本项目招标文件和后勤物资采购云平台的要求编制；投标人在使用系统进行投标的过程中遇到涉及平台使用的任何问题，可致电后勤物资采购云平台技术支持热线咨询，联系方式：400-999-2350。
+        </div>
+        <div class="text-indent-35 mb-10">
+          2.投标人应在开标前完成CA数字证书办理。完成CA数字证书办理预计一周左右时间，建议各投标人抓紧时间办理，CA锁办理可致电后勤物资采购云平台技术支持热线咨询，联系方式：400-999-2350。
+        </div>
+        <div class="text-indent-35 mb-10">
+          3.电子投标具体流程文档详见“服务中心——投标指南”，或网址：<a
+            class="ml-10 mr-10"
+            href="http://smart.acuit.net/bid/#/help"
+            target="_blank"
+          >http://smart.acuit.net/bid/#/help</a>。
+        </div>
         <h3>十、其他事项</h3>
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>
         <h3>十一、联系方式</h3>

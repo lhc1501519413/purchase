@@ -1,6 +1,6 @@
 <template>
-  <div id="contract">
-    <h5>招标管理 / 合同管理 / 合同列表</h5>
+  <div id="contractSupply">
+    <h5>合同管理 / 合同列表</h5>
     <section class="content">
       <a-row>
         <a-col :span="7">
@@ -29,29 +29,20 @@
         :pagination="false" 
         rowKey="id"
       >
-        <template slot="titleRender" slot-scope="value">
-          <span>
-            {{value}}的在线询价合同
-          </span>
-        </template>
         <template slot="status" slot-scope="value">
           <span>
             {{value|status}}
           </span>
         </template>
         <template slot="operation" slot-scope="text">
-          <router-link v-if='priv.contract_list.edit && text.status==1' :to="{path:'/addContract',query:{code:text.code}}">
-            起草
-          </router-link>
-          <a v-if='text.status==1||text.status==3' @click="submit(text.code)" href="javascript:;">提交</a>
-          <router-link v-if='priv.contract_list.view && text.status==2||text.status==3||text.status==8' :to="{path:'/contractDetail',query:{code:text.code}}">
-            详情
-          </router-link>
-          <router-link v-if='priv.contract_list.edit && text.status==3' :to="{path:'/addContract',query:{code:text.code}}">
-            编辑
-          </router-link>
-          <router-link v-if='priv.contract_list.confirm && text.status==4' :to="{path:'/confirmContract',query:{code:text.code}}">
+          <router-link v-if='priv.bid_supply_contract_list.confirm&&priv.bid_supply_contract_list.refuse&&text.status==2' :to="{path:'/Scontract/confirm_contract',query:{code:text.code}}">
             确认
+          </router-link>
+          <router-link v-if='priv.bid_supply_contract_list.view&&text.status==3' :to="{path:'/Scontract/contract_detail',query:{code:text.code}}">
+            查看详情
+          </router-link>
+          <router-link v-if='priv.bid_supply_contract_list.view&&text.status==4||text.status==8' :to="{path:'/Scontract/contract_detail',query:{code:text.code}}">
+            查看详情
           </router-link>
         </template>
       </a-table>
@@ -62,8 +53,7 @@
 
 <script>
 import {
-  get_bid_scontract_list, // 合同列表
-  confirm_bid_scontract // 提交合同
+  get_bid_scontract_list // 合同列表
 } from '@admin/api/bidsContractSupply';
 
 export default {
@@ -79,10 +69,9 @@ export default {
       status:'0',
       statusList:[
         {value:'0',label:'全部'},
-        {value:'1',label:'待起草'},
-        {value:'2',label:'待供应商确认'},
-        {value:'3',label:'供应商已退回'},
-        {value:'4',label:'待确认'},
+        {value:'2',label:'待确认'},
+        {value:'3',label:'已退回'},
+        {value:'4',label:'待采购方确认'},
         {value:'8',label:'已完成'},
       ],
       page:1,
@@ -104,16 +93,15 @@ export default {
           title: '合同名称',
           dataIndex: 'title',
           width:'16%',
-          scopedSlots: { customRender: 'titleRender' },
         },
         {
           title: '项目编号',
-          dataIndex: 'inquiry_code',
+          dataIndex: 'custom_code',
           width:'8%',
         },
         {
           title: '项目名称',
-          dataIndex: 'inquiry_title',
+          dataIndex: 'custom_title',
           width:'16%',
         },
         {
@@ -122,8 +110,8 @@ export default {
           width:'14%',
         },
         {
-          title: '供应商名称',
-          dataIndex: 'supply_name',
+          title: '成交金额（元）',
+          dataIndex: 'total_money',
           width:'10%',
         },
         {
@@ -144,31 +132,23 @@ export default {
   filters:{
     status:(key)=>{
       switch (key) {
-        case '1':
-          return '待起草'
-          break;
         case '2':
-          return '待供应商确认'
-          break;
-        case '3':
-          return '供应商已退回'
-          break;
-        case '4':
           return '待确认'
-          break;
+        case '3':
+          return '已退回'
+        case '4':
+          return '待采购方确认'
         case '8':
           return '已完成'
-          break;
         default:
           return '未知状态'
-          break;
       }
     }
   },
   created() {
-    this.father.selectedKeys = ['/Contract/get_bid_scontract_list'];
-    this.status = this.$route.params.status || '0';
+    this.status = this.$route.params.status||'0';
     this.get_bid_scontract_list_method();
+    this.father.selectedKeys = ['/Scontract/get_bid_scontract_list'];
   },
   methods: {
     get_bid_scontract_list_method2(){
@@ -185,21 +165,6 @@ export default {
         this.total = +res.data.total_count;
       }).catch(error=>this.$message.error(error))
     },
-    submit(code){
-      var self = this;
-      this.$confirm({
-        title: '确认提交此合同？',
-        onOk() {
-          confirm_bid_scontract(code).then(res=>{
-            self.$message.success(res.msg)
-            self.get_bid_scontract_list_method();
-          }).catch(error=>{
-            self.$message.error(error)
-          })
-        },
-        onCancel() {},
-      });
-    },
     paginationChange(page) {
       this.page = page;
       this.get_bid_scontract_list_method();
@@ -209,7 +174,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import '~@admin/assets/scss/common';
-  #contract{
+  #contractSupply{
     @include component;
   }
 </style>

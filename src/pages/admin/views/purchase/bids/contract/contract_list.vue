@@ -44,7 +44,7 @@
             起草
           </router-link>
           <a v-if='text.status==1||text.status==3' @click="submit(text.code)" href="javascript:;">提交</a>
-          <router-link v-if='priv.bid_contract_list.view && text.status==2||text.status==3||text.status==8' :to="{path:'/Contract/contract_info',query:{code:text.code}}">
+          <router-link v-if='priv.bid_contract_list.view && text.status==2||text.status==3||text.status==8' :to="{path:'/Contract/contract_detail',query:{code:text.code}}">
             详情
           </router-link>
           <router-link v-if='priv.bid_contract_list.edit && text.status==3' :to="{path:'/Contract/add_contract',query:{code:text.code}}">
@@ -183,7 +183,7 @@ export default {
       this.$confirm({
         title: '确认提交此合同？',
         onOk() {
-          submit_bid_contract(code).then(res=>{
+          submit_bid_contract({code}).then(res=>{
             self.$message.success(res.msg)
             self.get_bid_contract_list_method();
           }).catch(error=>{

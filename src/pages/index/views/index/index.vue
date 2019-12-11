@@ -28,7 +28,7 @@
         <ul class="notice-title-item" @click="change_item">
           <li :class="{'active':isActive==1}" data-isActive='1'>采购公告</li>
           <li :class="{'active':isActive==2}" data-isActive='2'>中标成交公告</li>
-          <li :class="{'active':isActive==3}" data-isActive='3'>废标公告</li>
+          <li :class="{'active':isActive==3}" data-isActive='3'>流标公告</li>
         </ul>
         <router-link :to="{name:'bid_notice',params:{noticeType:isActive}}">查看更多 ></router-link>
       </div>

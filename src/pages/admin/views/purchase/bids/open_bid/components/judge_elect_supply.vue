@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     refresh() {
+      this.father.get_judge_info();
       get_judge_elect_supply(this.bid_code)
       .then(res => this.judge_elect = res.data.supply_list||[])
       .catch(error => this.$message.error(error));
@@ -109,7 +110,10 @@ export default {
         supply_list:this.judge_elect
       }).then(res=> {
         this.$message.success(res.msg)
-        this.$router.push({path:'/Bid/open_bid',query:{bid_code:this.bid_code}})
+        let time = setTimeout(()=>{
+          this.$router.push({path:'/Bid/open_bid',query:{bid_code:this.bid_code}})
+          clearTimeout(time)
+        },1500)
       })
       .catch(error => this.$message.error(error));
     }

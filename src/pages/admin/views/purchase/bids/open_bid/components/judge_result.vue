@@ -5,7 +5,7 @@
       <a-table class="table" :dataSource="judge_result" :columns="columns" rowKey="supply_id" :rowSelection="rowSelection">
         <template slot="is_agree_price" slot-scope="text,record">
           <a-radio-group 
-            :disabled="status>=15"
+            :disabled="status>=14"
             v-model="record.is_agree_price">
             <a-radio :style="radioStyle" :value="'1'">是</a-radio>
             <a-radio :style="radioStyle" :value="'2'">否</a-radio>
