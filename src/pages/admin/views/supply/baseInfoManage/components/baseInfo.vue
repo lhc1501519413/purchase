@@ -233,14 +233,14 @@
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-item label="企业电子邮箱：" v-bind="formItemLayout" :help="edit_read?'':'企业电子邮箱'">
+        <a-form-item label="企业电子邮箱：" v-bind="formItemLayout">
           <span v-show="edit_read">{{formData.email}}</span>
           <a-input
           v-show="!edit_read"
             placeholder="请输入企业电子邮箱"
             v-decorator="[
               'email',
-              { rules: [{ type: 'email', message: '输入邮箱格式错误'}],initialValue:formData.email }
+              { rules: [{ required: true, message: '请输入企业电子邮箱' },{ type: 'email', message: '输入邮箱格式错误'}],initialValue:formData.email }
             ]"
           ></a-input>
         </a-form-item>

@@ -22,7 +22,7 @@
     </section>
     <section @click="showDialog" class="rules">
       <a-checkbox @change="checkboxChange">本人已阅读并同意</a-checkbox>
-      <span data-key="1">《政府采购供应商注册须知》</span>
+      <span data-key="1">《采购供应商注册须知》</span>
       <span data-key="2">《法律声明》</span>
       <span data-key="3">《隐私协议》</span>
     </section>
@@ -40,7 +40,7 @@
       @ok="modalVisible = false"
     >
       <h2 class="text-center">{{modalTitle}}</h2>
-      <div v-show="modalTitle=='政府采购供应商注册须知'">
+      <div v-show="modalTitle=='采购供应商注册须知'">
         <p>注册采购供应商应具备以下条件：</p>
         <p class="text-indent-10">1.具有独立承担民事责任的能力；</p>
         <p class="text-indent-10">2.具有良好的商业信誉和健全的财务会计制度；</p>

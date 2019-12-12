@@ -95,7 +95,7 @@ export default [
         name: 'check_in',
         component: () => import( /*webpackChunkName:notice*/ '@indexViews/server/check_in'),
         meta: { 
-          title: '入住指南', 
+          title: '入驻指南', 
           permission: true 
         }
       },
@@ -113,7 +113,7 @@ export default [
         name: 'evaluate',
         component: () => import( /*webpackChunkName:notice*/ '@indexViews/server/evaluate'),
         meta: { 
-          title: '评价指南', 
+          title: '评标指南', 
           permission: true 
         }
       },
