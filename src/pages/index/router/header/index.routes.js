@@ -85,8 +85,35 @@ export default [
         path: '/bid_notice_detail_fail',
         name: 'bid_notice_detail_fail',
         component: () => import( /*webpackChunkName:notice*/ '@indexViews/bid_notice/bid_notice_detail_fail'),
-        meta: { 
+        meta: {
           title: '流标公告详情', 
+          permission: true 
+        }
+      },
+      {
+        path: '/check_in_guide',
+        name: 'check_in',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/server/check_in'),
+        meta: { 
+          title: '入住指南', 
+          permission: true 
+        }
+      },
+      {
+        path: '/tender_guide',
+        name: 'tender',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/server/tender'),
+        meta: { 
+          title: '投标指南', 
+          permission: true 
+        }
+      },
+      {
+        path: '/evaluate_guide',
+        name: 'evaluate',
+        component: () => import( /*webpackChunkName:notice*/ '@indexViews/server/evaluate'),
+        meta: { 
+          title: '评价指南', 
           permission: true 
         }
       },

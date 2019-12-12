@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+  #tender,#check_in,#evaluate {
+    width: 210mm;
+    height: 100%;
+    background-color: #fff;
+    margin: 0 auto;
+    color: #000;
+    font-size: 16px;
+    /* font-family: 'Calibri', 'SimSun'; */
+  }
+
+  #app {
+    padding-top: 100px;
+    padding-bottom: 200px;
+  }
+  .img_width{
+    width: 100%;
+  }
+  .img_center{
+    display: block;
+    margin: 0 auto;
+  }
+  .center {
+    text-align: center;
+  }
+
+  .red {
+    color: #f00;
+  }
+  .blue{
+      color:#548dd4;
+  }
+  .underline{ /*下划线*/
+      text-decoration: underline;
+  }
+
+  .kaiti {
+    font-family: 'KaiTi'
+  }
+  .bold{
+      font-weight: bold;
+  }
+  .fzst{
+      font-family: 'FZXiaoBiaoSong-B05S';
+  }
+  .heiti{
+      font-family:'SimHei'
+  }
+  .TimesNewRoman{
+      font-family: 'Times New Roman';
+  }
+  .text-indent{
+      text-indent:2em;
+  }
+  .line-height{
+      line-height: 24pt;
+  }
+  .first_title{
+      font-size: 18pt;
+      margin: 40px 0;
+  }
+  .second_title{
+      font-size: 16pt;
+      margin: 30px 0;
+  }
+  .thirdly_title{
+      font-size: 14pt; 
+      margin-bottom: 10pt;
+  }
+  .paragraph{
+      margin-bottom: 10pt; 
+      font-size: 12pt;
+  }
+  table{
+      border-right:1px solid #000;
+      border-bottom:1px solid #000;
+  }
+  table td,th{
+      border-left:1px solid #000;
+      border-top:1px solid #000;
+  }
+  .table1 th{
+      width: 100px;
+      height: 40px;
+  }
+  .table1 td{
+      width:100px;
+  }
+  .table2 th{
+      width:100px;
+      height: 30px;
+  }
+  .table2 td{
+      width:100px;
+      height: 30px;
+  }

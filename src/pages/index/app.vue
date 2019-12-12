@@ -27,6 +27,21 @@
         </router-link>
       </div>
       <div>
+        <a-dropdown>
+          <a class="ant-dropdown-link server"> 服务中心 <a-icon type="down" /> </a>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <router-link to='/check_in_guide'>入住指南</router-link>
+            </a-menu-item>
+            <a-menu-item>
+              <router-link to='tender_guide'>投标指南</router-link>
+            </a-menu-item>
+            <a-menu-item>
+              <router-link to='evaluate_guide'>评价指南</router-link>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+        
         <span v-if="logined" @click="my_work" class="pointer work">
           我的工作台
         </span>
@@ -153,5 +168,8 @@ export default {
   }
   .ant-dropdown-menu-item{
     padding:5px 12px;
+  }
+  .server{
+    color:rgba(0,0,0,0.65);
   }
 </style>
