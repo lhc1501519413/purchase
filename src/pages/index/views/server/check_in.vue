@@ -7,6 +7,7 @@
     <p class="first_title bold">(一)注册账号</p>
     <p class="text-indent line-height">后勤物资采购云平台功能包括用户注册、招标方案、投标邀请、资格预审、发标、投标、开标、评标、定标、监督、归档（存档）等一系类功能，该平台的账号及密码请由本公司法定代表人或法定代表授权代理人进行注册并保管密码，您所填的信息及所做的操作视为投标报名的当然部分，饮食服务中心将通过信用中国、信用浙江、国家税务部门等网站对注册企业信息进行核实，在核实过程中若发现注册企业提供虚假资料及信息，将永久取消报名资格并予以通报。</p>
     <p class="line-height">1)  进入后勤物资采购云平台网站网址：<a href="http://smart.acuit.net/bid/#/index" target="_blank"> http://smart.acuit.net/bid/#/index</a>，点击页面右上角的【商家入驻】；</p>
+    <p class="text-indent line-height red bold">注：为了避免页面存在兼容性问题，建议使用谷歌Chrome 浏览器。</p>
     <img class="img_width" src="../../assets/images/check_in/img_1.png" alt="">
     <p class="line-height">2) 进入供应商入驻页面，首先注册账号。信息填写完成后，点击注册按钮，即完成注册。</p>
     <p class="line-height text-indent">注：在智慧食堂管理系统（http://smart.acuit.net）中已有的供应商也需重新注册账号，机构名称即供应商公司名称，账号需设置和智慧食堂管理系统不相同的账号，手机号码需设置和智慧食堂管理系统不相同的手机号码。</p>
@@ -56,7 +57,6 @@
     <img class="img_width" src="../../assets/images/check_in/img_2_2.png" alt="">
     <p class="first_title bold">(五)注册变更</p>
     <p class="line-height">基本信息、基本资质、特殊资质的必填项修改后均需点击【提交变更审核】按钮重新提交审核。同时生成相应的注册变更记录。注册变更记录也需要审核通过后才可生效。</p>
-    <p class="text-indent line-height">联系人：倪老师88273719，刘老师88273169  地址：浙江大学后勤集团饮食服务中心327办公室。</p>
     <br>
     <br>
     <br>

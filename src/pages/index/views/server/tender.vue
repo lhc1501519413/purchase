@@ -6,6 +6,7 @@
     <P class="first_title bold">(一) 获取采购文件 </P>
     <P class="line-height"> <span class="bold">说明</span>：采购组织机构发布采购公告后，已注册政采云平台的供应商可登陆平台，申请获取采购文件，待采购组织机构审核通过后，供应商可下载采购文件。</P>
     <p class="line-height">路径：招标管理—获取采购文件。</p>
+    <p class="text-indent line-height red bold">注：为了避免页面存在兼容性问题，建议使用谷歌Chrome 浏览器。</p>
     <p class="line-height">1) 在“获取采购文件”标签页下，找到需要获取采购文件的项目，点击操作栏</p>
     <p class="line-height bold">【获取】；</p>
     <img class="img_width" src="../../assets/images/tender/img_2.png" alt="">
