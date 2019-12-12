@@ -113,7 +113,7 @@
         </a-col>
       </a-row>
       <h4 class="mt-10">流转日志</h4>
-      <a-row class="mt-10">
+      <a-row class="mt-10 ml-10">
         <a-steps progressDot :current="stepsCurrent" direction="vertical">
           <a-step v-for="(item,index) of formData.log_list||[]" :key="index" :title="item.create_time">
             <template slot="description">
@@ -138,7 +138,9 @@
 
 <script>
 import {
-  get_bid_base_info // 合同详情
+  get_bid_base_info, // 合同详情
+  showContract, // 预览
+  downloadContract // 下载
 } from "@admin/api/bidsContractSupply";
 export default {
   components: {
@@ -209,19 +211,11 @@ export default {
         .catch(error => this.$message.error(error));
     },
     showContract() {
-      open(
-        this.global.baseUrl +
-          "?c=Pcontract&a=pre_view&code=" +
-          this.formData.code
-      );
+      showContract(this.formData.code)
     },
     downloadContract() {
-      open(
-        this.global.baseUrl +
-          "?c=Pcontract&a=download&code=" +
-          this.formData.code
-      );
-    }
+      downloadContract(this.formData.code)
+    },
   }
 };
 </script>

@@ -66,7 +66,8 @@ Object.defineProperties(Array.prototype, {
       if (!arguments.length)
         return [];
       var arr1 = this;
-      var result = arr2 = null;
+      var result,arr2;
+      result = arr2 = null;
       var n = 0;
       while (n < arguments.length) {
         result = [];

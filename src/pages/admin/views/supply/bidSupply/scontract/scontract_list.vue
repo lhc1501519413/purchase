@@ -110,11 +110,6 @@ export default {
           width:'14%',
         },
         {
-          title: '成交金额（元）',
-          dataIndex: 'total_money',
-          width:'10%',
-        },
-        {
           title: '状态',
           dataIndex:'status',
           scopedSlots: { customRender: 'status' },

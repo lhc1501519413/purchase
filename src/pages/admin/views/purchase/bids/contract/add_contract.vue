@@ -323,6 +323,26 @@
           </p>
         </a-col>
       </a-row>
+      <h4 class="mt-10" v-if="formData.log_list">流转日志</h4>
+      <a-row class="mt-10 ml-10" v-if="formData.log_list">
+        <a-steps progressDot :current="stepsCurrent" direction="vertical">
+          <a-step v-for="(item,index) of formData.log_list||[]" :key="index" :title="item.create_time">
+            <template slot="description">
+              <div class="step-item">
+                <span class="one">
+                  {{item.supply_name||item.com_name}}
+                </span>
+                <span class="mr-10 two">
+                  {{item.desc}}
+                </span>
+              </div>
+              <div class="step-item" v-if="item.remark">
+                {{item.remark}}
+              </div>
+            </template>
+          </a-step>
+        </a-steps>
+      </a-row>
     </section>
   </a-form>
 </template>
@@ -330,7 +350,9 @@
 <script>
 import {
   get_bid_base_info, // 合同详情
-  save_bid_contract_info // 添加编辑合同
+  save_bid_contract_info, // 添加编辑合同
+  showContract, // 预览
+  downloadContract // 下载
 } from "@admin/api/bidsContract";
 export default {
   components: {
@@ -350,6 +372,7 @@ export default {
       },
       code: "",
       formData: {},
+      stepsCurrent:1,
     };
   },
   created() {
@@ -381,23 +404,16 @@ export default {
               width: "10%"
             });
           }
+          this.stepsCurrent = formData.log_list&&formData.log_list.length;
           this.formData = formData;
         })
         .catch(error => this.$message.error(error));
     },
     showContract() {
-      open(
-        this.global.baseUrl +
-          "?c=Pcontract&a=pre_view&code=" +
-          this.formData.code
-      );
+      showContract(this.formData.code)
     },
     downloadContract() {
-      open(
-        this.global.baseUrl +
-          "?c=Pcontract&a=download&code=" +
-          this.formData.code
-      );
+      downloadContract(this.formData.code)
     },
     handleSubmit(e) {
       var self = this;
@@ -407,12 +423,11 @@ export default {
           const values = {
             ...fieldsValue
           };
-          console.log(values)
           save_bid_contract_info(values)
             .then(res => {
               self.$message.success(res.msg);
               let time = setTimeout(() => {
-                self.$router.go(-1);
+                this.$router.replace({path:'/Contract/get_bid_contract_list'})
                 clearTimeout(time);
               }, 1500);
             })
@@ -427,7 +442,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@admin/assets/scss/common";
+@import '~@admin/assets/scss/steps-content';
 #add_contract {
   @include component;
+  @include step-item;
 }
 </style>

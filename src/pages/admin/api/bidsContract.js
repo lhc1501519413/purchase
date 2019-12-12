@@ -1,3 +1,4 @@
+import global from '@common/js/global';
 import request from '@utils/request';
 /* 合同列表 */
 export function get_bid_contract_list(params) {
@@ -52,4 +53,12 @@ export function get_bid_base_info(params) {
     method: 'GET',
     params: Object.assign({ c: 'Contract', a: 'get_bid_base_info', token: localStorage.getItem('token') },params),
   })
+}
+/* 预览合同 */
+export function showContract(code) {
+  open(`${global.baseUrl}?c=Pcontract&a=bid_pre_view&code=${code}`);
+}
+/* 下载合同 */
+export function downloadContract(code) {
+  open(`${global.baseUrl}?c=Pcontract&a=bid_download&code=${code}`);
 }

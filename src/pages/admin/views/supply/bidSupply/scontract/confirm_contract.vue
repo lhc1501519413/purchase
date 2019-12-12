@@ -341,7 +341,7 @@
       <h4 class="mt-10">合同文件</h4>
       <a-row class="mt-10">
         <a-col :span='22' :offset='1'>
-          在线合同：关于{{formData.title}}的在线询价合同({{formData.code}}).pdf
+          在线合同：关于{{formData.title}}的合同({{formData.code}}).pdf
           <a href="javascript:;" @click="showContract">预览合同</a>
           <a href="javascript:;" @click="downloadContract">下载合同</a>
         </a-col>
@@ -362,7 +362,7 @@
         </a-col>
       </a-row>
       <h4 class="mt-10">流转日志</h4>
-      <a-row class="mt-10">
+      <a-row class="mt-10 ml-10">
         <a-steps progressDot :current="stepsCurrent" direction="vertical">
           <a-step v-for="(item,index) of formData.log_list||[]" :key="index" :title="item.create_time">
             <template slot="description">
@@ -390,7 +390,9 @@ import {
   get_bid_base_info, // 合同详情
   save_bid_scontract_info, // 添加编辑合同
   confirm_bid_scontract, // 确认
-  reback_bid_scontract // 退回
+  reback_bid_scontract, // 退回
+  showContract, // 预览
+  downloadContract // 下载
 } from '@admin/api/bidsContractSupply';
 const columns = [
   {
@@ -624,12 +626,12 @@ export default {
         onCancel() {},
       });
     },
-    showContract(){
-      open(this.global.baseUrl + "?c=Pcontract&a=pre_view&code="+this.formData.code);
+    showContract() {
+      showContract(this.formData.code)
     },
-    downloadContract(){
-      open(this.global.baseUrl+"?c=Pcontract&a=download&code="+this.formData.code);
-    }
+    downloadContract() {
+      downloadContract(this.formData.code)
+    },
   },
 };
 </script>

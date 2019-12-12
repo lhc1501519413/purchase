@@ -37,20 +37,19 @@
           （1）尚未注册后勤物资采购云平台（网址：
           <a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/index"
+            href="http://smart.acuit.net/bid"
             target="_blank"
-          >http://smart.acuit.net/bid/#/index</a>
+          >http://smart.acuit.net/bid</a>
           ）正式供应商的应先进行注册申请，注册流程详见“后勤物资采购云平台—服务中心—入驻指南”，或网址：
           <a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/help"
+            href="http://smart.acuit.net/bid/#/check_in_guide"
             target="_blank"
-          >http://smart.acuit.net/bid/#/help</a>。
+          >http://smart.acuit.net/bid/#/check_in_guide</a>。
         </div>
         <div class="text-indent-35 mb-10">
-          （2）供应商注册成功后，登录平台选择对应项目的项目公告中点击【我要获取】或者点击“我的工作台”，进入“获取采购文件”菜单，点击对应项目中的”获取“按钮，填写获取采购文件的申请信息【联系人姓名、手机号、邮箱、地址为必填项】，填写完整后点击右下角“确定”按钮提交，待采购方审核通过后可下载采购文件。
+          （2）供应商注册成功后，登录平台选择对应项目的项目公告中点击【获取采购文件】或者点击“我的工作台”，进入“获取采购文件”菜单，点击对应项目中的”获取“按钮，填写获取采购文件的申请信息【联系人姓名、手机号、邮箱、地址为必填项】，填写完整后点击右下角“确定”按钮提交，待采购方审核通过后可下载采购文件。
         </div>
-        <div class="text-indent-35 mb-10">采购文件售价：人民币0元</div>
         <h3>七、开标评标时间和地址</h3>
         <div class="text-indent-35 mb-10">开标时间：{{formData.open_time}}</div>
         <div class="text-indent-35 mb-10">开标地址：{{formData.open_address}}</div>
@@ -61,20 +60,12 @@
         <div class="text-indent-35 mb-10">
           ②在线提交电子投标文件：投标截止时间前在后勤物资采购云平台（网址：<a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/index"
+            href="http://smart.acuit.net/bid"
             target="_blank"
-          >http://smart.acuit.net/bid/#/index</a>）完成电子投标文件的加密传输提交；
+          >http://smart.acuit.net/bid</a>）完成电子投标文件的加密传输提交；
         </div>
         <div class="text-indent-35 mb-10">
-          ③投标文件的备份电子文件和纸质投标文件：投标截止时间前，提交投标文件的备份电子文件一份（U盘，勿加密）和纸质投标文件一份，提交地址为【投标文件递交地址】
-        </div>
-        <div class="text-indent-35 mb-10">
-          投标文件递交地址：供应商通过平台
-          <a
-            class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/index"
-            target="_blank"
-          >http://smart.acuit.net/bid/#/index</a>在线提交投标文件。
+          ③投标文件的备份电子文件和纸质投标文件：投标截止时间前，提交投标文件的备份电子文件一份（U盘，勿加密）和纸质投标文件一份，提交地址为【{{formData.submit_address}}】
         </div>
         <div class="text-indent-35 mb-10">注：供应商需注册并审核通过，并且在规定时间内在线成功获取采购文件后，可在【投标文件管理】模块在线提交投标文件。</div>
         <h3>八、投标保证金</h3>
@@ -93,9 +84,9 @@
         <div class="text-indent-35 mb-10">
           3.电子投标具体流程文档详见“服务中心——投标指南”，或网址：<a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/help"
+            href="http://smart.acuit.net/bid/#/tender_guide"
             target="_blank"
-          >http://smart.acuit.net/bid/#/help</a>。
+          >http://smart.acuit.net/bid/#/tender_guide</a>。
         </div>
         <h3>十、其他事项</h3>
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>
@@ -114,8 +105,8 @@
         <div class="text-right pr-20">{{formData.create_time}}</div>
         <h3>附件信息</h3>
         <ul class="ml-30">
-          <li v-for="item of formData.fileList" :key='item.id'>
-            <a>{{item.file_name}}</a>{{item.file_size}}
+          <li v-for="item of formData.file_list" :key='item.id'>
+            <a :href="item.full_path" target="_blank">{{item.file_name}}</a>
           </li>
         </ul>
       </div>
@@ -135,79 +126,13 @@ export default {
     return {
       id: "",
       formData: {},
-      area_list:[],
-      columns: [
-        {
-          title: "序号",
-          customRender: (text, record, index) => `${index + 1}`,
-          width: "14%",
-          align: "center"
-        },
-        {
-          title: "商品名称",
-          dataIndex: "stock_name",
-          width: "14%",
-          align: "center"
-        },
-        {
-          title: "品牌",
-          dataIndex: "brand",
-          width: "14%",
-          align: "center"
-        },
-        {
-          title: "规格",
-          dataIndex: "standard",
-          width: "14%",
-          align: "center"
-        },
-        {
-          title: "采购单位",
-          dataIndex: "price_unit_name",
-          width: "14%",
-          align: "center"
-        },
-        {
-          title: "预估采购数量",
-          dataIndex: "number",
-          width: "14%",
-          align: "center"
-        },
-        {
-          title: "提供产品检测报告",
-          dataIndex: "is_exam",
-          width: "14%",
-          align: "center",
-          scopedSlots: { customRender: "is_exam" }
-        }
-      ],
-      pagination: {
-        showQuickJumper: true,
-        showTotal: () => {
-          return `共${this.formData.stock_list.length}条数据`;
-        }
-      }
+      area_list:[]
     };
   },
   created() {
     this.father.selectedKeys = ['/Bid/notice_list'];
     this.id = this.$route.query.id;
     this.get_notice_info_method();
-  },
-  filters: {
-    is_exam(key) {
-      switch (key) {
-        case 1:
-          return "是";
-          break;
-        case "1":
-          return "是";
-          break;
-        default:
-          return "否";
-          break;
-      }
-    }
   },
   methods: {
     get_notice_info_method() {

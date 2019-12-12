@@ -41,5 +41,3 @@ export function judge_supply_report(params) {
     params: Object.assign({ c: 'Sbid', a: 'judge_supply_report',token:localStorage.getItem('token') },params)
   })
 }
-
-

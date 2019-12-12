@@ -132,7 +132,6 @@ export default {
   created() {
     this.father.selectedKeys = ['/Sbid/tender_list'];
     this.status = this.$route.params.status || '0';
-    this.keyword = this.$route.query.bid_code || '';
     this.tender_list_method();
     this.get_tree_data();
   },
