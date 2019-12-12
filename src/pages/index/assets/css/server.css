@@ -4,21 +4,21 @@
   }
 
   #tender,#check_in,#evaluate {
-    width: 210mm;
+    width: 65%;
     height: 100%;
+    padding:1px 60px;
     background-color: #fff;
-    margin: 0 auto;
+    margin: 20px auto;
     color: #000;
     font-size: 16px;
     /* font-family: 'Calibri', 'SimSun'; */
   }
-
   #app {
     padding-top: 100px;
     padding-bottom: 200px;
   }
   .img_width{
-    width: 100%;
+    width: 90%;
   }
   .img_center{
     display: block;

@@ -31,13 +31,13 @@
           <a class="ant-dropdown-link server"> 服务中心 <a-icon type="down" /> </a>
           <a-menu slot="overlay">
             <a-menu-item>
-              <router-link to='/check_in_guide'>入住指南</router-link>
+              <router-link to='/check_in_guide'>入驻指南</router-link>
             </a-menu-item>
             <a-menu-item>
               <router-link to='tender_guide'>投标指南</router-link>
             </a-menu-item>
             <a-menu-item>
-              <router-link to='evaluate_guide'>评价指南</router-link>
+              <router-link to='evaluate_guide'>评标指南</router-link>
             </a-menu-item>
           </a-menu>
         </a-dropdown>

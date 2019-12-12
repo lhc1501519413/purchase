@@ -66,7 +66,7 @@
             @click="showModal(record.bid_code)"
           >解密</a>
           <router-link
-            v-if="priv.open_sbid_list.view&&record.status==14&&(record.bid_status!=20||record.bid_status!=21)"
+            v-if="priv.open_sbid_list.view&&record.status==14&&record.is_elect==1&&(record.bid_status!=20||record.bid_status!=21)"
             :to="{path:'/Sbid/bid_result',query:{id:record.bid_id}}"
           >
             中标信息

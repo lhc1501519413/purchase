@@ -290,7 +290,7 @@
           <div class="mb-10">基准价得分：{{formData.eval_method_info.eval_standard_ext.standard_price}}</div>
           <div>每百分点分值：{{formData.eval_method_info.eval_standard_ext.per_percent_point}}</div>
         </a-col>
-        <a-col :span="10" v-else>
+        <a-col :span="10" v-if='formData.eval_method_info.eval_standard_type==3'>
           <div class="mb-10">正偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.up_percent_point}}</div>
           <div>负偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.down_percent_point}}</div>
         </a-col>

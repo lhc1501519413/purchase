@@ -29,13 +29,13 @@
     <p class="line-height">点击链接 <a href="http://smart.acuit.net/upload/dl/key_soft.zip">http://smart.acuit.net/upload/dl/key_soft.zip</a> 获取安装包。</p>
     <p class="line-height">1）ZJCA 数字证书安装软件</p>
     <p class="line-height">选择简体中文语言，点击确认后，按照安装步骤进行安装即可。</p>
-    <img class="img_center" src="../../assets/images/tender/图片 11.png" alt="">
+    <img class="img_center"  src="../../assets/images/tender/图片 11.png" alt="">
     <p class="line-height">2）ESign_安装软件</p>
-    <img class="img_center" src="../../assets/images/tender/图片 12.png" alt="">
+    <img class="img_center" style="width:50%" src="../../assets/images/tender/图片 12.png" alt="">
     <p class="line-height">①点击“一键安装”后，若跳出如下提醒后，将谷歌、火狐等浏览器关闭后点击确定重试。</p>
     <img class="img_center" src="../../assets/images/tender/图片 9.png" alt="">
     <p class="line-height">②安装完成后，点击“开始使用”后，跳出如下弹窗，选择UKEY种类，或识别当前UKey。选择完成后，即可使用。</p>
-    <img class="img_center" style="width:60%" src="../../assets/images/tender/图片 10.png" alt="">
+    <img class="img_center" style="width:50%" src="../../assets/images/tender/图片 10.png" alt="">
     <p class="line-height">3）打开服务软件</p>
     <p class="line-height">运行bin文件夹中server.exe。</p>
     <p class="line-height bold">2. 投标文件制作</p>

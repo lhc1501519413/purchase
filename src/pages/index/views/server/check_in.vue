@@ -1,5 +1,6 @@
 <template>
   <div id="check_in">
+    <div>
     <p class="center first_title">后勤物资采购云平台供应商注册操作说明</p>
     <p >供应商首先需在平台注册账号，完善供应商基本信息提交审核机构审核，审核通过后成为正式供应商。</p>
     <img src="../../assets/images/check_in/1.png" alt="">
@@ -61,6 +62,7 @@
     <br>
     <br>
     <br>
+    </div>
   </div>
 </template>
 

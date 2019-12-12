@@ -66,11 +66,7 @@
               :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
             >确认</router-link>
             <router-link
-              v-if="priv.open_bid_list.open&&record.status==15"
-              :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
-            >开标评标</router-link>
-            <router-link
-              v-if="priv.open_bid_list.open&&record.status==16"
+              v-if="priv.open_bid_list.open&&record.open_key&&(record.status==15||record.status==16)"
               :to="{path:'/Bid/open_bid',query:{bid_code:record.code}}"
             >开标评标</router-link>
             <router-link
@@ -85,7 +81,7 @@
               @click="show_bid_fail(record.code)">
               流标信息
             </a>
-            <a disabled v-if="priv.open_bid_list.view&&(record.status==20||record.status==21)">开标评标</a>
+            <!-- <a disabled v-if="priv.open_bid_list.view&&(record.status==20||record.status==21)">开标评标</a> -->
             <router-link
               v-if="priv.open_bid_list.view&&record.status==21"
               :to="{path:'/Bid/scrap',query:{bid_code:record.code}}"
@@ -296,7 +292,11 @@ export default {
       params.bid_type = this.bid_type;
       open_bid_list(params)
         .then(res => {
-          this.dataSource = res.data.list || [];
+          var list = res.data.list || [];
+          list.forEach(elem=>{
+            elem.open_key = new Date(elem.open_time).getTime()>new Date().getTime()
+          })
+          this.dataSource = list;
           this.total = +res.data.total_count;
         })
         .catch(error => this.$message.error(error));
@@ -311,16 +311,7 @@ export default {
         this.ModalVisible = true;
       }).catch(error=>this.$message.error(error))
     },
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFieldsAndScroll((err, fieldsValue) => {
-        if (!err) {
-          const values = {
-            ...fieldsValue,
-          };
-        }
-      });
-    }
+    handleSubmit(e) {},
   }
 };
 </script>
