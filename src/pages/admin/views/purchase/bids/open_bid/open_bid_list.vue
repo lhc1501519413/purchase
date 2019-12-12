@@ -294,7 +294,7 @@ export default {
         .then(res => {
           var list = res.data.list || [];
           list.forEach(elem=>{
-            elem.open_key = new Date(elem.open_time).getTime()>new Date().getTime()
+            elem.open_key = new Date(elem.open_time).getTime()<new Date().getTime()
           })
           this.dataSource = list;
           this.total = +res.data.total_count;
