@@ -135,6 +135,10 @@ export default {
         this.group_leader = res.data.group_leader;
         this.judge_info = res.data;
       }).catch(error=>this.$message.error(error))
+      console.log(!!this.$refs.child.get_judge_result)
+      if(!!this.$refs.child.get_judge_result){
+        this.$refs.child.get_judge_result()
+      }
     },
     download_tender_file() {
       var step;

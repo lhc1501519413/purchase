@@ -174,7 +174,7 @@ export function get_judge_result(bid_code) {
 }
 /* 标记推荐供应商 */
 export function save_judge_supply_elect(data) {
-  return request({
+  return requestcodemsg({
     method: 'POST',
     params: { c: 'Judge', a: 'save_judge_supply_elect', token: localStorage.getItem('token') },
     data

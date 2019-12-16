@@ -56,8 +56,8 @@
         :pagination="false"
         rowKey="id"
       >
-        <template slot="status" slot-scope="value">
-          <span>{{value|status}}</span>
+        <template slot="status" slot-scope="value,record">
+          <span>{{value|status(record)}}</span>
         </template>
         <template slot="operation" slot-scope="text,record">
           <a
@@ -363,7 +363,8 @@ export default {
     };
   },
   filters: {
-    status: key => {
+    status: (key,record)=>{
+      if(record.bid_status==20||record.bid_status==21) return '已流标'
       switch (key) {
         case "8":
           return "待开标";

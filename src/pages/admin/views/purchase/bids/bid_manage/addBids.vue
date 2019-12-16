@@ -1,6 +1,14 @@
 <template>
   <a-form id="bids" :form="form" @submit="handleSubmit">
     <h5>招标管理 / 招标项目管理 / {{formData.code?'编辑项目':'新增项目'}}</h5>
+    <h3 v-if="code">
+      <span>
+        项目编号：{{formData.custom_code}}
+      </span>
+      <span class="ml-20" v-if="formData.from_custom_code">
+        关联项目编号：{{formData.from_custom_code}}
+      </span>
+    </h3>
     <a-form-item class="button-container">
       <div align="center">
         <a-button type="primary" html-type="submit">保存</a-button>
@@ -420,6 +428,7 @@ export default {
         labelCol: { span: 7 },
         wrapperCol: { span: 15 }
       },
+      code:'',
       formData: {
         id: "",
         title: "", //标题
@@ -562,6 +571,7 @@ export default {
   },
   created() {
     this.father.selectedKeys = ['/Bid/bid_list'];
+    this.code = this.$route.query.code;
     var id = this.$route.query.id;
     id && this.get_bid_info_method(id);
     this.get_tree_data();

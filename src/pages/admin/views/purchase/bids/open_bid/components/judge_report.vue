@@ -57,7 +57,7 @@ export default {
           width: "10%"
         },
         {
-          title: "最终报价（万元）",
+          title: "最终报价（元）",
           dataIndex: "report_money",
           width: "10%"
         },
@@ -74,9 +74,9 @@ export default {
     status(key){
       switch (key) {
         case '1':
-          return '符合'
+          return '有效'
         case '2':
-          return '不符合'
+          return '无效'
         default:
           return ''
       }

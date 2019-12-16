@@ -53,6 +53,15 @@
           <router-link v-if='priv.bid_contract_list.confirm && text.status==4' :to="{path:'/Contract/confirm_contract',query:{code:text.code}}">
             确认
           </router-link>
+          <!-- <a v-if='priv.bid_contract_list.import && text.status==8' @click="import_bid_contract(text.code)">
+            导入
+          </a>
+          <a v-if='priv.bid_contract_list.end && text.status==8' @click="end_bid_contract(text.code)">
+            结束
+          </a>
+          <a v-if='priv.bid_contract_list.end && text.status==12' @click="end_bid_contract(text.code)">
+            结束
+          </a> -->
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" v-model="page" @change="paginationChange" />
@@ -63,7 +72,9 @@
 <script>
 import {
   get_bid_contract_list, // 合同列表
-  submit_bid_contract // 提交合同
+  submit_bid_contract, // 提交合同
+  import_bid_contract, // 导入合同
+  end_bid_contract, // 结束合同
 } from '@admin/api/bidsContract';
 
 export default {
@@ -84,6 +95,9 @@ export default {
         {value:'3',label:'供应商已退回'},
         {value:'4',label:'待确认'},
         {value:'8',label:'已完成'},
+        {value:'10',label:'已导入'},
+        {value:'12',label:'使用中'},
+        {value:'14',label:'已结束'}
       ],
       page:1,
       dataSource: [],
@@ -153,6 +167,12 @@ export default {
           return '待确认'
         case '8':
           return '已完成'
+        case '10':
+          return '已导入'
+        case '12':
+          return '使用中'
+        case '14':
+          return '已结束'
         default:
           return '未知状态'
       }
@@ -197,6 +217,37 @@ export default {
       this.page = page;
       this.get_bid_contract_list_method();
     },
+    import_bid_contract(code){
+      var self = this;
+      this.$confirm({
+        title: '确认导入此合同？',
+        onOk() {
+          import_bid_contract({code}).then(res=>{
+            self.$message.success(res.msg)
+            self.get_bid_contract_list_method();
+          }).catch(error=>{
+            self.$message.error(error)
+          })
+        },
+        onCancel() {},
+      });
+    },
+    end_bid_contract(code){
+      var self = this;
+      this.$confirm({
+        title: '警告',
+        content:'此项目配送数量未达到整体数量的90%以上，确认结束合同吗？请谨慎操作？',
+        onOk() {
+          end_bid_contract({code}).then(res=>{
+            self.$message.success(res.msg)
+            self.get_bid_contract_list_method();
+          }).catch(error=>{
+            self.$message.error(error)
+          })
+        },
+        onCancel() {},
+      });
+    }
   },
 };
 </script>

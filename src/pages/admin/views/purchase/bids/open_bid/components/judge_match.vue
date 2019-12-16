@@ -24,12 +24,9 @@
             </template>
           </a-table>
           <h4>评审意见</h4>
-          <a-row>
-            <a-col :span="3" class="text-right" >【{{item.username}}】评审意见：</a-col>
-            <a-col :span="13">
-              {{item.opinion}}
-            </a-col>
-          </a-row>
+          <div class="ml-20">
+            【{{item.username}}】评审意见：{{item.opinion}}
+          </div>
         </a-tab-pane>
       </a-tabs>
     </section>

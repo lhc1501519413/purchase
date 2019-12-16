@@ -374,10 +374,11 @@
                 slot-scope="text, record"
               >
                 <div :key="col">
-                  <a-input
+                  <a-textarea 
                     style="margin: -5px 0"
                     :value="text"
                     @change="e => handleChange(e.target.value, record.key, col, record.id)"
+                    :rows="4"
                   />
                 </div>
               </template>
@@ -583,10 +584,11 @@
                 slot-scope="text, record"
               >
                 <div :key="col">
-                  <a-input
+                  <a-textarea 
                     style="margin: -5px 0"
                     :value="text"
                     @change="e => handleChangeGrade(e.target.value, record.key, col, record.id)"
+                    :rows="4" 
                   />
                 </div>
               </template>
@@ -830,31 +832,32 @@ export default {
         {
           slots: { title: "nameTitle" },
           dataIndex: "name",
-          width: "20%",
+          width: "14%",
           scopedSlots: { customRender: "name" }
         },
         {
           slots: { title: "judge_standardTitle" },
           dataIndex: "judge_standard",
-          width: "28%",
+          width: "49%",
           scopedSlots: { customRender: "judge_standard" }
         },
         {
           slots: { title: "gistTitle" },
           dataIndex: "gist",
-          width: "20%",
+          width: "15%",
           scopedSlots: { customRender: "gist" }
         },
         {
           slots: { title: "max_scoreTitle" },
           dataIndex: "max_score",
-          width: "20%",
+          width: "10%",
           scopedSlots: { customRender: "max_score" }
         },
         {
           title: "操作",
           dataIndex: "operation",
-          width: "10%",
+          width: "6%",
+          align: "center",
           scopedSlots: { customRender: "operation" }
         }
       ],
@@ -1062,6 +1065,12 @@ export default {
       this.formData.quality_info = quality_list.filter(item => item.id !== id);
     },
     handleChange(value, key, column, id) {
+      // const elem = event.target;
+      // const style = getComputedStyle(elem);
+      // const lineHeight = style.lineHeight.slice(0,-2);
+      // const {scrollHeight} = elem;
+      // let rowsNum = Math.round(scrollHeight / lineHeight)
+      // elem.setAttribute('rows', rowsNum)
       const newData = this.formData.quality_info || [];
       let index = newData.indexOfObj("id", id);
       const target = newData.filter(item => key === item.key)[index];
@@ -1372,6 +1381,9 @@ export default {
   .wenjian {
     width: 17px;
     height: 17px;
+  }
+  textarea::-webkit-scrollbar {
+    width: 5px;
   }
   .bid-rule {
     .ant-col-11 {

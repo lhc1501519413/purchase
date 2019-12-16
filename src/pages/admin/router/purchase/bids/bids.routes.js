@@ -20,6 +20,16 @@ export default [
     }
   },
   {
+    path: '/bidRelevance',
+    name: 'bidRelevance',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bid_manage/bidRelevance'),
+    meta: {
+      title: '关联项目',
+      permission: true
+    }
+  },
+  {
     path: '/auditBid',
     name: 'auditBid',
     component: () =>

@@ -23,13 +23,9 @@
             </template>
           </a-table>
           <h4>评审意见</h4>
-          <!-- <a-row v-for="item of judge_quality_grade" :key="item.user_id" class="mb-10"> -->
-          <a-row>
-            <a-col :span="3" class="text-right">【{{item.username}}】评审意见：</a-col>
-            <a-col :span="13">
-              {{item.opinion}}
-            </a-col>
-          </a-row>
+          <div class="ml-20">
+            【{{item.username}}】评审意见：{{item.opinion}}
+          </div>
         </a-tab-pane>
       </a-tabs>
     </section>
@@ -63,12 +59,12 @@ export default {
         {
           title: "评分项目",
           dataIndex: "name",
-          width: "10%"
+          width: "15%"
         },
         {
           title: "评分标准",
           dataIndex: "judge_standard",
-          width: "10%"
+          width: "20%"
         },
         {
           title: "最高得分",

@@ -151,6 +151,7 @@ export default {
           width: "20%"
         }
       ],
+      /* 达成流标条件 */
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },

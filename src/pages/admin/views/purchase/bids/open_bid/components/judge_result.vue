@@ -13,12 +13,9 @@
         </template>
       </a-table>
       <h4>评审意见</h4>
-      <a-row v-for="item of opinion_list" :key='item.user_id' class="mb-10">
-        <a-col :span="3" class="text-right">【{{item.realname}}】评审意见：</a-col>
-        <a-col :span="13">
-          {{item.opinion}}
-        </a-col>
-      </a-row>
+      <div class="ml-20 mb-10" v-for="item of opinion_list" :key='item.user_id'>
+        【{{item.realname}}】评审意见：{{item.opinion}}
+      </div>
       <h4>其他</h4>
       <a-row>
         <a-col :span="3" class="text-right">比较和评价：</a-col>

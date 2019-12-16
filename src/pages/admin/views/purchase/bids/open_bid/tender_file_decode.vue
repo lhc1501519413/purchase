@@ -14,6 +14,11 @@
       </div>
     </h5>
     <section class="content">
+      <div v-if="judge_info.decrypt_time">
+        供应商
+        <span class="ml-10 mr-10">{{decrypt_end_time}}</span>
+        完成解密后（时限30分钟），可以结束解密
+      </div>
       <a-table
         class="table"
         :dataSource="dataSource"
@@ -160,7 +165,7 @@ export default {
           width: "10%"
         },
         {
-          title: "操作",
+          title: "状态",
           dataIndex: "status",
           scopedSlots: { customRender: "status" },
           width: "10%"
@@ -206,6 +211,9 @@ export default {
       get_judge_info(this.bid_code)
         .then(res => {
           this.judge_info = res.data;
+          if(res.data.decrypt_time){
+            this.decrypt_end_time = this.$moment(res.data.decrypt_time).add(0.5, 'd').format('YYYY-MM-DD hh:mm:ss');
+          }
         })
         .catch(error => this.$message.error(error));
     },

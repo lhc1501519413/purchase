@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        // target: 'http://192.168.2.134/cloud.php',
-        target: 'http://demo.acuit.net/cloud.php',
+        target: 'http://192.168.2.134/cloud.php',
+        // target: 'http://demo.acuit.net/cloud.php',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

@@ -456,7 +456,6 @@ export default {
   created() {
     this.father.selectedKeys = ['/Inquiry/get_inquiry_list'];
     this.code = this.$route.query.code;
-    // this.id = this.$route.query.id;
     this.get_inquiry_info_method(this.code);
     this.get_tree_data();
   },
@@ -578,7 +577,6 @@ export default {
             }
             values.stock_list = stock_list;
             values.status = 1;
-            // values.id = this.id;
             values.from_inquiry_code = this.code;
           }
           save_inquiry(values)

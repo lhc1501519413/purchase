@@ -3,7 +3,7 @@
     <section class="content">
       <h4>资格审查</h4>
       <a-table 
-        v-if='judge_quality&&judge_quality.length>0'
+        v-if='is_need'
         class="table" 
         :dataSource="judge_quality" 
         :columns="columns" 
@@ -213,6 +213,7 @@ export default {
       ModalVisible: false,
       supply_id: "",
       quality_list: [],
+      is_need:0,
       columns2: [
         {
           title: "序号",
@@ -247,6 +248,7 @@ export default {
           width: "10%"
         }
       ],
+      /* 达成流标条件 */
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },
@@ -271,8 +273,9 @@ export default {
     get_judge_quality() {
       get_judge_quality(this.bid_code)
         .then(res => {
-          this.judge_quality = res.data || [];
-          this.supply_id = res.data[0].supply_id;
+          this.judge_quality = res.data.list || [];
+          this.is_need = res.data.is_need;
+          this.supply_id = res.data.list[0].supply_id;
         })
         .catch(error => this.$message.error(error));
     },
@@ -321,6 +324,10 @@ export default {
         bid_code: this.bid_code,
         supply_list: this.judge_quality
       };
+      if(!self.is_need){
+        self.$message.info("本次招标资格审查已在供应商入驻环节完成，请直接进行下一步评审");
+        return;
+      }
       var key1 = formData.supply_list.some(elem => {
         return elem.status == "";
       });

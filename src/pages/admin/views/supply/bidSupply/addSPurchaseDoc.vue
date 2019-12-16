@@ -499,25 +499,25 @@ export default {
         {
           slots: { title: "nameTitle" },
           dataIndex: "name",
-          width: "18%",
+          width: "14%",
           scopedSlots: { customRender: "name" }
         },
         {
           slots: { title: "judge_standardTitle" },
           dataIndex: "judge_standard",
-          width: "18%",
+          width: "40%",
           scopedSlots: { customRender: "judge_standard" }
         },
         {
           slots: { title: "gistTitle" },
           dataIndex: "gist",
-          width: "18%",
+          width: "12%",
           scopedSlots: { customRender: "gist" }
         },
         {
           slots: { title: "max_scoreTitle" },
           dataIndex: "max_score",
-          width: "13%",
+          width: "10%",
           scopedSlots: { customRender: "max_score" }
         },
         {

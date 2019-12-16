@@ -22,7 +22,7 @@
         </template>
         <template slot="operation" slot-scope="text">
           <div v-if="text.status==1||text.status==3">
-            <router-link v-if="priv.bid_list.edit" :to="{path:'/addBids',query:{id:text.id}}">
+            <router-link v-if="priv.bid_list.edit" :to="{path:'/addBids',query:{id:text.id,code:text.custom_code}}">
               编辑
             </router-link>
             <router-link v-if="priv.bid_list.view" :to="{path:'/bidDetail',query:{id:text.id}}">
@@ -58,6 +58,9 @@
             @click="show_bid_fail(text.code)">
             流标信息
           </a>
+          <!-- <router-link v-if="priv.bid_list.add&&text.show_copy" :to="{path:'/bidRelevance',query:{id:text.id,code:text.custom_code}}">
+            关联
+          </router-link> -->
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -159,7 +162,11 @@ export default {
         {value:'17',label:'采购方确认中'},
         {value:'18',label:'采购结果公告已发布'},
         {value:'19',label:'中标通知书已发布'},
-        {value:'20,21',label:'已流标'}
+        {value:'20,21',label:'已流标'},
+      /*   {value:'22',label:'合同确认中'},
+        {value:'23',label:'合同已导入'},
+        {value:'24',label:'合同生效中'},
+        {value:'25',label:'合同已结束'}, */
       ],
       bid_type:'',
       bid_type_list:[
@@ -255,6 +262,14 @@ export default {
           return '已流标'
         case '21':
           return '已流标'
+        // case '22':
+        //   return '合同确认中'
+        // case '23':
+        //   return '合同已导入'
+        // case '24':
+        //   return '合同生效中'
+        // case '25':
+        //   return '合同已结束'
         default:
           return '未知状态'
       }

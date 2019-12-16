@@ -461,22 +461,22 @@ export default {
         {
           slots: { title: "nameTitle" },
           dataIndex: "name",
-          width: "20%"
+          width: "15%"
         },
         {
           slots: { title: "judge_standardTitle" },
           dataIndex: "judge_standard",
-          width: "28%"
+          width: "50%"
         },
         {
           slots: { title: "gistTitle" },
           dataIndex: "gist",
-          width: "20%"
+          width: "15%"
         },
         {
           slots: { title: "max_scoreTitle" },
           dataIndex: "max_score",
-          width: "20%"
+          width: "10%"
         }
       ],
       pagination: {

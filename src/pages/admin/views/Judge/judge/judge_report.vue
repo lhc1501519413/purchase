@@ -28,7 +28,7 @@
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
     >
-      <h3 slot="title">在线资格评审</h3>
+      <h3 slot="title">在线报价评审</h3>
       <h4>
         <span>{{judge_info.title}}</span>
         <div class="text-right pr-20">
@@ -67,7 +67,7 @@
         :pagination="false"
         rowKey="id"
       >
-        <template slot="is_match" slot-scope="value">{{value==1?'是':'否'}}</template>
+        <template slot="is_match" slot-scope="value">{{value|is_match}}</template>
       </a-table>
     </a-modal>
     <a-modal
@@ -219,6 +219,12 @@ export default {
           align: "center"
         },
         {
+          title: "产品参数",
+          dataIndex: "note",
+          width: "6%",
+          align: "center"
+        },
+        {
           title: "采购单位",
           dataIndex: "price_unit_name",
           width: "6%",
@@ -239,23 +245,30 @@ export default {
         {
           title: "响应品牌",
           dataIndex: "response_brand",
-          width: "9%",
+          width: "7%",
           align: "center"
         },
         {
           title: "响应规格",
           dataIndex: "response_standard",
-          width: "9%",
+          width: "7%",
           align: "center"
         },
         {
-          title: "是否符合",
-          dataIndex: "is_match",
+          title: "响应产品参数",
+          dataIndex: "response_note",
           width: "8%",
+          align: "center"
+        },
+        {
+          title: "是否偏离",
+          dataIndex: "is_match",
+          width: "7%",
           align: "center",
           scopedSlots: { customRender: "is_match" }
         }
       ],
+      /* 达成流标条件 */
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },
@@ -268,6 +281,18 @@ export default {
         file_list: []
       },
     };
+  },
+  filters:{
+    is_match(key){
+      switch (key) {
+        case '1':
+          return '正偏离'
+        case '0':
+          return '无偏离'
+        case '-1':
+          return '负偏离'
+      }
+    }
   },
   created() {
     this.father.current = 4;

@@ -28,7 +28,7 @@
       @ok="ModalVisible = false"
       @cancel="ModalVisible = false"
     >
-      <h3 slot="title">在线资格评审</h3>
+      <h3 slot="title">在线电子评标</h3>
       <h4>
         <span>{{judge_info.title}}</span>
         <div class="text-right pr-20">
@@ -189,7 +189,7 @@ export default {
         {
           title: "评分标准",
           dataIndex: "judge_standard",
-          width: "10%"
+          width: "20%"
         },
         {
           title: "最高得分",
@@ -216,7 +216,7 @@ export default {
         {
           title: "评分标准",
           dataIndex: "judge_standard",
-          width: "15%"
+          width: "35%"
         },
         {
           title: "判定依据",
@@ -226,7 +226,7 @@ export default {
         {
           title: "最高得分",
           dataIndex: "max_score",
-          width: "15%"
+          width: "10%"
         },
         {
           title: "附件",
@@ -240,6 +240,7 @@ export default {
           width: "10%"
         }
       ],
+      /* 达成流标条件 */
       form: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 6 },

@@ -54,6 +54,7 @@ export default {
       bid_code: this.$route.query.bid_code,
       activeKey: "",
       judge_quality: [],
+      is_need:0,
       columns: [
         {
           title: "序号",
@@ -89,8 +90,9 @@ export default {
     refresh(){
       get_judge_quality(this.bid_code)
       .then(res => {
-        this.judge_quality = res.data || [];
-        this.activeKey = res.data[0].user_id;
+        this.judge_quality = res.data.list || [];
+        this.is_need = res.data.is_need;
+        this.activeKey = res.data.list[0].user_id;
       })
       .catch(error => this.$message.error(error));
     },
