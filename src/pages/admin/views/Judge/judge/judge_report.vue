@@ -19,7 +19,7 @@
       class="judge-modal"
       :afterClose="afterClose"
       :destroyOnClose="true"
-      style="top: 10%;"
+      style="top: 7%;"
       width="70%"
       :visible="ModalVisible"
       :keyboard="false"
@@ -62,6 +62,9 @@
       </div>
       <a-table
         class="mb-20"
+        :scroll='{
+          y:500
+        }'
         :dataSource="stock_list"
         :columns="columns2"
         :pagination="false"

@@ -2,7 +2,10 @@
   <div id="judge_group">
     <h5>
       招标管理 / 评审小组设置
-      <a-button type="primary" v-if="status<14" @click="save">保存</a-button>
+      <div>
+        <a-button @click="$router.go(-1)">返回</a-button>
+        <a-button type="primary" v-if="status<14" @click="save">保存</a-button>
+      </div>
     </h5>
     <a-table
       class="content"

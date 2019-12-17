@@ -75,10 +75,14 @@
             </template>
             <template slot="response_note" slot-scope="value,record">
               <span class="hide">{{record.response_note}}</span>
-              <input type="text" v-model="record.response_note" />
+              <a-textarea
+                placeholder="请输入响应产品参数"
+                :rows="2"
+                v-model="record.response_note"
+              />
             </template>
             <template slot="is_match" slot-scope="value,record">
-              <a-select style="width: 120px"
+              <a-select style="width: 100px"
                 v-model="record.is_match"
               >
                 <a-select-option value="1">正偏离</a-select-option>
@@ -414,28 +418,27 @@ export default {
         {
           title: "响应品牌",
           dataIndex: "response_brand",
-          width: "8%",
+          width: 100,
           align: "center",
           // scopedSlots: { customRender: "response_brand" }
         },
         {
           title: "响应规格",
           dataIndex: "response_standard",
-          width: "8%",
+          width: 100,
           align: "center",
           // scopedSlots: { customRender: "response_standard" }
         },
         {
           title: "响应产品参数",
           dataIndex: "response_note",
-          width: "8%",
+          width: 100,
           align: "center",
           scopedSlots: { customRender: "response_note" }
         },
         {
           title: "偏离信息",
           dataIndex: "is_match",
-          width: "15%",
           align: "center",
           scopedSlots: { customRender: "is_match" }
         }
@@ -588,6 +591,7 @@ export default {
         }
         formData.stock_list.forEach(elem=> elem.new_price = elem.secret_price==''?'':'***')
         this.secret = formData.bid_info.secret;
+        this.secretKey = formData.bid_info.secret;
         if(formData.bid_info.secret){
           encryption({
             serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",
@@ -1034,6 +1038,9 @@ export default {
       line-height: 1.5;
       width: 80%;
     }
+  }
+  textarea::-webkit-scrollbar {
+    width: 5px;
   }
 }
 </style>

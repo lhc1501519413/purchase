@@ -3,6 +3,7 @@
     <h5>
       招标管理 / 投标文件解密
       <div class="btn-container" v-if="status<14">
+        <a-button @click="$router.go(-1)">返回</a-button>
         <a-button type="primary" class="ml-10" @click="failure">流标</a-button>
         <a-button type="primary" class="ml-10" @click="get_open_supply_list">刷新</a-button>
         <a-button
@@ -211,9 +212,7 @@ export default {
       get_judge_info(this.bid_code)
         .then(res => {
           this.judge_info = res.data;
-          if(res.data.decrypt_time){
-            this.decrypt_end_time = this.$moment(res.data.decrypt_time).add(0.5, 'd').format('YYYY-MM-DD hh:mm:ss');
-          }
+          if(res.data.decrypt_time) this.decrypt_end_time = this.$moment(res.data.decrypt_time).add(0.5, 'h').format('YYYY-MM-DD hh:mm:ss');
         })
         .catch(error => this.$message.error(error));
     },

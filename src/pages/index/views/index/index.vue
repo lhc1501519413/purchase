@@ -6,9 +6,9 @@
         <ul class="slogan">
           <li>公平</li>
           <li class="dot"></li>
-          <li>公正</li>
-          <li class="dot"></li>
           <li>公开</li>
+          <li class="dot"></li>
+          <li>公正</li>
         </ul>
       </div>
       <div class="announce">

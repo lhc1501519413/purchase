@@ -237,19 +237,19 @@ export default {
         {
           title: "响应品牌",
           dataIndex: "response_brand",
-          width: "8%",
+          width: 100,
           align: "center",
         },
         {
           title: "响应规格",
           dataIndex: "response_standard",
-          width: "8%",
+          width: 100,
           align: "center",
         },
         {
           title: "响应产品参数",
           dataIndex: "response_note",
-          width: "8%",
+          width: 100,
           align: "center",
         },
         {

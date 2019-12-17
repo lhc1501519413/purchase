@@ -53,7 +53,7 @@
           <router-link v-if='priv.bid_contract_list.confirm && text.status==4' :to="{path:'/Contract/confirm_contract',query:{code:text.code}}">
             确认
           </router-link>
-          <!-- <a v-if='priv.bid_contract_list.import && text.status==8' @click="import_bid_contract(text.code)">
+          <a v-if='priv.bid_contract_list.import && text.status==8' @click="import_bid_contract(text.code)">
             导入
           </a>
           <a v-if='priv.bid_contract_list.end && text.status==8' @click="end_bid_contract(text.code)">
@@ -61,7 +61,7 @@
           </a>
           <a v-if='priv.bid_contract_list.end && text.status==12' @click="end_bid_contract(text.code)">
             结束
-          </a> -->
+          </a>
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" v-model="page" @change="paginationChange" />

@@ -101,7 +101,10 @@
         :columns="columns_stock_list"
         :dataSource="bid_pre_price_info.stock_list"
         rowKey="stock_id"
-        :pagination="pagination_shipping"
+        :pagination="false"
+        :scroll='{
+          y:600
+        }'
       >
         <template
           v-for="(item,index2) of bid_pre_price_info.area_list"
@@ -302,7 +305,7 @@ export default {
             title:'合计数量',
             align:'center',
             dataIndex:'number',
-            width:'10%'
+            width:'6%'
           })
         }
         this.bid_pre_price_info = bid_pre_price_info;

@@ -56,9 +56,10 @@ export function get_bid_base_info(params) {
 }
 /* 预览合同 */
 export function showContract(code) {
-  open(`${global.baseUrl}?c=Pcontract&a=bid_pre_view&code=${code}`);
+  // open(`${global.host}?c=Pcontract&a=bid_pre_view&code=${code}`);
+  open(`http://192.168.2.134/cloud.php?c=Pcontract&a=bid_pre_view&code=${code}`);
 }
 /* 下载合同 */
 export function downloadContract(code) {
-  open(`${global.baseUrl}?c=Pcontract&a=bid_download&code=${code}`);
+  open(`${global.host}?c=Pcontract&a=bid_download&code=${code}`);
 }

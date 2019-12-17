@@ -617,7 +617,7 @@ export default {
               title:'合计数量',
               align:'center',
               dataIndex:'number',
-              width:'10%'
+              width:'6%'
             })
           }
           this.formData = formData;
@@ -744,7 +744,7 @@ export default {
           title:'合计数量',
           align:'center',
           dataIndex:'number',
-          width:'10%'
+          width:'6%'
         })
       }
     },
@@ -798,7 +798,7 @@ export default {
           title:'合计数量',
           align:'center',
           dataIndex:'number',
-          width:'10%'
+          width:'6%'
         })
       }
       this.formData.stock_list.forEach(elem=>{
@@ -824,7 +824,7 @@ export default {
           title:'合计数量',
           align:'center',
           dataIndex:'number',
-          width:'10%'
+          width:'6%'
         })
       }
     },

@@ -248,7 +248,7 @@ export default {
               title:'合计数量',
               align:'center',
               dataIndex:'number',
-              width:'10%'
+              width:'6%'
             })
           }
           this.formData = formData;

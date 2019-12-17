@@ -75,7 +75,10 @@
         :columns="columns_stock_list"
         :dataSource="formData.stock_list"
         rowKey="stock_id"
-        :pagination="pagination_shipping"
+        :scroll="{
+          y: 700
+        }"
+        :pagination="false"
       >
       <template slot="note" slot-scope="text">
         <span class="line-wrap" :title="text">{{text}}</span>
@@ -243,7 +246,7 @@ export default {
               title:'合计数量',
               align:'center',
               dataIndex:'number',
-              width:'10%'
+              width:'6%'
             })
           }
           this.formData = formData;

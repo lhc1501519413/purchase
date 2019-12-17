@@ -43,7 +43,6 @@
             </h4>
             <a-form-item :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }" class="ml-10">
               <a-textarea
-                maxlength="500"
                 placeholder="请输入供应商资格要求"
                 :rows="4"
                 v-decorator="[
@@ -241,7 +240,7 @@
             <a-form-item label="处罚信息" v-bind="formItemLayout">
               由于中标价格原因、配送能力等原因供应商当场放弃中标权利，饮食中心可对其处罚
               <a-input
-                style="width:120px;margin-right:5px;"
+                style="width:80px;margin-right:5px;"
                 placeholder="请输入处罚金额"
                 v-decorator="[
                   'fine_money',
@@ -280,7 +279,6 @@
             <h4>其他事项</h4>
             <a-form-item :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }" class="ml-10">
               <a-textarea
-                maxlength="500"
                 placeholder="请输入其他事项"
                 :rows="4"
                 v-decorator="[

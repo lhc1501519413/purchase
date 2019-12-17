@@ -481,7 +481,7 @@ export default {
           encryption(formData)
             .then(res => {
               if (res.data.result != "") {
-                self.$message.info("解密中，请稍候");
+                self.$message.info("解密中，请勿操作",5000);
                 let obj = {
                   id: self.decrypt_file[0].id,
                   secret_key: res.data.result

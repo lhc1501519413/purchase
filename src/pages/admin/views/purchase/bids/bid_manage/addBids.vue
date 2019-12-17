@@ -112,10 +112,9 @@
               placeholder="请输入联系方式"
               v-decorator="[
                 'contact_number',
-                { 
+                {
                   rules: [
-                    { required: true, message: '请输入联系方式' },
-                    {validator:(rule, value, callback) => this.vali_mobile(rule, value, callback)}
+                    { required: true, message: '请输入联系方式' }
                   ],
                   initialValue:formData.contact_number                 
                 }
@@ -255,16 +254,15 @@
       <a-table
         class="mt"
         bordered
-        :scroll="scroll"
         :columns="columns_stock_list"
         :dataSource="formData.stock_list"
         rowKey="stock_id"
         :pagination="pagination_shipping"
       >
-        <template v-for="(item,index2) of formData.area_list" :slot="item.area_key" slot-scope="text,record,index">
+        <template v-for="(item,index2) of formData.area_list" :slot="item.area_key" slot-scope="text,record">
           <a-input :key='index2' 
             :value="record.area_stock_number[index2].number"
-            @change="e => handleChange(e.target.value, index2, index)"
+            @change="e => handleChange(e.target.value, index2, record.stock_id)"
           ></a-input>
         </template>
         <template slot="operation" slot-scope="text,record">
@@ -449,9 +447,6 @@ export default {
         contact_number: "", // 联系方式
         stock_list: [],
       },
-      scroll:{
-        x: '100%'
-      },
       columns_stock_list:[
         {
           title:'序号',
@@ -488,7 +483,7 @@ export default {
         {
           title:'预估采购数量',
           children: [],
-          width:'50%'
+          width:'65%'
         },
         {
           title:'操作',
@@ -531,6 +526,7 @@ export default {
       all_shipping_region:[], // 全部公司价格配送区域
       all_shipping_region_copy:[],
       pagination_shipping:{
+        showSizeChanger:true,
         showQuickJumper:true,
         pageSizeOptions:['10', '20', '30', '40'],
       },
@@ -614,14 +610,17 @@ export default {
             })
           })
           /* 插入合计列 */
-          if(this.formData.area_list.length>1){
+          if(formData.area_list.length>1){
             this.columns_stock_list[6].children.push({
               title:'合计数量',
               align:'center',
               dataIndex:'number',
-              width:'10%'
+              width:'6%'
             })
           }
+          formData.stock_list.forEach(elem=>{
+            this.selectedRowKeys.push(elem.stock_id)
+          })
           this.formData = formData;
         })
         .catch(error => {
@@ -746,7 +745,7 @@ export default {
           title:'合计数量',
           align:'center',
           dataIndex:'number',
-          width:'10%'
+          width:'6%'
         })
       }
     },
@@ -800,7 +799,7 @@ export default {
           title:'合计数量',
           align:'center',
           dataIndex:'number',
-          width:'10%'
+          width:'6%'
         })
       }
       this.formData.stock_list.forEach(elem=>{
@@ -826,7 +825,7 @@ export default {
           title:'合计数量',
           align:'center',
           dataIndex:'number',
-          width:'10%'
+          width:'6%'
         })
       }
     },
@@ -976,9 +975,10 @@ export default {
       });
       this.formData.stock_list = list;
     },
-    handleChange(value, index2, index) {
-              /*  值   片区下标  商品下标 */
+    handleChange(value, index2, stock_id) {
+              /*  值   片区下标  商品下标 商品id */
       var new_stock_list = [...this.formData.stock_list];
+      var index = new_stock_list.indexOfObj('stock_id',stock_id)
       new_stock_list[index].area_stock_number[index2].number = value;
       new_stock_list[index].number = new_stock_list[index].area_stock_number.reduce((priv,elem)=>{
         return priv+= +elem.number;

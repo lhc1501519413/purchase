@@ -2,11 +2,9 @@ import axios from 'axios'
 import { message } from 'ant-design-vue'
 import store from '@indexStore'
 import global from '@common/js/global';
-import vm from '@admin/admin.js';
 // create an axios instance
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // 生产环境url
-  // baseURL: 'http://192.168.2.134/cloud.php', // 固定 url
   baseURL: global.baseUrl, // 固定 url
   // baseURL: process.env.API, // 开发环境代理跨域
   // withCredentials: true, // send cookies when cross-domain requests
