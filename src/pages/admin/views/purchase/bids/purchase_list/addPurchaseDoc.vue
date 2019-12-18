@@ -238,7 +238,7 @@
               </div>
             </a-form-item>
             <a-form-item label="处罚信息" v-bind="formItemLayout">
-              由于中标价格原因、配送能力等原因供应商当场放弃中标权利，饮食中心可对其处罚
+              由于中标价格原因、配送能力等原因供应商当场放弃中标权利，可对供应商处罚
               <a-input
                 style="width:80px;margin-right:5px;"
                 placeholder="请输入处罚金额"
