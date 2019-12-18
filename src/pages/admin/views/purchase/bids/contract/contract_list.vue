@@ -221,7 +221,7 @@ export default {
     import_bid_contract(code){
       var self = this;
       this.$confirm({
-        title: '确认导入此合同？',
+        title: '将此项目关联的所有合同都导入？',
         onOk() {
           import_bid_contract({code}).then(res=>{
             self.$message.success(res.msg)

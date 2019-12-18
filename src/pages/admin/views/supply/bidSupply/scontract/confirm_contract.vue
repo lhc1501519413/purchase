@@ -153,8 +153,7 @@
               placeholder="请输入传真"
               v-decorator="[
                   'supply_fax',
-                  { 
-                    rules: [{ required: true, message: '请输入传真' }],
+                  {
                     initialValue:formData.supply_fax
                   }
                 ]"

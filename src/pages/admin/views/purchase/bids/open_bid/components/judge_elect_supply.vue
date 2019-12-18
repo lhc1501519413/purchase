@@ -1,12 +1,22 @@
 <template>
   <div class="judge_elect">
     <section class="content">
+      <a-button @click="submit">提交</a-button>
       <a-table class="table" :dataSource="judge_elect" :columns="columns" rowKey="supply_id" :pagination='false'>
         <template slot="area_key" slot-scope="text,record">
-            <!-- mode="multiple" -->
-          <a-select style="width: 100px"
+          <!-- 多选 -->
+          <!-- <a-select style="width: 100px"
+            mode="multiple"
             @focus="select_change(record.supply_id)"
             :disabled="status>=16"
+            v-model="record.area_key"
+          >
+            <a-select-option v-for="item of area_list" :disabled='item.disabled' :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
+          </a-select> -->
+          <!-- 单选 -->
+          <a-select style="width: 100px"
+            allowClear
+            @mouseenter="mousechange(record.supply_id)"
             v-model="record.area_key"
           >
             <a-select-option v-for="item of area_list" :disabled='item.disabled' :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
@@ -92,7 +102,7 @@ export default {
       get_judge_elect_supply(this.bid_code)
       .then(res => {
         var judge_elect = res.data.supply_list||[];
-        judge_elect.forEach(elem=>elem.area_key=elem.area_key||[]);
+        // judge_elect.forEach(elem=>elem.area_key=elem.area_key||[]);  // 多选
         this.judge_elect = judge_elect
       })
       .catch(error => this.$message.error(error));
@@ -105,6 +115,15 @@ export default {
       var selectedList = [];
       this.judge_elect.forEach(elem=>{
         if(elem.supply_id!=supply_id) selectedList = [...selectedList,...elem.area_key]
+      })
+      var area_list = [...this.area_list]
+      area_list.forEach(elem=>elem.disabled = selectedList.indexOf(elem.area_key)!=-1);
+      this.area_list = area_list;
+    },
+    mousechange(supply_id){
+      var selectedList = [];
+      this.judge_elect.forEach(elem=>{
+        if(elem.supply_id!=supply_id) selectedList.push(elem.area_key)
       })
       var area_list = [...this.area_list]
       area_list.forEach(elem=>elem.disabled = selectedList.indexOf(elem.area_key)!=-1);
