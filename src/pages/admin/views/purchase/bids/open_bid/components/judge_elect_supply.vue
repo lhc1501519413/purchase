@@ -3,8 +3,8 @@
     <section class="content">
       <a-table class="table" :dataSource="judge_elect" :columns="columns" rowKey="supply_id" :pagination='false'>
         <template slot="area_key" slot-scope="text,record">
+            <!-- mode="multiple" -->
           <a-select style="width: 100px"
-            mode="multiple"
             @focus="select_change(record.supply_id)"
             :disabled="status>=16"
             v-model="record.area_key"

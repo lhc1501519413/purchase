@@ -14,6 +14,13 @@ export function get_bid_info(id) {
     params: { c: 'Bid', a: 'get_bid_info', token: localStorage.getItem('token'),id },
   })
 }
+/* 招标详情 */
+export function get_bid_info_by_code(code) {
+  return request({
+    method: 'GET',
+    params: { c: 'Bid', a: 'get_bid_info_by_code', token: localStorage.getItem('token'),code },
+  })
+}
 /* 添加/编辑招标 */
 export function save_bid(data) {
   return request({

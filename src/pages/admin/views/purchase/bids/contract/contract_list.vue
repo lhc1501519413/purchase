@@ -95,7 +95,7 @@ export default {
         {value:'2',label:'待供应商确认'},
         {value:'3',label:'供应商已退回'},
         {value:'4',label:'待确认'},
-        {value:'8',label:'已完成'},
+        {value:'8',label:'已确认'},
         {value:'10',label:'已导入'},
         {value:'12',label:'使用中'},
         {value:'14',label:'已结束'}
@@ -167,7 +167,7 @@ export default {
         case '4':
           return '待确认'
         case '8':
-          return '已完成'
+          return '已确认'
         case '10':
           return '已导入'
         case '12':

@@ -1,5 +1,5 @@
 <template>
-  <a-form id="bids" :form="form" @submit="handleSubmit">
+  <a-form id="bidRelevance" :form="form" @submit="handleSubmit">
     <h5>招标管理 / 招标项目管理 / 关联项目</h5>
     <a-form-item class="button-container">
       <div align="center">
@@ -9,7 +9,7 @@
     </a-form-item>
     <h3>
       <div>
-        关联项目编号：{{code}}
+        关联项目编号：{{custom_code}}
       </div>
       <div></div>
     </h3>
@@ -360,8 +360,6 @@
 <script>
 import {
   get_user_com_list, // 获取当前账户有效公司列表
-  // get_com_price_region, // 获取公司价格执行区域列表
-  // get_shipping_region, // 获取公司价格配送区域列表
   get_all_shipping_region // 获取全部公司价格配送区域列表
 } from "@common/js/comUsedApi";
 import { 
@@ -373,7 +371,7 @@ import {
 } from "@admin/api/enquiry";
 import {
   save_bid, // 保存
-  get_bid_info // 获取详情
+  get_bid_info_by_code, // 获取详情
 } from "@admin/api/bids";
 
 var columns = [
@@ -426,7 +424,8 @@ export default {
         labelCol: { span: 7 },
         wrapperCol: { span: 15 }
       },
-      code:'',
+      bid_code:'',
+      custom_code:'',
       formData: {
         id: "",
         title: "", //标题
@@ -496,7 +495,6 @@ export default {
       ],
       user_com_list: [], // 用户公司列表
       bid_type_list: [], // 采购方式列表
-      // region_area: "", // 配送区域
       columns_area:[
         {
           title:'序号',
@@ -545,8 +543,6 @@ export default {
         }
       ], // 分区table列数组
       shipping_selectedRowKeys:[], // 区域已选择列表
-      // disabledKeys:["1", "42", "94", "97", "98"],
-      // com_price_region: [], // 价格执行区域
       all_rule_type: [], // 成交规则
       cat_list: [], // 大类列表
       sub_cat_list: [], // 小类列表
@@ -569,25 +565,15 @@ export default {
   },
   created() {
     this.father.selectedKeys = ['/Bid/bid_list'];
-    this.code = this.$route.query.code;
-    var id = this.$route.query.id;
-    id && this.get_bid_info_method(id);
+    this.custom_code = this.$route.query.code;
+    this.bid_code = this.$route.query.bid_code;
+    this.bid_code && this.get_bid_info_method(this.bid_code);
     this.get_tree_data();
   },
   methods: {
-    get_bid_info_method(id) { // 修改项目时获取信息
-      get_bid_info(id)
+    get_bid_info_method(code) { // 修改项目时获取信息
+      get_bid_info_by_code(code)
         .then(res => {
-          // get_com_price_region(res.data.com_id).then(res2 => {
-          //   var data = res2.data || [];
-          //   this.com_price_region = this.$common.treeSelectFormat(data);
-          // }).catch();
-          // var list = res.data.shipping_region_list;
-          // var region_area='';
-          // list.forEach(elem => {
-          //   region_area +=elem.name+'，';
-          // });
-          // this.region_area = region_area.slice(0,-1);
           this.com_id = res.data.com_id;
           this.get_all_shipping_region()
           var formData = res.data||[];
@@ -598,9 +584,6 @@ export default {
             })
           })
           this.shipping_selectedRowKeys=shipping_selectedRowKeys;
-          // formData.stock_list.forEach(elem=>{
-          //   elem.is_exam = +elem.is_exam;
-          // })
           this.columns_stock_list[6].children = [];
           formData.area_list.forEach(elem=>{
             this.columns_stock_list[6].children.push({
@@ -657,13 +640,6 @@ export default {
       this.formData.area_list = [];
       this.com_id = e;
       this.get_all_shipping_region();
-      // this.region_area = "";
-      // this.com_price_region =[];
-      // this.form.setFieldsValue({ ["region_id"]: '' });
-      // get_com_price_region(e).then(res => {
-      //   var data = res.data || [];
-      //   this.com_price_region = this.$common.treeSelectFormat(data);
-      // }).catch();
     },
     get_all_shipping_region(){
       var keyword = this.keyword;
@@ -688,16 +664,6 @@ export default {
         })
         .catch();
     },
-    /* areaChange(e) {
-      get_shipping_region(e).then(res => {
-        let result = res.data||[];
-        let region_area = "";
-        result.forEach(elem => {
-          region_area += elem.name + "，";
-        });
-        this.region_area = region_area.slice(0, -1);
-      });
-    }, */
     add_line(){
       if(!this.form.getFieldsValue(['com_id']).com_id){
         this.$message.warn('请先选择采购单位');
@@ -749,24 +715,14 @@ export default {
       }
     },
     add_area(index){
-      // var other_region_list = [];
-      // this.formData.area_list.forEach((elem,i)=>{
-      //   if(index==i)return;
-      //   other_region_list = [...other_region_list,...elem.region_list];
-      // })
-      // let all_shipping_region_copy = JSON.parse(JSON.stringify(this.all_shipping_region_copy));
-      // var arr2 = all_shipping_region_copy.uniqueObj(other_region_list,'id');
-      // this.all_shipping_region = arr2;
       this.region_list_index = index;
       this.get_all_shipping_region();
-      // this.ModalVisibleArea = true;
     },
     del_line(index){
       this.formData.area_list[index].region_list.forEach(elem=>{
         this.shipping_selectedRowKeys.remove(elem.id)
       })
       this.formData.area_list.splice(index,1);
-
       var data = [...this.formData.stock_list];
       data.forEach(elem => {
         var area_stock_number = [];
@@ -849,14 +805,6 @@ export default {
       var region_list = this.shipping_selectedRowKeys.merge(data,'id');
       this.formData.area_list[this.region_list_index].region_list = region_list;
     },
-    // shippingGetCheckboxProps(record){
-    //   var self = this;
-    //   return{
-    //     props: {
-    //       disabled: self.disabledKeys.indexOf(record.id)!=-1
-    //     },
-    //   }
-    // },
     cat_change(e) {
       this.formData.cat_id  = e;
       this.sub_cat_id = "";
@@ -1015,22 +963,11 @@ export default {
             this.$message.warn("请添加商品");
             return;
           } else {
-            // let stock_list = this.formData.stock_list;
-            // let key = false;
-            // stock_list.forEach(elem => {
-            //   if (!elem.number) {
-            //     key = true;
-            //   }
-            // });
-            // if (key) {
-            //   this.$message.warn("商品数量不能为空");
-            //   return;
-            // }
             values.stock_list = this.formData.stock_list;
             values.area_list = this.formData.area_list;
             values.status = submitKey||1;
             values.id = this.formData.id;
-            values.from_bid_code = this.code;
+            values.from_bid_code = this.bid_code;
           }
           save_bid(values)
             .then(res => {
@@ -1054,7 +991,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~@admin/assets/scss/common';
-#bids{
+#bidRelevance{
   @include component;
 }
 </style>

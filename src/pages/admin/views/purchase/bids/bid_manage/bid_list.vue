@@ -58,7 +58,7 @@
             @click="show_bid_fail(text.code)">
             流标信息
           </a>
-          <router-link v-if="priv.bid_list.add&&text.show_copy" :to="{path:'/bidRelevance',query:{id:text.id,code:text.custom_code}}">
+          <router-link v-if="priv.bid_list.add&&text.show_copy" :to="{path:'/bidRelevance',query:{bid_code:text.code,code:text.custom_code}}">
             关联
           </router-link>
         </template>

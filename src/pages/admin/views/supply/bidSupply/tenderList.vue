@@ -18,7 +18,7 @@
           </span>
         </template>
         <template slot="operation" slot-scope="text">
-          <div v-if="text.status==5||text.status==7">
+          <div v-if="text.status==5||text.status==7||text.status==9">
             <router-link v-if="priv.tender_list.edit&&text.bid_status==15&&text.add_chance&&text.bid_status!=20&&text.bid_status!=21" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
               制作
             </router-link>
@@ -27,13 +27,13 @@
             </router-link>
           </div>
           <div v-if="priv.tender_list.view&&text.status==8">
+            <!-- <a @click="reback" v-if="priv.tender_list.edit&&text.add_chance">撤回</a> -->
             <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
               查看项目
             </router-link>
             <router-link :to="{path:'/tenderDoc',query:{code:text.bid_code}}">
               查看投标文件
             </router-link>
-            <a @click="reback">撤回</a>
           </div>
         </template>
       </a-table>
@@ -69,6 +69,7 @@ export default {
         {value:'5',label:'待制作'},
         {value:'7',label:'已制作'},
         {value:'8',label:'已上传'},
+        {value:'9',label:'已撤回'},
       ],
       bid_type:'',
       bid_type_list:[
@@ -126,6 +127,8 @@ export default {
           return '已制作'
         case '8':
           return '已上传'
+        case '9':
+          return '已撤回'
         default:
           return '未知状态'
       }

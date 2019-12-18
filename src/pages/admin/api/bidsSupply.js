@@ -32,7 +32,7 @@ export function tender_list(params){
 export function reback(data){
   return request({
     method:'POST',
-    params:{ c : 'Sbid', a : 'reback' },
+    params:{ c : 'Sbid', a : 'reback', token:localStorage.getItem('token') },
     data
   })
 }
