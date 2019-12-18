@@ -1,7 +1,6 @@
 <template>
   <div class="judge_elect">
     <section class="content">
-      <a-button @click="submit">提交</a-button>
       <a-table class="table" :dataSource="judge_elect" :columns="columns" rowKey="supply_id" :pagination='false'>
         <template slot="area_key" slot-scope="text,record">
           <!-- 多选 -->
@@ -17,6 +16,7 @@
           <a-select style="width: 100px"
             allowClear
             @mouseenter="mousechange(record.supply_id)"
+            :disabled="status>=16"
             v-model="record.area_key"
           >
             <a-select-option v-for="item of area_list" :disabled='item.disabled' :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
@@ -123,10 +123,18 @@ export default {
     mousechange(supply_id){
       var selectedList = [];
       this.judge_elect.forEach(elem=>{
-        if(elem.supply_id!=supply_id) selectedList.push(elem.area_key)
+        if(elem.supply_id!=supply_id){
+          if(this.$common.isArray(elem.area_key)){ // 该段兼容134修改后的数据，线上数据仍为字符型
+            selectedList = [...selectedList,...elem.area_key];
+          }else{
+            selectedList.push(elem.area_key)
+          }
+        } 
       })
       var area_list = [...this.area_list]
-      area_list.forEach(elem=>elem.disabled = selectedList.indexOf(elem.area_key)!=-1);
+      area_list.forEach(elem=>{
+        elem.disabled = selectedList.indexOf(elem.area_key)!=-1
+      });
       this.area_list = area_list;
     },
     submit(){ // 提交分配片区

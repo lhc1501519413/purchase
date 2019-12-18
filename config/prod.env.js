@@ -1,4 +1,6 @@
 'use strict'
 module.exports = {
-  NODE_ENV: '"production"'
+  NODE_ENV: '"production"',
+  API: '"http://192.168.2.134/cloud.php"',
+  // API: '"http://smart.acuit.net/bid/cloud.php"'
 }

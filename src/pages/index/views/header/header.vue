@@ -101,7 +101,7 @@ export default {
     height: 11.5%;
     @include flex(space-between);
     .svg,img {
-      @include box(140px, 65px);
+      @include box(180px, 57px);
     }
     .search-container {
       width: 50%;

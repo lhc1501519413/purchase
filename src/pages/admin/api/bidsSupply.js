@@ -43,6 +43,13 @@ export function get_tender_info(bid_code){
     params:{c:'Sbid',a:'get_tender_info',token:localStorage.getItem('token'),bid_code},
   })
 }
+/* 获取招标全部详情 */
+export function get_tender_complete_info(bid_code){
+  return request({
+    method:'GET',
+    params:{c:'Sbid',a:'get_tender_complete_info',token:localStorage.getItem('token'),bid_code},
+  })
+}
 /* 报价保存 */
 export function save_supply_stock_list(data){
   return request({

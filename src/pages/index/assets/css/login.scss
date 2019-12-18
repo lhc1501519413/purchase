@@ -13,7 +13,7 @@
 
     .logo {
       @include horizontalCenter(65%);
-
+      margin: 7px auto;
       img {
         width: 346px;
         height: 39px;

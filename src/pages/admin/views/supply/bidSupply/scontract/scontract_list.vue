@@ -73,6 +73,9 @@ export default {
         {value:'3',label:'已退回'},
         {value:'4',label:'待采购方确认'},
         {value:'8',label:'已完成'},
+        {value:'10',label:'已导入'},
+        {value:'12',label:'使用中'},
+        {value:'14',label:'已结束'}
       ],
       page:1,
       dataSource: [],
@@ -135,6 +138,12 @@ export default {
           return '待采购方确认'
         case '8':
           return '已完成'
+        case '10':
+          return '已导入'
+        case '12':
+          return '使用中'
+        case '14':
+          return '已结束'
         default:
           return '未知状态'
       }

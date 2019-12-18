@@ -379,8 +379,8 @@ export default {
     font-size:18px !important;
   }
   .logo2{
-    width: 140px !important;
-    height: 65px !important;
+    width: 180px !important;
+    height: 57px !important;
   }
   .send_yzm{
     height: 45px !important;

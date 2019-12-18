@@ -37,15 +37,15 @@
           （1）尚未注册后勤物资采购云平台（网址：
           <a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid"
+            :href="global.host"
             target="_blank"
-          >http://smart.acuit.net/bid</a>
+          >{{global.host}}</a>
           ）正式供应商的应先进行注册申请，注册流程详见“后勤物资采购云平台—服务中心—入驻指南”，或网址：
           <a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/check_in_guide"
+            :href="global.host+'/#/check_in_guide'"
             target="_blank"
-          >http://smart.acuit.net/bid/#/check_in_guide</a>。
+          >{{global.host}}/#/check_in_guide</a>。
         </div>
         <div class="text-indent-35 mb-10">
           （2）供应商注册成功后，登录平台选择对应项目的项目公告中点击【获取采购文件】或者点击“我的工作台”，进入“获取采购文件”菜单，点击对应项目中的”获取“按钮，填写获取采购文件的申请信息【联系人姓名、手机号、邮箱、地址为必填项】，填写完整后点击右下角“确定”按钮提交，待采购方审核通过后可下载采购文件。
@@ -60,9 +60,9 @@
         <div class="text-indent-35 mb-10">
           ②在线提交电子投标文件：投标截止时间前在后勤物资采购云平台（网址：<a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid"
+            :href="global.host"
             target="_blank"
-          >http://smart.acuit.net/bid</a>）完成电子投标文件的加密传输提交；
+          >{{global.host}}</a>）完成电子投标文件的加密传输提交；
         </div>
         <div class="text-indent-35 mb-10">
           ③投标文件的备份电子文件和纸质投标文件：投标截止时间前，提交投标文件的备份电子文件一份（U盘，勿加密）和纸质投标文件一份，提交地址为【{{formData.submit_address}}】
@@ -84,9 +84,9 @@
         <div class="text-indent-35 mb-10">
           3.电子投标具体流程文档详见“服务中心——投标指南”，或网址：<a
             class="ml-10 mr-10"
-            href="http://smart.acuit.net/bid/#/tender_guide"
+            :href="global.host+'/#/tender_guide'"
             target="_blank"
-          >http://smart.acuit.net/bid/#/tender_guide</a>。
+          >{{global.host}}/#/tender_guide</a>。
         </div>
         <h3>十、其他事项</h3>
         <div class="text-indent-35 mb-10">{{formData.desc}}</div>

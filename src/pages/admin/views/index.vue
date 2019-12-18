@@ -3,6 +3,7 @@
     <header>
       <div @click="toFront" class="logo">
         <svg-icon icon-class="logo_new" />
+        <!-- <svg-icon icon-class="logo" /> -->
       </div>
       <a-button class="collapsed-btn" @click="toggleCollapsed" style="margin-bottom: 16px">
         <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
