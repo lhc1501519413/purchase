@@ -33,6 +33,7 @@
             <router-link :to="{path:'/tenderDoc',query:{code:text.bid_code}}">
               查看投标文件
             </router-link>
+            <a @click="reback">撤回</a>
           </div>
         </template>
       </a-table>
@@ -46,7 +47,8 @@ import {
   get_bid_type // 采购方式
 } from "@common/js/apis";
 import {
-  tender_list // 招标列表
+  tender_list, // 招标列表
+  reback // 撤回
 } from '@admin/api/bidsSupply'
 export default {
   components:{
@@ -168,6 +170,11 @@ export default {
       this.page = page;
       this.tender_list_method();
     },
+    reback(code){
+      reback({code}).then(res=>{
+        this.$message.success(res.msg)
+      }).catch(error=>this.$message.error(error))
+    }
   },
 };
 </script>

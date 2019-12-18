@@ -29,6 +29,13 @@ export function tender_list(params){
     params:Object.assign({c:'Sbid',a:'tender_list',token:localStorage.getItem('token')},params)
   })
 }
+export function reback(data){
+  return request({
+    method:'POST',
+    params:{ c : 'Sbid', a : 'reback' },
+    data
+  })
+}
 /* 获取招标全部详情 */
 export function get_tender_info(bid_code){
   return request({

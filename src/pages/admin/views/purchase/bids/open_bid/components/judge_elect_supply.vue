@@ -115,7 +115,6 @@ export default {
         bid_code:this.bid_code,
         supply_list:this.judge_elect
       }
-      // formData.supply_list.forEach(elem=> elem.area_key = elem.area_key.join(','))
       submit_supply_area(formData).then(res=> {
         this.$message.success(res.msg)
         let time = setTimeout(()=>{

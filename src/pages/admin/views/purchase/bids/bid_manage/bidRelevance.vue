@@ -1030,6 +1030,7 @@ export default {
             values.area_list = this.formData.area_list;
             values.status = submitKey||1;
             values.id = this.formData.id;
+            values.from_bid_code = this.code;
           }
           save_bid(values)
             .then(res => {

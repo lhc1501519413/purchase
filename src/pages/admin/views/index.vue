@@ -2,7 +2,7 @@
   <div id="index">
     <header>
       <div @click="toFront" class="logo">
-        <svg-icon icon-class="logo" />
+        <svg-icon icon-class="logo_new" />
       </div>
       <a-button class="collapsed-btn" @click="toggleCollapsed" style="margin-bottom: 16px">
         <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
@@ -455,14 +455,15 @@ export default {
     background-color: $white;
     .logo {
       @extend .pointer;
-      padding: 10px;
+      // padding: 10px;
       position: absolute;
       left: 0;
       width: 220px;
       height: 100%;
       .svg-icon {
         width: 100%;
-        height: 100%;
+        height: 50px;
+        // height: 100%;
       }
     }
     .collapsed-btn {

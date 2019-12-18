@@ -126,7 +126,11 @@ export default {
   created() {
     this.bid_code = this.$route.query.bid_code;
     this.father.selectedKeys = ["/Judge/bid_list"];
-    this.get_judge_info();
+    get_judge_info(this.bid_code).then(res=>{
+      this.status = res.data.status;
+      this.group_leader = res.data.group_leader;
+      this.judge_info = res.data;
+    }).catch(error=>this.$message.error(error))
   },
   methods: {
     get_judge_info(){
@@ -135,7 +139,6 @@ export default {
         this.group_leader = res.data.group_leader;
         this.judge_info = res.data;
       }).catch(error=>this.$message.error(error))
-      console.log(!!this.$refs.child.get_judge_result)
       if(!!this.$refs.child.get_judge_result){
         this.$refs.child.get_judge_result()
       }

@@ -266,7 +266,7 @@ export default {
     this.father.current = 0;
     this.get_judge_quality();
   },
-  beforeMount() {
+  mounted() {
     this.father.get_judge_info();
   },
   methods: {

@@ -2,7 +2,8 @@
   <div id="header">
     <header>
       <div @click="home">
-        <svg-icon class="svg pointer" icon-class="logo" />
+        <!-- <img src="@static/images/logo.png" alt=""> -->
+        <svg-icon class="svg pointer" icon-class="logo_new" />
       </div>
       <img hidden :src="logo" alt="logo"/>
       <div hidden class="search-container">
@@ -95,12 +96,12 @@ export default {
   width: 100%;
   header {
     width: 100%;
-    padding: 20px 17.5%;
+    padding: 10px 17.5%;
     background-color: #fff;
     height: 11.5%;
     @include flex(space-between);
     .svg,img {
-      @include box(303px, 45px);
+      @include box(140px, 65px);
     }
     .search-container {
       width: 50%;

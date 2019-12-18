@@ -23,6 +23,13 @@ export function import_bid_contract(data) {
     data
   })
 }
+/* 检查合同 */
+export function check_end_contract(params) {
+  return request({
+    method: 'GET',
+    params: Object.assign({ c: 'Contract', a: 'check_end_contract', token: localStorage.getItem('token') },params)
+  })
+}
 /* 结束合同 */
 export function end_bid_contract(data) {
   return request({
@@ -56,10 +63,9 @@ export function get_bid_base_info(params) {
 }
 /* 预览合同 */
 export function showContract(code) {
-  // open(`${global.host}?c=Pcontract&a=bid_pre_view&code=${code}`);
-  open(`http://192.168.2.134/cloud.php?c=Pcontract&a=bid_pre_view&code=${code}`);
+  open(`${global.baseUrl}?c=Pcontract&a=bid_pre_view&code=${code}`);
 }
 /* 下载合同 */
 export function downloadContract(code) {
-  open(`${global.host}?c=Pcontract&a=bid_download&code=${code}`);
+  open(`${global.baseUrl}?c=Pcontract&a=bid_download&code=${code}`);
 }

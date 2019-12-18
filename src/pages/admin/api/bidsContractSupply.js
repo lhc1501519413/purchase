@@ -40,9 +40,9 @@ export function reback_bid_scontract(data) {
 }
 /* 预览合同 */
 export function showContract(code) {
-  open(`${global.host}?c=Pcontract&a=bid_pre_view&code=${code}`);
+  open(`${global.baseUrl}?c=Pcontract&a=bid_pre_view&code=${code}`);
 }
 /* 下载合同 */
 export function downloadContract(code) {
-  open(`${global.host}?c=Pcontract&a=bid_download&code=${code}`);
+  open(`${global.baseUrl}?c=Pcontract&a=bid_download&code=${code}`);
 }

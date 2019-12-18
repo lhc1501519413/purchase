@@ -75,6 +75,7 @@ import {
   submit_bid_contract, // 提交合同
   import_bid_contract, // 导入合同
   end_bid_contract, // 结束合同
+  check_end_contract, // 检验结束合同提示
 } from '@admin/api/bidsContract';
 
 export default {
@@ -234,19 +235,21 @@ export default {
     },
     end_bid_contract(code){
       var self = this;
-      this.$confirm({
-        title: '警告',
-        content:'此项目配送数量未达到整体数量的90%以上，确认结束合同吗？请谨慎操作？',
-        onOk() {
-          end_bid_contract({code}).then(res=>{
-            self.$message.success(res.msg)
-            self.get_bid_contract_list_method();
-          }).catch(error=>{
-            self.$message.error(error)
-          })
-        },
-        onCancel() {},
-      });
+      check_end_contract({code}).then(res=>{
+        self.$confirm({
+          title: '温馨提示',
+          content:res.msg,
+          onOk() {
+            end_bid_contract({code}).then(res=>{
+              self.$message.success(res.msg)
+              self.get_bid_contract_list_method();
+            }).catch(error=>{
+              self.$message.error(error)
+            })
+          },
+          onCancel() {},
+        });
+      }).catch(error=>self.$message.error(error))
     }
   },
 };

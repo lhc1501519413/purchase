@@ -3,7 +3,8 @@
     <section>
       <div class="logo">
         <router-link to='/index'>
-          <svg-icon class="svg pointer logo2" icon-class="logo" />
+          <!-- <img src="@static/images/logo.png" alt=""> -->
+          <svg-icon class="svg pointer logo2" icon-class="logo_new" />
         </router-link>
       </div>
       <div class="login-container">
@@ -378,8 +379,8 @@ export default {
     font-size:18px !important;
   }
   .logo2{
-    width: 273px !important;
-    height: 74px !important;
+    width: 140px !important;
+    height: 65px !important;
   }
   .send_yzm{
     height: 45px !important;
