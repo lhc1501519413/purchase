@@ -244,7 +244,7 @@
                 initialValue:formData.expert_money
               }
             ]"
-            />元
+            />万元
           </a-form-item>
         </a-col>
         <a-col :span="3">

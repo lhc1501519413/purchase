@@ -53,6 +53,9 @@
           {{modalInfo.desc2[3]}}
           </router-link>。
       </template>
+      <template v-if='modalInfo.type == 10'>
+        {{modalInfo.desc}}
+      </template>
       <div style="height:80px;width:100%"></div>
     </a-modal>
   </div>
@@ -99,16 +102,14 @@ export default {
       switch (value) {
         case '4':
           return '合同退回通知'
-          break;
         case '7':
           return '供应商回复送货消息通知'
-          break;
         case '8':
           return '发起询价通知'
-          break;
+        case '10':
+          return '采购量预警通知'
         default:
-          return '发起询价通知'
-          break;
+          return '未知状态'
       }
     },
     type_code(value){

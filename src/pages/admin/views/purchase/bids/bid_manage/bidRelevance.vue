@@ -243,7 +243,7 @@
                 initialValue:formData.expert_money
               }
             ]"
-            />元
+            />万元
           </a-form-item>
         </a-col>
         <a-col :span="3">
@@ -966,7 +966,7 @@ export default {
             values.stock_list = this.formData.stock_list;
             values.area_list = this.formData.area_list;
             values.status = submitKey||1;
-            values.id = this.formData.id;
+            // values.id = this.formData.id;
             values.from_bid_code = this.bid_code;
           }
           save_bid(values)

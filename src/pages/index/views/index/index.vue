@@ -302,7 +302,7 @@ export default {
   },
   methods: {
     get_list(){
-      get_inquiry_list().then(res=>{
+      get_inquiry_list({page_size:4}).then(res=>{
         this.enquiryList = res.data.list||[];
         this.enquiryList.forEach((elem,index)=>{
           elem.end_date = this.end_time(elem.end_date,index)
@@ -310,7 +310,7 @@ export default {
       }).catch(error=>{
         this.$message.warn(error)
       })
-      get_notice_list().then(res=>{
+      get_notice_list({page_size:4}).then(res=>{
         this.noticeList = res.data.list||[];
       }).catch(error=>{
         this.$message.warn(error)
@@ -345,6 +345,8 @@ export default {
         time = new Date(end_date).getTime()-new Date().getTime();
         if(time<1000){
           clearInterval(endTime)
+          this.Pbid_notice_list[index].end_time = '0天0时0分0秒';
+          return;
         }
         date = parseInt(time/(3600*24*1000));
         hour = parseInt((time-date*(3600*24*1000))/(3600*1000));

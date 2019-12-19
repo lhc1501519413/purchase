@@ -74,11 +74,20 @@ export default {
         .catch(error => this.$message.error(error));
     },
     back_expert_judge_score(){
-      back_expert_judge_score({bid_code:this.bid_code}).then(res=>{
-        this.$router.replace({path:'/judge/judge_quality_grade',query:{bid_code:this.bid_code}});
-        this.father.get_judge_info();
-        this.$message.success(res.msg);
-      }).catch(error => this.$message.error(error));
+      var self = this;
+      self.$confirm({
+        title: "温馨提示",
+        content: "确认退回商务技术评分吗？",
+        okText: "确认",
+        cancelText: "取消",
+        onOk() {
+          back_expert_judge_score({bid_code:self.bid_code}).then(res=>{
+            self.$router.replace({path:'/judge/judge_quality_grade',query:{bid_code:self.bid_code}});
+            self.father.get_judge_info();
+            self.$message.success(res.msg);
+          }).catch(error => self.$message.error(error));
+        }
+      });
     },
     save(submit) {
       var self = this;

@@ -62,7 +62,7 @@
       <div class="ml-20 mb-10" v-else>
         本次招标资格审查已在供应商入驻环节完成
       </div>
-      <h4>资格评分要求</h4>
+      <h4>资质评分要求</h4>
       <a-table
         class="mt-10 ml-10"
         :pagination="pagination_quality_grade"
@@ -409,7 +409,7 @@ export default {
           if (res.data.result != "") {
             var secret = res.data.result.slice(0,16);
             formData.stock_list.forEach(elem=>{
-              elem.new_price = this.$common.toDecimal(decryptAes(elem.secret_price,secret),2)
+              elem.new_price = this.$common.toDecimal(decryptAes(elem.secret_price,secret,secret),2)
             })
           } else {
             this.$message.warn("请检查是否插入U盾");

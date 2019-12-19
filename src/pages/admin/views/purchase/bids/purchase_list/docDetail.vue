@@ -295,10 +295,10 @@
           <div>负偏离每百分点分值：{{formData.eval_method_info.eval_standard_ext.down_percent_point}}</div>
         </a-col>
       </a-row>
-      <h4>资格评分要求</h4>
+      <h4>资质评分要求</h4>
       <a-table
         class="ml-10" 
-        :pagination="pagination"
+        :pagination="pagination_grade_info"
         bordered
         :dataSource="formData.quality_grade_info"
         :columns="columns_grade"
@@ -483,6 +483,17 @@ export default {
         showTotal: () => {
           let length =
             (this.formData.quality_info && this.formData.quality_info.length) ||
+            0;
+          return `共${length}条数据`;
+        }
+      },
+      pagination_grade_info: {
+        showQuickJumper: true,
+        showSizeChanger: true,
+        pageSizeOptions: ["10", "20", "30"],
+        showTotal: () => {
+          let length =
+            (this.formData.quality_grade_info && this.formData.quality_grade_info.length) ||
             0;
           return `共${length}条数据`;
         }

@@ -13,7 +13,7 @@
           <h4>资格审查</h4>
           <div slot="tab">{{item.username}}</div>
           <a-table 
-            v-if='item.quality_info&&item.quality_info.length>0'
+            v-if='is_need&&item.quality_info&&item.quality_info.length>0'
             class="table" 
             :dataSource="item.quality_info" 
             :columns="columns" 

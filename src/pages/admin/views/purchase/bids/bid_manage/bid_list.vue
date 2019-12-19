@@ -54,10 +54,12 @@
               查看项目
             </router-link>
           </div>
-          <a v-if="text.status==20||text.status==21"
-            @click="show_bid_fail(text.code)">
-            流标信息
-          </a>
+          <div v-if="(text.status==20||text.status==21)&&priv.bid_list.view">
+            <router-link :to="{path:'/bidDetail',query:{id:text.id}}">
+              查看项目
+            </router-link>
+            <a @click="show_bid_fail(text.code)">流标信息</a>
+          </div>
           <router-link v-if="priv.bid_list.add&&text.show_copy" :to="{path:'/bidRelevance',query:{bid_code:text.code,code:text.custom_code}}">
             关联
           </router-link>
@@ -161,9 +163,9 @@ export default {
         {value:'16',label:'评标中'},
         {value:'17',label:'采购方确认中'},
         {value:'18',label:'采购结果公告已发布'},
-        {value:'19',label:'中标通知书已发布'},
         {value:'20,21',label:'已流标'},
-      /*   {value:'22',label:'合同确认中'},
+        /* {value:'19',label:'中标通知书已发布'},
+        {value:'22',label:'合同确认中'},
         {value:'23',label:'合同已导入'},
         {value:'24',label:'合同生效中'},
         {value:'25',label:'合同已结束'}, */

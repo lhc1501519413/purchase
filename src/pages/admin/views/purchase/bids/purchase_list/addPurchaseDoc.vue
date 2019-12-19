@@ -53,7 +53,10 @@
             </a-form-item>
             <h4>供应商获取采购文件要求</h4>
             <a-row>
-              <a-col :span="4" class="text-right" style="height:39px;line-height:39px;">获取时间：</a-col>
+              <a-col :span="4" class="text-right" style="height:39px;line-height:39px;">
+                <img class="img_point_six" :src="point_six" alt="必填" />
+                获取时间：
+              </a-col>
               <a-col :span="18">
                 <a-form-item class="inline-block">
                   <a-date-picker
@@ -63,7 +66,10 @@
                     placeholder="开始时间"
                     v-decorator="[
                       'start_time',
-                      {initialValue:$moment(formData.notice_info.start_time)}
+                      { 
+                        rules: [{ required: true, message: '请选择开始时间' }],
+                        initialValue:$moment(formData.notice_info.start_time)
+                      }
                     ]"
                   />
                   <a-date-picker
@@ -71,7 +77,12 @@
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="开始时间"
-                    v-decorator="['start_time']"
+                    v-decorator="[
+                      'start_time',
+                      {
+                        rules: [{ required: true, message: '请选择开始时间' }],
+                      }
+                    ]"
                   />
                 </a-form-item>
                 <span style="height:39px;line-height:39px;" class="ml-10 mr-10">~</span>
@@ -83,7 +94,10 @@
                     placeholder="结束时间"
                     v-decorator="[
                       'end_time',
-                      { initialValue:$moment(formData.notice_info.end_time) }
+                      { 
+                        rules: [{ required: true, message: '请选择结束时间' }],
+                        initialValue:$moment(formData.notice_info.end_time)
+                      }
                     ]"
                   />
                   <a-date-picker
@@ -91,7 +105,12 @@
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="结束时间"
-                    v-decorator="['end_time']"
+                    v-decorator="[
+                      'end_time',
+                      {
+                        rules: [{ required: true, message: '请选择结束时间' }],
+                      }
+                    ]"
                   />
                 </a-form-item>
               </a-col>
@@ -539,7 +558,7 @@
         <a-tab-pane key="4">
           <div slot="tab">
             <img class="img_point" :src="point" alt="必填" />
-            资格评分要求
+            资质评分要求
             <img
               :src="purchase_complete_info.quality_grade_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
               alt="是否完善"
@@ -547,7 +566,7 @@
           </div>
           <div>
             <div class="header">
-              <h4>资格评分要求</h4>
+              <h4>资质评分要求</h4>
               <div>
                 <a-button type="primary" class="mb-10 mr-10" @click="handleAddGrade">添加行</a-button>
                 <a-button type="primary" @click="save_bid_quality_grade">保存</a-button>
@@ -787,6 +806,7 @@ export default {
       min_supply: "",
       margin: "",
       point: require("@static/images/icon_point.png"),
+      point_six: require("@static/images/icon_point_six.png"),
       activeKey: "1",
       columns: [
         {
@@ -1137,7 +1157,7 @@ export default {
         );
       });
       if (JSON.stringify(quality_grade_info) === "[]") {
-        this.$message.warn("请添加资格评分要求");
+        this.$message.warn("请添加资质评分要求");
         return;
       }
       if (key) {
@@ -1375,6 +1395,10 @@ export default {
     width: 8px;
     height: 8px;
     margin-bottom: 3px;
+  }
+  .img_point_six{
+    width: 6px;
+    height: 6px;
   }
   .wenjian {
     width: 17px;

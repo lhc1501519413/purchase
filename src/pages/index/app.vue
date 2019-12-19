@@ -27,9 +27,9 @@
         </router-link>
       </div>
       <div class="right">
-        <svg-icon icon-class="request" />
-        <span class="pointer mr-10" style="margin-left:5px;" @click="openErp">ERP平台</span>
-        <svg-icon icon-class="sign" />
+        <svg-icon icon-class="icon_top_erp" />
+        <span class="pointer" @click="openErp">ERP平台</span>
+        <svg-icon icon-class="icon_top_serve" />
         <a-dropdown>
           <a class="ant-dropdown-link server"> 服务中心 <a-icon type="down" /> </a>
           <a-menu slot="overlay">
@@ -44,7 +44,7 @@
             </a-menu-item>
           </a-menu>
         </a-dropdown>
-        <svg-icon icon-class="computer"/>
+        <svg-icon v-if="logined" icon-class="icon_top_work"/>
         <span v-if="logined" @click="my_work" class="pointer work">
           我的工作台
         </span>

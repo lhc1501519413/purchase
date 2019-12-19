@@ -76,11 +76,14 @@
           <span>{{value|status}}</span>
         </template>
         <template slot="operation" slot-scope="text,record">
-          <router-link v-if="text.status==2" :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}">
-            查看
-          </router-link>
-          <router-link v-else :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}">
+          <router-link v-if="text.status==1" :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}">
             抽取
+          </router-link>
+          <router-link v-if="text.status==2" :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}">
+            编辑
+          </router-link>
+          <router-link v-if="text.status==2||text.status==4" :to="{path:'/Bid/experts_draw',query:{status:record.status,bid_code:record.bid_code}}">
+            查看
           </router-link>
         </template>
       </a-table>
@@ -111,7 +114,7 @@ export default {
       statusList: [
         { value: "0", label: "全部" },
         { value: "1", label: "待抽取" },
-        { value: "2", label: "已抽取" }
+        { value: "2,4", label: "已抽取" }
       ],
       bid_type: "0",
       bid_type_list: [{ value: "0", title: "全部" }],
@@ -171,10 +174,10 @@ export default {
       switch (key) {
         case "1":
           return "待抽取";
-          break;
         case "2":
           return "已抽取";
-          break;
+        case "4":
+          return "已抽取";
         default:
           return "未知状态";
           break;

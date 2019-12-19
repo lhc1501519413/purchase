@@ -26,7 +26,7 @@
     <a-row>
       <a-col :span="6" :offset="1">采购类别：{{formData.bid_cat_name}}</a-col>
       <a-col :span="6" :offset="1">预计配送时间：{{formData.shipping_days}}天</a-col>
-      <a-col :span="6" :offset="1">预估采购金额：{{formData.expert_money}}元</a-col>
+      <a-col :span="6" :offset="1">预估采购金额：{{formData.expert_money}}万元</a-col>
     </a-row>
     <a-table
       bordered

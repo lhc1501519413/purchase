@@ -16,7 +16,7 @@
         <h3>三、采购方式：{{formData.bid_type_name}}</h3>
         <h3>四、招标商品信息</h3>
         <div class="text-indent-35 mb-10">采购类别：{{formData.cat_name}}</div>
-        <div class="text-indent-35 mb-10">预估采购金额：{{formData.expert_money}}元</div>
+        <div class="text-indent-35 mb-10">预估采购金额：{{formData.expert_money}}万元</div>
         <div class="text-indent-35 mb-10">需求商家数：{{formData.min_supply}}家</div>
         <div class="text-indent-35 mb-10 area">
           <span>配送区域：</span>

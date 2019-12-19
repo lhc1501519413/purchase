@@ -25,20 +25,20 @@ export const ECBdecryptDes = (message, key) => {
   return decrypted.toString(cryptoJS.enc.Utf8)
 }
 // CBC模式
-// AES加密
-export const CBCencryptAes = (message, key, iv) => {
+// DES加密
+export const CBCencryptDes = (message, key, iv) => {
   var keyHex = cryptoJS.enc.Utf8.parse(key)
   var ivHex = cryptoJS.enc.Utf8.parse(iv)
   var option = { iv: ivHex, mode: cryptoJS.mode.CBC, padding: cryptoJS.pad.Pkcs7 }
-  var encrypted = cryptoJS.AES.encrypt(message, keyHex, option)
+  var encrypted = cryptoJS.DES.encrypt(message, keyHex, option)
   return encrypted.ciphertext.toString()
 }
 
-// AES解密
-export const CBCdecryptAes = (message, key, iv) => {
+// DES解密
+export const CBCdecryptDes = (message, key, iv) => {
   var keyHex = cryptoJS.enc.Utf8.parse(key)
   var ivHex = cryptoJS.enc.Utf8.parse(iv)
-  var decrypted = cryptoJS.AES.decrypt(
+  var decrypted = cryptoJS.DES.decrypt(
     {
       ciphertext: cryptoJS.enc.Hex.parse(message)
     },
@@ -57,12 +57,12 @@ export const CBCdecryptAes = (message, key, iv) => {
  * @param data
  * @returns {string}
  */
-export const encryptAes = (data,secretkey)=>{
+export const encryptAes = (data,secretkey,secretiv)=>{
   let text = cryptoJS.enc.Base64.stringify(cryptoJS.enc.Utf8.parse(data)).toString();
   let key = cryptoJS.enc.Utf8.parse(secretkey); //为了避免补位，直接用16位的秘钥
-  let iv = cryptoJS.enc.Utf8.parse(secretkey); //16位初始向量
+  let iv = cryptoJS.enc.Utf8.parse(secretiv); //16位初始向量
   let encrypted = cryptoJS.AES.encrypt(text, key, {
-      iv:iv,
+      iv,
       mode: cryptoJS.mode.CBC,
       padding: cryptoJS.pad.ZeroPadding
   }).toString();
@@ -74,12 +74,12 @@ export const encryptAes = (data,secretkey)=>{
  * @param data
  * @returns {string}
  */
-export const decryptAes = (data,secretkey)=>{
+export const decryptAes = (data,secretkey,secretiv)=>{
   let encrypted = cryptoJS.enc.Utf8.stringify(cryptoJS.enc.Base64.parse(data)).toString();
   let key = cryptoJS.enc.Utf8.parse(secretkey); //为了避免补位，直接用16位的秘钥
-  let iv = cryptoJS.enc.Utf8.parse(secretkey); //16位初始向量
+  let iv = cryptoJS.enc.Utf8.parse(secretiv); //16位初始向量
   let decrypted = cryptoJS.AES.decrypt(encrypted, key, {
-    iv:iv,
+    iv,
     mode: cryptoJS.mode.CBC,
     padding: cryptoJS.pad.ZeroPadding
   }).toString(cryptoJS.enc.Utf8);

@@ -27,9 +27,10 @@
       >
         <a-tab-pane key="1">
           <div slot="tab">
-            <img class="img_point" :src="point" alt="必填" />
+            <img v-if="tender_complete_info.stock_list.is_must" class="img_point" :src="point" alt="必填" />
             {{tender_complete_info.stock_list.name}}
             <img
+              v-if="tender_complete_info.stock_list.is_must"
               :src="tender_complete_info.stock_list.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
               alt="是否完善"
             />
@@ -97,9 +98,10 @@
         </a-tab-pane>
         <a-tab-pane key="2">
           <div slot="tab">
-            <img class="img_point" :src="point" alt="必填" />
+            <img v-if="tender_complete_info.quality_info.is_must" class="img_point" :src="point" alt="必填" />
             {{tender_complete_info.quality_info.name}}
             <img
+              v-if="tender_complete_info.quality_info.is_must"
               :src="tender_complete_info.quality_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
               alt="是否完善"
             />
@@ -147,16 +149,17 @@
         </a-tab-pane>
         <a-tab-pane key="3">
           <div slot="tab">
-            <img class="img_point" :src="point" alt="必填" />
+            <img v-if="tender_complete_info.quality_grade_info.is_must" class="img_point" :src="point" alt="必填" />
             {{tender_complete_info.quality_grade_info.name}}
             <img
+              v-if="tender_complete_info.quality_grade_info.is_must"
               :src="tender_complete_info.quality_grade_info.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
               alt="是否完善"
             />
           </div>
           <div>
             <div class="header mb-10">
-              <h4>资格评分要求</h4>
+              <h4>资质评分要求</h4>
               <a-button type="primary" @click="save_bid_quality_grade">保存</a-button>
             </div>
             <a-table
@@ -207,9 +210,10 @@
         </a-tab-pane>
         <a-tab-pane key="4">
           <div slot="tab">
-            <img class="img_point" :src="point" alt="必填" />
+            <img v-if="tender_complete_info.tender_file.is_must" class="img_point" :src="point" alt="必填" />
             {{tender_complete_info.tender_file.name}}
             <img
+              v-if="tender_complete_info.tender_file.is_must"
               :src="tender_complete_info.tender_file.status==0?require('@admin/assets/images/check.png'):require('@admin/assets/images/check_done.png')"
               alt="是否完善"
             />
@@ -862,7 +866,7 @@ export default {
       };
       secret = this.secret; // 明文secret
       data.stock_list.forEach(elem => {
-        elem.secret_price = encryptAes(elem.new_price, secret);
+        elem.secret_price = encryptAes(elem.new_price, secret, secret);
         let length = this.$common.isArray(elem.new_price.match(/\./g))
           ? elem.new_price.match(/\./g).length
           : 0;
@@ -920,7 +924,7 @@ export default {
       this.file_path = "";
     },
     quality_grade_change(event, index) {
-      // 添加资格评分要求文件
+      // 添加资质评分要求文件
       var self = this;
       this.tabIndex = index;
       var files = event.target.files;
@@ -969,7 +973,7 @@ export default {
       };
     },
     del_quality_grade_file(e, index) {
-      // 删除资格评分要求文件
+      // 删除资质评分要求文件
       var index2 = e.target.dataset.key;
       if (index2 !== undefined) {
         this.formData.quality_grade_info[index].file_list.splice(index2, 1);

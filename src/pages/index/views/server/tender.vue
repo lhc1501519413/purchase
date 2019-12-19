@@ -49,14 +49,14 @@
     <p class="line-height">路径：招标管理—投标文件管理。</p>
     <p class="line-height">1)左侧菜单栏选择 <span class="bold">【投标文件管理】</span> ，选择需要制作投标文件的项目，点击 <span class="bold">【制作】</span>；</p>
     <img class="img_width" src="../../assets/images/tender/img_7.png" alt="">
-    <p class="line-height">2) 在制作投标文件页面中进行报价信息、资格审查要求、资格评分要求、项目附件的填写；</p>
+    <p class="line-height">2) 在制作投标文件页面中进行报价信息、资格审查要求、资质评分要求、项目附件的填写；</p>
     <p class="line-height">①报价</p>
     <p class="line-height">在该页面进行商品报价，填写单价、响应产品参数及偏离信息。报价信息填写完成后，可以点击“下载报价文件”，会生成Excel形式报价单。</p>
     <img class="img_width" src="../../assets/images/tender/img_8.png" alt="">
     <p class="line-height">②资格审查要求</p>
     <p class="line-height">资格审查要求是采购文件中提出的要求，供应商按照对应项将需要上传的文件进行上传。填写完成后点击“保存”进行下一步。</p>
     <img class="img_width" src="../../assets/images/tender/img_13.png" alt="">
-    <p class="line-height">③资格评分要求</p>
+    <p class="line-height">③资质评分要求</p>
     <p class="line-height">资格审查要求是采购文件中提出的资质评分项，供应商按照对应项将需要上传的文件进行上传。填写完成后点击“保存”进行下一步。</p>
     <img class="img_width" src="../../assets/images/tender/img_14.png" alt="">
     <p class="line-height">④项目附件</p>

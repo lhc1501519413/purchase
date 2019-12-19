@@ -173,7 +173,7 @@
         </ul>
         <a-form-item class="text-center" v-if="bid_status!=20&&bid_status!=21">
           <a-button class="mr-10" @click="ModalVisible = false">取消</a-button>
-          <a-button class="ml-10" type="primary" html-type="submit">确定</a-button>
+          <a-button class="ml-10" :disabled="confirmDisabled" type="primary" html-type="submit">确定</a-button>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -437,7 +437,8 @@ export default {
       modalData: {
         reason: "",
         file_list: []
-      }
+      },
+      confirmDisabled:false
     };
   },
   filters: {
@@ -503,6 +504,7 @@ export default {
     get_supply_purchase_info(bid_code,record) {
       this.bid_code = bid_code;
       this.bid_status = record.bid_status;
+      this.confirmDisabled = new Date().getTime() > new Date(record.end_time).getTime();
       get_supply_purchase_info(bid_code)
         .then(res => {
           this.supply_purchase_info = res.data;

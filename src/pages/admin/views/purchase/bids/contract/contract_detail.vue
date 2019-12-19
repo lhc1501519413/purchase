@@ -185,9 +185,11 @@ export default {
     get_bid_base_info_method(code) {
       get_bid_base_info({ code })
         .then(res => {
-          var formData = res.data || [];
-          this.$refs['contract'].columns_stock_list[6].children = [];
-          formData.area_list.forEach(elem => {
+          var formData = res.data || {};
+          if(formData.area_list){
+            this.$refs['contract'].columns_stock_list[6].children = [];
+          }
+          formData.area_list&&formData.area_list.forEach(elem => {
             this.$refs['contract'].columns_stock_list[6].children.push({
               title: elem.area_name,
               dataIndex: elem.area_key,
@@ -197,7 +199,7 @@ export default {
             });
           });
           /* 插入合计列 */
-          if (formData.area_list.length > 1) {
+          if (formData.area_list&&formData.area_list.length > 1) {
             this.$refs['contract'].columns_stock_list[6].children.push({
               title: "合计数量",
               align: "center",
@@ -205,7 +207,7 @@ export default {
               width: "6%"
             });
           }
-          this.stepsCurrent = formData.log_list.length;
+          this.stepsCurrent = formData.log_list&&formData.log_list.length;
           this.formData = formData;
         })
         .catch(error => this.$message.error(error));

@@ -130,7 +130,7 @@ export function save_bid_eval_method(data) {
     data
   })
 }
-/* 获取资格评分要求 */
+/* 获取资质评分要求 */
 export function get_bid_quality_grade(bid_id) {
   return request({
     method: 'GET',

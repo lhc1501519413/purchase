@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+  <g id="icon_top_erp" transform="translate(-85.233 -54.212)">
+    <rect id="矩形_192" data-name="矩形 192" width="14" height="14" transform="translate(85.233 54.212)" fill="rgba(255,255,255,0)" opacity="0"/>
+    <g id="组_139" data-name="组 139" transform="translate(5216.233 515.212)">
+      <path id="路径_383" data-name="路径 383" d="M77.5,140h-13a.508.508,0,0,0-.5.516v8a.508.508,0,0,0,.5.516h5.938v1.806H67.75a.255.255,0,0,0-.25.258v.774a.127.127,0,0,0,.125.129h6.75a.127.127,0,0,0,.125-.129V151.1a.255.255,0,0,0-.25-.258H71.563v-1.806H77.5a.508.508,0,0,0,.5-.516v-8A.508.508,0,0,0,77.5,140Zm-.625,7.871H65.125v-6.71h11.75Z" transform="translate(-5195 -600)" fill="#999"/>
+      <text id="ERP" transform="translate(-5129 -454)" fill="rgba(153,153,153,0.85)" font-size="5" font-family="SourceHanSansSC-Heavy, Source Han Sans SC" font-weight="800" letter-spacing="0.01em"><tspan x="0" y="0">ERP</tspan></text>
+    </g>
+  </g>
+</svg>

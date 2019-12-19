@@ -292,7 +292,7 @@ export default {
       }).catch(error=>this.$message.error(error))
     },
     result_file_list_change() {
-      // 添加资格评分要求文件
+      // 添加资质评分要求文件
       var self = this;
       var files = event.target.files;
       if (
@@ -328,7 +328,7 @@ export default {
       }
     },
     confirm_file_list_change() {
-      // 添加资格评分要求文件
+      // 添加资质评分要求文件
       var self = this;
       var files = event.target.files;
       if (

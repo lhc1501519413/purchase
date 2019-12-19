@@ -1,6 +1,6 @@
 // const host = location.protocol+"//"+location.host + '/bid';
-const host = location.protocol+"//"+location.host + '/purchase';
-// const host = location.protocol+"//"+location.host;
+// const host = location.protocol+"//"+location.host + '/purchase';
+const host = location.protocol+"//"+location.host;
 const baseUrl = process.env.API;
 const webSocketUrl = 'ws://127.0.0.1:9797/ws';
 const RexConfig = {

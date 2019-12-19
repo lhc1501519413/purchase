@@ -169,6 +169,8 @@ export default {
         time = new Date(end_date).getTime()-new Date().getTime();
         if(time<1000){
           clearInterval(this.endTimeCtrl[index])
+          this.enquiryList[index].end_date = '0天0时0分0秒';
+          return;
         }
         date = parseInt(time/(3600*24*1000));
         hour = parseInt((time-date*(3600*24*1000))/(3600*1000));

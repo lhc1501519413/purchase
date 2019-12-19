@@ -92,7 +92,7 @@
           预计配送时间：{{bid_pre_price_info.shipping_days}}天
         </a-col>
         <a-col :span="6" :offset='1'>
-          预估采购金额：{{bid_pre_price_info.expert_money}}元
+          预估采购金额：{{bid_pre_price_info.expert_money}}万元
         </a-col>
       </a-row>
       <a-table

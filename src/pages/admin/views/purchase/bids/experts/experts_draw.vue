@@ -2,7 +2,7 @@
   <div id="experts_draw">
     <h5>招标管理 / 专家抽取</h5>
     <section class="content">
-      <div class="text-right mb-10" v-if="status === '1'">
+      <div class="text-right mb-10" v-if="status !== '4'">
         <a-button type="primary" @click="choose_expert">选择专家</a-button>
         <a-button type="primary" @click="save_expert">保存</a-button>
       </div>
@@ -11,7 +11,7 @@
           <img class="img_point" :src="point" alt="必填" />
           <span>抽取类型：</span>
           <a-select
-            :disabled="status === '2'"
+            :disabled="status === '4'"
             allowClear
             v-model="formData.draw_type"
             dropdownMatchSelectWidth
@@ -28,7 +28,7 @@
           <img class="img_point ml-20" :src="point" alt="必填" />
           评标人数：
           <a-input
-            :disabled="status === '2'"
+            :disabled="status === '4'"
             style="width: 60%"
             v-model="formData.eval_number"
           />
@@ -37,7 +37,7 @@
           评标所需时间：
           <a-input
             class="mr-10"
-            :disabled="status === '2'"
+            :disabled="status === '4'"
             style="width: 55%"
             v-model="formData.eval_time"
           />小时（h）
@@ -53,7 +53,7 @@
         <template slot="type" slot-scope="text">{{text==1?'用户代表':'评标专家'}}</template>
         <template slot="operation" slot-scope="text,record,index">
           <a
-            :disabled="status === '2'"
+            :disabled="status === '4'"
             href="javascript:;"
             @click="del(record.user_id,index)"
           >移除</a>
@@ -71,7 +71,7 @@
       <a-row>
         专家类别：
         <a-select
-          :disabled="status === '2'"
+          :disabled="status === '4'"
           allowClear
           v-model="draw_type"
           dropdownMatchSelectWidth
@@ -236,13 +236,14 @@ export default {
         .then(res => {
           this.draw_type_list = [...this.$common.treeSelectFormat(res.data)];
         })
-        .catch();
+        .catch(error => this.$message.error(error));
     },
     get_expert_draw_info_method() {
       get_expert_draw_info(this.bid_code)
         .then(res => {
           this.formData = res.data;
           this.formData.expert_list = res.data.expert_list||[];
+          this.formData.expert_list.forEach(elem=>this.selectedRowKeys.push(elem.user_id));
           this.formData.draw_type = res.data.draw_type==='0'?'':res.data.draw_type;
           this.formData.eval_number = res.data.eval_number==='0'?'':res.data.eval_number;
         })
