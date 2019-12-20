@@ -37,6 +37,9 @@
               <router-link to='/check_in_guide'>入驻指南</router-link>
             </a-menu-item>
             <a-menu-item>
+              <router-link to='/bidding_guide'>招标指南</router-link>
+            </a-menu-item>
+            <a-menu-item>
               <router-link to='tender_guide'>投标指南</router-link>
             </a-menu-item>
             <a-menu-item>

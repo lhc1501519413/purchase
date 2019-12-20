@@ -1,5 +1,6 @@
 import global from '@common/js/global';
 import request from '@utils/request';
+import requesttimeout from '@utils/requesttimeout';
 /* 合同列表 */
 export function get_bid_contract_list(params) {
   return request({
@@ -32,7 +33,7 @@ export function check_end_contract(params) {
 }
 /* 结束合同 */
 export function end_bid_contract(data) {
-  return request({
+  return requesttimeout({
     method: 'POST',
     params: { c: 'Contract', a: 'end_bid_contract', token: localStorage.getItem('token') },
     data

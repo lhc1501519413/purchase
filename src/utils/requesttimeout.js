@@ -4,7 +4,7 @@ import global from '@common/js/global';
 const service = axios.create({
   baseURL: global.baseUrl, // 固定 url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  timeout: 8000 // request timeout
 })
 service.interceptors.request.use(
   config => {
@@ -28,12 +28,13 @@ service.interceptors.response.use(
         store.commit('SET_TOKEN',null);
         store.commit('SET_USERNAME',null);
         store.commit('SET_TYPE',null);
+        store.commit('SET_LOGINED',false);
         localStorage.clear();
         setTimeout(()=>{
           location.href = global.host + "/index.html#/login"
         },1500)
       }
-      return Promise.reject(res)
+      return Promise.reject(res.msg)
     } else {
       return res
     }

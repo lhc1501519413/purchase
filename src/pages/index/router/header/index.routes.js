@@ -117,6 +117,15 @@ export default [
           permission: true 
         }
       },
+      {
+        path:'/bidding_guide',
+        name:'bidding',
+        component:() => import('@indexViews/server/bidding'),
+        meta: {
+          title: '投标指南', 
+          permission: true 
+        }
+      }
     ]
   },
 ]
