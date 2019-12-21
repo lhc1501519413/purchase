@@ -9,6 +9,7 @@
         <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
       </a-button>
       <div class="right">
+        <span class="mr-10">国家授时中心时间：{{now_time}}</span>
         <a href="javascript:;" class="mr-10" title="返回前台" @click="toFront">
           <svg-icon icon-class="icon_topnav_store_n" />
         </a>
@@ -201,6 +202,7 @@ export default {
   },
   data() {
     return {
+      now_time:new Date().Format('YYYY-MM-DD hh:mm:ss'),
       com_info: {},
       supply_info: {},
       type: null,
@@ -318,11 +320,20 @@ export default {
       .catch(error => {
         this.$message.warn(error);
       });
+    this.get_now_time();
     this.get_menu_list();
     this.get_panel();
     this.get_message();
   },
   methods: {
+    get_now_time(){
+      var time = setInterval(()=>{
+        this.now_time = new Date().Format('YYYY-MM-DD hh:mm:ss')
+      },1000);
+      this.$once('hook:beforeDestroy',() => {
+        clearInterval(time);
+      })
+    },
     get_menu_list() {
       menu_list()
         .then(res => {

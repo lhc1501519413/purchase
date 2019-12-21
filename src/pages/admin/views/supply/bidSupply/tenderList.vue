@@ -27,8 +27,8 @@
             </router-link>
           </div>
           <div v-if="priv.tender_list.view&&text.status==8">
-            <a @click="reback_tender" v-if="priv.tender_list.edit&&text.add_chance">撤回</a>
-            <router-link :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
+            <a @click="reback_tender(text.bid_code)" v-if="priv.tender_list.edit&&text.add_chance">撤回</a>
+            <router-link :to="{path:'/tbidDetail',query:{bid_code:text.bid_code}}">
               查看项目
             </router-link>
             <router-link :to="{path:'/tenderDoc',query:{code:text.bid_code}}">
@@ -104,6 +104,11 @@ export default {
           width:'15%'
         },
         {
+          title: '投标截止时间',
+          dataIndex: 'end_time',
+          width:'15%'
+        },
+        {
           title: '状态',
           dataIndex:'status',
           scopedSlots: { customRender: 'status' },
@@ -112,7 +117,7 @@ export default {
         {
           title: '操作',
           scopedSlots: { customRender: 'operation' },
-          width:'20%'
+          width:'15%'
         }
       ],
       total:0
@@ -173,10 +178,19 @@ export default {
       this.page = page;
       this.tender_list_method();
     },
-    reback_tender(code){
-      reback_tender({code}).then(res=>{
-        this.$message.success(res.msg)
-      }).catch(error=>this.$message.error(error))
+    reback_tender(bid_code){
+      var self = this;
+      this.$confirm({
+        title: '您确定撤回投标文件吗？',
+        content: '注意：再次上传投标文件，需在开标时间前上传！',
+        onOk() {
+          reback_tender({bid_code}).then(res=>{
+            self.$message.success(res.msg);
+            self.tender_list_method();
+          }).catch(error=>self.$message.error(error))
+        },
+        onCancel() {},
+      });
     }
   },
 };

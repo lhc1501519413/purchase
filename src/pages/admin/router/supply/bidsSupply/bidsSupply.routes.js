@@ -20,6 +20,16 @@ export default [
     }
   },
   {
+    path: '/tbidDetail',
+    name: '/tbidDetail',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/tbidDetail'),
+    meta: {
+      title: '查看项目信息',
+      permission: true
+    }
+  },
+  {
     path: '/Sbid/tender_list',
     name: '/Sbid/tender_list',
     component: () =>

@@ -67,7 +67,7 @@ export default {
           width: "15%",
         },
         {
-          title: "技术商务资质信得分",
+          title: "技术商务资质得分",
           dataIndex:'business_skill_score',
           width: "15%",
         },

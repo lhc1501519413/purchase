@@ -181,6 +181,7 @@ export default {
         }
       ], // 分区table列数组
       pagination_shipping: {
+        showSizeChanger: true,
         showQuickJumper: true,
         pageSizeOptions: ["10", "20", "30", "40"]
       }

@@ -267,7 +267,7 @@ export default {
     this.get_judge_quality();
   },
   mounted() {
-    this.father.get_judge_info();
+    // this.father.get_judge_info();
   },
   methods: {
     get_judge_quality() {

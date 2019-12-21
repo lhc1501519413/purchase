@@ -114,7 +114,7 @@
             <p :class="{bg:judge_info.status>=9}">6</p>
             <span>
               <span>
-                商务技术结果公布
+                商务技术结果公示
               </span>
               <span class="info">
                 开标
@@ -170,7 +170,7 @@
             <p :class="{bg:judge_info.status>=15}">10</p>
             <span>
               <span>
-                结果公布
+                结果公示
               </span>
               <span class="info">
                 开标

@@ -2,7 +2,16 @@
   <div class="judge_result">
     <section class="content">
       <h4>得分汇总列表</h4>
-      <a-table class="table" ref="print" id="judge_result_table" bordered :dataSource="judge_result" :columns="columns" rowKey="supply_id" :rowSelection="rowSelection">
+      <a-table 
+        class="table" 
+        :customRow="rowClick" 
+        id="judge_result_table" 
+        bordered 
+        :dataSource="judge_result" 
+        :columns="columns" 
+        rowKey="supply_id" 
+        :rowSelection="rowSelection"
+        >
         <template slot="is_agree_price" slot-scope="text,record">
           <a-radio-group 
             :disabled="status>=14"
@@ -124,7 +133,8 @@ import {
   get_judge_result, // 获取商务技术评分汇总
   confirm_bid_judge, // 得分汇总下一步
   submit_supply_price_status, // 提交供应商关于价格意见
-  get_bid_pre_price_info
+  get_bid_pre_price_info, // 获取中标预执行价详情
+  save_judge_supply_elect, // 保存得分汇总列表
 } from "@admin/api/open_bid";
 export default {
   props: {
@@ -149,12 +159,12 @@ export default {
         {
           title: "供应商名称",
           dataIndex:'supply_name',
-          width: "20%",
+          width: "30%",
         },
         {
           title: "最终报价（元）",
           dataIndex:'report_money',
-          width: "10%",
+          width: "15%",
         },
         {
           title: "报价得分",
@@ -162,7 +172,7 @@ export default {
           width: "10%",
         },
         {
-          title: "技术商务资质信得分",
+          title: "技术商务资质得分",
           dataIndex:'business_skill_score',
           width: "15%",
         },
@@ -176,12 +186,12 @@ export default {
           dataIndex:'rank',
           width: "10%",
         },
-        {
-          title:'是否同意',
-          dataIndex:'is_agree_price',
-          width:'10%',
-          scopedSlots:{ customRender:'is_agree_price' }
-        }
+        // {
+        //   title:'是否同意',
+        //   dataIndex:'is_agree_price',
+        //   width:'10%',
+        //   scopedSlots:{ customRender:'is_agree_price' }
+        // }
       ],
       selectedRowKeys:[],
       ModalVisible:false,
@@ -260,11 +270,12 @@ export default {
       return {
         selectedRowKeys,
         columnTitle:'推荐中标',
+        onChange: selectedRowKeys => this.selectedRowKeys = selectedRowKeys,
         getCheckboxProps: record => ({
-            props: {
-              disabled: true,
-            }
-          }),
+          props: {
+            disabled: this.status > '14'
+          }
+        }),
       }
     }
   },
@@ -273,6 +284,20 @@ export default {
     this.refresh();
   },
   methods: {
+    rowClick(record, index) {
+      return {
+        on: {
+          click: () => {
+            if(this.status > '14') return;
+            if (this.selectedRowKeys.indexOf(record.supply_id) == -1) {
+              this.selectedRowKeys.push(record.supply_id);
+            } else {
+              this.selectedRowKeys.remove(record.supply_id);
+            }
+          }
+        }
+      };
+    },
     refresh() {
       get_judge_result(this.bid_code)
         .then(res => {
@@ -314,11 +339,16 @@ export default {
       .catch(error => this.$message.error(error));
     },
     submit(){
-      submit_supply_price_status({
+      save_judge_supply_elect({
         bid_code:this.bid_code,
-        supply_list:this.judge_result
+        supply_ids: this.selectedRowKeys.join(','),
       }).then(res=> this.$message.success(res.msg))
       .catch(error => this.$message.error(error));
+      // submit_supply_price_status({
+      //   bid_code:this.bid_code,
+      //   supply_list:this.judge_result
+      // }).then(res=> this.$message.success(res.msg))
+      // .catch(error => this.$message.error(error));
     },
     next() {
       if(this.$store.getters.judgeStatus>=15){ // 得分汇总完成

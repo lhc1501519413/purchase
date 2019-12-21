@@ -126,20 +126,36 @@ export default {
   created() {
     this.bid_code = this.$route.query.bid_code;
     this.father.selectedKeys = ["/Judge/bid_list"];
-    get_judge_info(this.bid_code).then(res=>{
-      this.status = res.data.status;
-      this.group_leader = res.data.group_leader;
-      this.judge_info = res.data;
-    }).catch(error=>this.$message.error(error))
+    this.get_judge_info();
   },
   methods: {
     get_judge_info(){
-      get_judge_info(this.bid_code).then(res=>{
+      var bid_code = this.bid_code;
+      get_judge_info(bid_code).then(res=>{
         this.status = res.data.status;
         this.group_leader = res.data.group_leader;
         this.judge_info = res.data;
+        switch (this.status) {
+          case '5':
+            this.$router.push({path:'/judge/judge_match',query:{bid_code}})
+            break;
+          case '6':
+            this.$router.push({path:'/judge/judge_quality_grade',query:{bid_code}})
+            break;
+          case '7':
+            this.$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})
+            break;
+          case '12':
+            this.$router.push({path:'/judge/judge_report',query:{bid_code}})
+            break;
+          case '13':
+            this.$router.push({path:'/judge/judge_result',query:{bid_code}})
+            break;
+          default:
+            break;
+        }
       }).catch(error=>this.$message.error(error))
-      if(!!this.$refs.child.get_judge_result){
+      if(this.$refs.child&&!!this.$refs.child.get_judge_result){
         this.$refs.child.get_judge_result()
       }
     },

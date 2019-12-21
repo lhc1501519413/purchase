@@ -81,7 +81,7 @@
             <a-col :span="23" :offset="1">
               合同保证金：合同签订时，乙方向甲方交纳合同保证金人民币
               <span style="color:#f00;margin:0 5px;">{{formData.margin_money}}</span>
-              元整，无违约情况，合同期满后无息退还。
+              万元整，无违约情况，合同期满后无息退还。
             </a-col>
           </a-row>
         </template>

@@ -7,6 +7,13 @@ export function spurchase_list(params){
     params:Object.assign({c:'Sbid',a:'spurchase_list',token:localStorage.getItem('token')},params)
   })
 }
+/* 供应商查看项目 */
+export function get_notice_info_by_code(params){
+  return request({
+    method:'GET',
+    params:Object.assign({c:'Pbid',a:'get_notice_info_by_code',token:localStorage.getItem('token')},params)
+  })
+}
 /* 保存 获取采购文件信息 */
 export function save_supply_purchase(data){
   return request({

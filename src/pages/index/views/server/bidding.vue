@@ -86,11 +86,11 @@
         <img class="img_width" src="../../assets/images/bidding/img26.png" alt="">
         <p class="text-indent second_title bold">⑤ 商务技术评分汇总</p>
         <p class="text-indent line-height">专家进入商务技术评分汇总环节后，采购方才可点击【商务技术评分汇总】查看专家的评审结果。点击【刷新】，页面信息更新。</p>
-        <p class="text-indent line-height">采购方点击【下一步】按钮，进入【商务技术结果公布】环节</p>
+        <p class="text-indent line-height">采购方点击【下一步】按钮，进入【商务技术结果公示】环节</p>
         <img class="img_width" src="../../assets/images/bidding/img28.png" alt="">
 
-        <p class="text-indent second_title bold">⑥ 商务技术结果公布</p>
-        <p class="text-indent line-height">在【商务技术结果公布】页面，采购方可公布商务结果信息。点击【下一步】进入【开标记录（报价）】界面。</p>
+        <p class="text-indent second_title bold">⑥ 商务技术结果公示</p>
+        <p class="text-indent line-height">在【商务技术结果公示】页面，采购方可公布商务结果信息。点击【下一步】进入【开标记录（报价）】界面。</p>
         <img class="img_width" src="../../assets/images/bidding/img29.png" alt="">
 
         <p class="text-indent second_title bold">⑦ 开标记录（报价）</p>
@@ -101,9 +101,9 @@
         <p  class="text-indent line-height">在【报价评审】界面，采购方可查看专家对供应商报价的有效性的评审结果。点击【刷新】，页面信息更新。</p>
         <p class="text-indent second_title bold">⑨ 得分汇总</p>
         <p class="text-indent line-height">专家进入得分汇总环节后，采购方才可点击【得分汇总】查看评审结果。点击【刷新】，页面信息更新。</p>
-        <p class="text-indent line-height">可查看并下载【中标执行价】，确定供应商是否同意中标，点击【下一步】进行结果公布页面。</p>
-        <p class="text-indent second_title bold">⑩结果公布</p>
-        <p class="text-indent line-height">在结果公布页面，采购方确认供应商配送的片区。</p>
+        <p class="text-indent line-height">可查看并下载【中标执行价】，确定供应商是否同意中标，点击【下一步】进行结果公示页面。</p>
+        <p class="text-indent second_title bold">⑩结果公示</p>
+        <p class="text-indent line-height">在结果公示页面，采购方确认供应商配送的片区。</p>
         <p class="second_title">3、评审结果</p>
         <p class="text-indent line-height">评审完成后，项目状态为待采购方确认，采购方可在评审结果中上传附件。</p>
         <p class="text-indent line-height">在评审结果中上传评审结果附件及采购人结果确认附件，附件上传完成后，点击【提交】即将评审提交。</p>

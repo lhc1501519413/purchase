@@ -271,7 +271,7 @@
                       initialValue:formData.margin_money
                     }
                   ]"
-                />元整，无违约情况，合同期满后无息退还。
+                />万元整，无违约情况，合同期满后无息退还。
               </a-form-item>
             </a-col>
           </a-row>

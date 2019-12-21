@@ -27,7 +27,7 @@
     <p class="line-height">（ <span class="red bold">注：</span> 供应商先要申领CA，拿到 CA 后在云平台进行投标操作。）</p>
     <p class="line-height red bold">请供应商在使用云平台时，使用 WIN7 及以上操作系统；</p>
     <p class="line-height">1、文件安装</p>
-    <p class="line-height">点击链接 <a href="http://smart.acuit.net/upload/dl/key_soft.zip">http://smart.acuit.net/upload/dl/key_soft.zip</a> 获取安装包。</p>
+    <p class="line-height">点击链接 <a :href="global.host+'/upload/dl/key_soft.zip'">{{global.host}}/upload/dl/key_soft.zip</a> 获取安装包。</p>
     <p class="line-height">1）ZJCA 数字证书安装软件</p>
     <p class="line-height">选择简体中文语言，点击确认后，按照安装步骤进行安装即可。</p>
     <img class="img_center"  src="../../assets/images/tender/img_11.png" alt="">

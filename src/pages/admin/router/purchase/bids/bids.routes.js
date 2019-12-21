@@ -256,7 +256,7 @@ export default [
         component: () =>
           import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/open_bid/components/business_result'),
         meta: {
-          title: '商务技术结果公布',
+          title: '商务技术结果公示',
           permission: true
         },
       },

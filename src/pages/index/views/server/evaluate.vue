@@ -1,7 +1,7 @@
 <template>
   <div id="evaluate">
     <p class="center first_title">后勤物资采购云平台供应商投标操作指南</p>
-    <p class="text-indent line-height">项目开标后，评审专家登录后勤物资采购云平台，对项目进行在线评审。 <a href="http://smart.acuit.net/bid/#/index">（http://smart.acuit.net/bid/#/index）</a></p>
+    <p class="text-indent line-height">项目开标后，评审专家登录后勤物资采购云平台，对项目进行在线评审。 <a :href="global.host">（{{global.host}}）</a></p>
     <p class="first_title bold">一、登录 </p>
     <p class="text-indent line-height">专家点击【用户登录】，选择【验证码登录】方式，输入手机号，获取验证码登录。</p>
     <img class="img_width img_center" src="../../assets/images/evaluate/img_25.png" alt="">
@@ -47,7 +47,7 @@
     <p class="line-height">4) 作为评审小组组长，待所有专家提交评审结果后，评审小组组长在此环节页面中可点击【下一步】，所有专家点击页面的【刷新】按钮后再点击进入下一环节评审，否则不可进入下一评审环节，提示“尚未进行到此阶段。</p>
     <p class="line-height">4.商务技术评分汇总</p>
     <p class="line-height">1) 进入【商务技术评分汇总】环节，可查看各专家打分情况及评审意见；</p>
-    <p class="line-height">2) 作为评审小组组长确认分数无误后，点击右上角【提交】，提交完成后，采购方可进入【商务技术结果公布】环节；</p>
+    <p class="line-height">2) 作为评审小组组长确认分数无误后，点击右上角【提交】，提交完成后，采购方可进入【商务技术结果公示】环节；</p>
     <p class="line-height">3) 在采购方开启价格标书之后，评审小组组长可点击【下一步】进入【报价评审】环节；</p>
     <p class="line-height">4) 如专家在此环节需要对评分分数修改，评审小组组长可点击【退回专家打分】，所有专家可重新回到【商务技术评分环节】打分。</p>
     <img class="img_width img_center" src="../../assets/images/evaluate/img_16.png" alt="">

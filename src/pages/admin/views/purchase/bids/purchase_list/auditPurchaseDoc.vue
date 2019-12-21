@@ -155,7 +155,7 @@
               readOnly
               style="width:30%;margin-right:5px;"
               :value='formData.notice_info.margin'
-            ></a-input>元
+            ></a-input>万元
           </div>
         </a-col>
       </a-row>

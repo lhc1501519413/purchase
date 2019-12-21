@@ -36,8 +36,8 @@
           <a-col :span="6">联系人：{{formData.contact_name}}</a-col>
           <a-col :span="6" :offset="2">联系方式：{{formData.contact_number}}</a-col>
         </a-row>
-        <div class="text-center mb-10">{{formData.com_name}}</div>
-        <div class="text-center mb-10">{{formData.create_time}}</div>
+        <div class="text-right mb-10">{{formData.com_name}}</div>
+        <div class="text-right mb-10">{{formData.create_time}}</div>
       </div>
     </section>
   </div>

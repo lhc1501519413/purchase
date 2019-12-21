@@ -63,7 +63,7 @@ export default {
         .catch(error => this.$message.error(error));
     },
     next() {
-      if(this.$store.getters.judgeStatus>=10){ // 如技术结果公布完成，跳转到开标记录
+      if(this.$store.getters.judgeStatus>=10){ // 如技术结果公示完成，跳转到开标记录
         this.$router.push({path:'/Bid/supply_report',query:{bid_code:this.bid_code}})
       }else{
         open_report({bid_code:this.bid_code}).then(res => {

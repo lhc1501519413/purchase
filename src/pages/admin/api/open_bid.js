@@ -94,7 +94,7 @@ export function get_judge_total_quality_grade(bid_code) {
     params: { c: 'Bid', a: 'get_judge_total_quality_grade', token: localStorage.getItem('token'), bid_code }
   })
 }
-/* 获取商务技术结果公布 */
+/* 获取商务技术结果公示 */
 export function get_business_result(bid_code) {
   return request({
     method: 'GET',
@@ -161,7 +161,7 @@ export function publish_business_result(data) {
     data
   })
 }
-/* 商务技术结果公布下一步 */
+/* 商务技术结果公示下一步 */
 export function open_report(data) {
   return request({
     method: 'POST',
@@ -225,6 +225,14 @@ export function get_bid_pre_price_info(params){
   return request({
     method:'GET',
     params: Object.assign({ c: 'Bid' , a: 'get_bid_pre_price_info', token: localStorage.getItem('token') },params)
+  })
+}
+/* 保存得分汇总列表 */
+export function save_judge_supply_elect(data){
+  return request({
+    method:'POST',
+    params: { c: 'Bid' , a: 'save_judge_supply_elect', token: localStorage.getItem('token') },
+    data
   })
 }
 /* 获取片区列表 */

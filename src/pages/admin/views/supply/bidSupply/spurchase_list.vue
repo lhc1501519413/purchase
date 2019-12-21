@@ -21,7 +21,7 @@
           <span>{{value|status}}</span>
         </template>
         <template slot="operation" slot-scope="text,record">
-          <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">查看项目</router-link>
+          <router-link v-if="priv.spurchase_list.view" :to="{path:'/sbidDetail',query:{bid_code:text.bid_code}}">查看项目</router-link>
           <a v-if="priv.spurchase_list.acquire&&(text.status==1||text.status==3)" @click="get_supply_purchase_info(text.bid_code,record)" href="javascript:;">获取</a><!-- 待获取，已驳回 -->
           <a v-if="priv.spurchase_list.acquire&&text.status==5" @click="download(text.bid_id)">下载采购文件</a>
           <!-- <a v-if="text.status==20||text.status==21"

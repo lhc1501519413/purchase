@@ -245,31 +245,31 @@ export default {
           width: "9%",
           align: "center"
         },
-        {
-          title: "响应品牌",
-          dataIndex: "response_brand",
-          width: "7%",
-          align: "center"
-        },
-        {
-          title: "响应规格",
-          dataIndex: "response_standard",
-          width: "7%",
-          align: "center"
-        },
-        {
-          title: "响应产品参数",
-          dataIndex: "response_note",
-          width: "8%",
-          align: "center"
-        },
-        {
-          title: "是否偏离",
-          dataIndex: "is_match",
-          width: "7%",
-          align: "center",
-          scopedSlots: { customRender: "is_match" }
-        }
+        // {
+        //   title: "响应品牌",
+        //   dataIndex: "response_brand",
+        //   width: "7%",
+        //   align: "center"
+        // },
+        // {
+        //   title: "响应规格",
+        //   dataIndex: "response_standard",
+        //   width: "7%",
+        //   align: "center"
+        // },
+        // {
+        //   title: "响应产品参数",
+        //   dataIndex: "response_note",
+        //   width: "8%",
+        //   align: "center"
+        // },
+        // {
+        //   title: "是否偏离",
+        //   dataIndex: "is_match",
+        //   width: "7%",
+        //   align: "center",
+        //   scopedSlots: { customRender: "is_match" }
+        // }
       ],
       /* 达成流标条件 */
       form: this.$form.createForm(this),

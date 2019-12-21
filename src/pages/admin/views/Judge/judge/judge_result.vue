@@ -2,7 +2,14 @@
   <div class="judge_result">
     <section class="content">
       <h4>得分汇总列表</h4>
-      <a-table class="table" :customRow="rowClick" :dataSource="judge_result" :columns="columns" rowKey="supply_id" :rowSelection="rowSelection"></a-table>
+      <a-table 
+        class="table" 
+        :dataSource="judge_result" 
+        :columns="columns" 
+        rowKey="supply_id"
+        >
+      </a-table>
+      <!-- <a-table class="table" :customRow="rowClick" :dataSource="judge_result" :columns="columns" rowKey="supply_id" :rowSelection="rowSelection"></a-table> -->
       <h4>评审意见</h4>
       <div class="ml-20 mb-10" v-for="item of opinion_list" :key='item.user_id'>
         【{{item.realname}}】评审意见：{{item.opinion}}
@@ -120,6 +127,13 @@ export default {
       opinion:'',
       opinion_list:[],
       columns: [
+        /* 去除专家方推荐后添加 */
+        {
+          title: "序号",
+          customRender: (text, record, index) => `${index + 1}`,
+          width: "6%",
+          align: "center"
+        },
         {
           title: "供应商名称",
           dataIndex:'supply_name',
@@ -136,7 +150,7 @@ export default {
           width: "15%",
         },
         {
-          title: "技术商务资质信得分",
+          title: "技术商务资质得分",
           dataIndex:'business_skill_score',
           width: "15%",
         },
@@ -217,7 +231,7 @@ export default {
       var self = this;
       var formData = {
         bid_code: this.bid_code,
-        supply_ids: this.selectedRowKeys.join(','),
+        // supply_ids: this.selectedRowKeys.join(','),
         opinion:this.opinion
       };
       self.$confirm({

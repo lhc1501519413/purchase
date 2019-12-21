@@ -234,31 +234,31 @@ export default {
           align: "center",
           scopedSlots: { customRender: "price" }
         },
-        {
-          title: "响应品牌",
-          dataIndex: "response_brand",
-          width: 100,
-          align: "center",
-        },
-        {
-          title: "响应规格",
-          dataIndex: "response_standard",
-          width: 100,
-          align: "center",
-        },
-        {
-          title: "响应产品参数",
-          dataIndex: "response_note",
-          width: 100,
-          align: "center",
-        },
-        {
-          title: "偏离信息",
-          dataIndex: "is_match",
-          width: "15%",
-          align: "center",
-          scopedSlots: { customRender: "is_match" }
-        }
+        // {
+        //   title: "响应品牌",
+        //   dataIndex: "response_brand",
+        //   width: 100,
+        //   align: "center",
+        // },
+        // {
+        //   title: "响应规格",
+        //   dataIndex: "response_standard",
+        //   width: 100,
+        //   align: "center",
+        // },
+        // {
+        //   title: "响应产品参数",
+        //   dataIndex: "response_note",
+        //   width: 100,
+        //   align: "center",
+        // },
+        // {
+        //   title: "偏离信息",
+        //   dataIndex: "is_match",
+        //   width: "15%",
+        //   align: "center",
+        //   scopedSlots: { customRender: "is_match" }
+        // }
       ],
       paginationStock: {
         showQuickJumper: true,

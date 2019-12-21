@@ -253,7 +253,7 @@
                   style="width:30%;margin-right:5px;"
                   placeholder="请输入投标保证金"
                   v-model="margin"
-                ></a-input>元
+                ></a-input>万元
               </div>
             </a-form-item>
             <a-form-item label="处罚信息" v-bind="formItemLayout">

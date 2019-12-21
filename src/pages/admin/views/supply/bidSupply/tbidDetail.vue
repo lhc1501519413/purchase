@@ -1,6 +1,6 @@
 <template>
   <div id="sbidDetail">
-    <h5>获取采购文件 / 查看项目
+    <h5>投标文件管理 / 查看项目
       <a-button @click="$router.go(-1)">返回</a-button>
     </h5>
     <section class="bid_notice_detail mt-20 content">
@@ -125,7 +125,7 @@ export default {
     };
   },
   created() {
-    this.father.selectedKeys = ["/Sbid/spurchase_list"];
+    this.father.selectedKeys = ["/Sbid/tender_list"];
     get_notice_info_by_code({ bid_code: this.$route.query.bid_code })
       .then(res => {
         this.formData = res.data||{};

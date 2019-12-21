@@ -8,11 +8,11 @@
         <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
         <a-button type="primary" @click="refresh">刷新</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
-        <!-- <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button> -->
+        <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
         <!-- <a-button v-if="current==8" type="primary" v-print="'#judge_result_table'">打印得分汇总v-print</a-button> -->
-        <a-button v-if="current==8" type="primary" @click="print_bid_result">打印得分汇总click</a-button>
-        <a-button v-if="current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
-        <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="submit">提交</a-button>
+        <!-- <a-button v-if="current==8" type="primary" @click="print_bid_result">打印得分汇总click</a-button> -->
+        <!-- <a-button v-if="current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button> -->
+        <a-button v-if="judge_info.status==14&&current==8" type="primary" @click="submit">提交</a-button><!-- 提交供应商关于价格意见改为提交得分汇总列表 -->
         <a-button v-if="judge_info.status==15&&current==9" type="primary" @click="submit">提交</a-button>
         <a-button type="primary" v-if="current==0||current==4||current==5||current==6||current==8" @click="next">下一步</a-button>
       </div>
@@ -53,7 +53,7 @@
         </a-step>
         <a-step @click="judge_info.status>=9?$router.push({path:'/Bid/business_result',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
-            商务技术结果公布
+            商务技术结果公示
             <span class="open">开</span>
           </div>
         </a-step>
@@ -79,7 +79,7 @@
         </a-step>
         <a-step @click="judge_info.status>=15?$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}}):$message.info('尚未进行到此阶段')">
           <div slot="title" class="pointer">
-            结果公布
+            结果公示
             <span class="open">开</span>
           </div>
         </a-step>
@@ -115,9 +115,41 @@ export default {
       this.$refs.child.open_report_file();
     },
     get_judge_info(){ // 获取项目评标中的状态
-      get_judge_info(this.bid_code).then(res=>{
+      var bid_code = this.bid_code;
+      get_judge_info(bid_code).then(res=>{
         this.judge_info = res.data;
-        this.$store.commit('SET_STATUS',res.data.status)
+        this.$store.commit('SET_STATUS',res.data.status);
+        switch (res.data.status) {
+          case '4':
+            this.$router.push({path:'/Bid/judge_quality',query:{bid_code}})
+            break;
+          case '5':
+            this.$router.push({path:'/Bid/judge_match',query:{bid_code}})
+            break;
+          case '6':
+            this.$router.push({path:'/Bid/judge_quality_grade',query:{bid_code}})
+            break;
+          case '7':
+            this.$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})
+            break;
+          case '9':
+            this.$router.push({path:'/Bid/business_result',query:{bid_code}})
+            break;
+          case '10':
+            this.$router.push({path:'/Bid/supply_report',query:{bid_code}})
+            break;
+          case '12':
+            this.$router.push({path:'/Bid/judge_report',query:{bid_code}})
+            break;
+          case '13':
+            this.$router.push({path:'/Bid/judge_result',query:{bid_code}})
+            break;
+          case '15':
+            this.$router.push({path:'/Bid/judge_elect_supply',query:{bid_code}})
+            break;
+          default:
+            break;
+        }
       }).catch(error=>this.$message.error(error))
     },
     refresh(){  // 刷新
