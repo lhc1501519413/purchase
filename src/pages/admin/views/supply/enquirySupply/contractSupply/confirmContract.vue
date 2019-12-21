@@ -225,7 +225,7 @@
             <span class="ml-10 mr-10">
               {{formData.margin_money}}
             </span>
-            元整，无违约情况，合同期满后无息退还。
+            万元整，无违约情况，合同期满后无息退还。
           </a-form-item>
         </a-col>
       </a-row>

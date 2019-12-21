@@ -8,7 +8,7 @@
         <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
         <a-button type="primary" @click="refresh">刷新</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
-        <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
+        <a-button v-if="(judge_info.status==13||judge_info.status==14)&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
         <!-- <a-button v-if="current==8" type="primary" v-print="'#judge_result_table'">打印得分汇总v-print</a-button> -->
         <!-- <a-button v-if="current==8" type="primary" @click="print_bid_result">打印得分汇总click</a-button> -->
         <!-- <a-button v-if="current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button> -->
