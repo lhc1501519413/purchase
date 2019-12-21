@@ -29,10 +29,11 @@ export function tender_list(params){
     params:Object.assign({c:'Sbid',a:'tender_list',token:localStorage.getItem('token')},params)
   })
 }
-export function reback(data){
+/* 撤回投标 */
+export function reback_tender(data){
   return request({
     method:'POST',
-    params:{ c : 'Sbid', a : 'reback', token:localStorage.getItem('token') },
+    params:{ c : 'Sbid', a : 'reback_tender', token:localStorage.getItem('token') },
     data
   })
 }

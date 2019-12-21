@@ -61,6 +61,14 @@ export function del_bid(id) {
     data:{id}
   })
 };
+/* 撤回招标项目 */
+export function reback_bid(id) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'reback_bid', token: localStorage.getItem('token') },
+    data:{id}
+  })
+};
 /* 采购文件管理 */
 /* 添加/编辑公告 */
 export function save_bid_notice(data) {

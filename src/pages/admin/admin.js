@@ -30,7 +30,10 @@ Vue.directive('focus', {
     el.focus()
   }
 });
-
+import Print from '@common/js/print';
+Vue.use(Print) // 注册
+// import Print from 'vue-print-nb';
+// Vue.use(Print);  // 打印插件
 var vm = new Vue({
   el: '#app',
   router,

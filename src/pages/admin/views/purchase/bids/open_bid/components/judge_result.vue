@@ -2,7 +2,7 @@
   <div class="judge_result">
     <section class="content">
       <h4>得分汇总列表</h4>
-      <a-table class="table" :dataSource="judge_result" :columns="columns" rowKey="supply_id" :rowSelection="rowSelection">
+      <a-table class="table" ref="print" id="judge_result_table" bordered :dataSource="judge_result" :columns="columns" rowKey="supply_id" :rowSelection="rowSelection">
         <template slot="is_agree_price" slot-scope="text,record">
           <a-radio-group 
             :disabled="status>=14"
@@ -329,6 +329,9 @@ export default {
         }).catch(error => this.$message.error(error));
       }
     },
+    print_bid_result(){
+      this.$print(this.$refs.print)
+    }
   }
 };
 </script>

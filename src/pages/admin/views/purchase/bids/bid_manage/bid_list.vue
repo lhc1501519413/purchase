@@ -21,7 +21,7 @@
           </span>
         </template>
         <template slot="operation" slot-scope="text">
-          <div v-if="text.status==1||text.status==3">
+          <span v-if="text.status==1||text.status==3">
             <router-link v-if="priv.bid_list.edit" :to="{path:'/addBids',query:{id:text.id,code:text.custom_code}}">
               编辑
             </router-link>
@@ -30,8 +30,8 @@
             </router-link>
             <a @click="del(text.id)" v-if="priv.bid_list.delete" href="javascript:;">删除</a>
             <a @click="submit(text.id)" v-if="priv.bid_list.submit" href="javascript:;">提交</a>
-          </div>
-          <div v-if="text.status==2">
+          </span>
+          <span v-if="text.status==2">
             <router-link v-if="priv.bid_list.audit" :to="{path:'/auditBid',query:{id:text.id}}">
               审核
             </router-link>
@@ -39,8 +39,8 @@
             <router-link v-if="priv.bid_list.view" :to="{path:'/bidDetail',query:{id:text.id}}">
               查看项目
             </router-link>
-          </div>
-          <div v-if="text.status==8">
+          </span>
+          <span v-if="text.status==8">
             <router-link v-if="priv.purchase_list.edit" :to="{path:'/addPurchaseDoc',query:{id:text.id}}">
               制作
             </router-link>
@@ -48,21 +48,22 @@
               查看项目
             </router-link>
             <a @click="del(text.id)" v-if="priv.bid_list.delete" href="javascript:;">删除</a>
-          </div>
-          <div v-if="(text.status==9||text.status==10||text.status==11||text.status==15||text.status==16||text.status==17||text.status==18)&&priv.bid_list.view">
+          </span>
+          <span v-if="(text.status==9||text.status==10||text.status==11||text.status==15||text.status==16||text.status==17||text.status==18)&&priv.bid_list.view">
             <router-link :to="{path:'/bidDetail',query:{id:text.id}}">
               查看项目
             </router-link>
-          </div>
-          <div v-if="(text.status==20||text.status==21)&&priv.bid_list.view">
+          </span>
+          <span v-if="(text.status==20||text.status==21)&&priv.bid_list.view">
             <router-link :to="{path:'/bidDetail',query:{id:text.id}}">
               查看项目
             </router-link>
             <a @click="show_bid_fail(text.code)">流标信息</a>
-          </div>
+          </span>
           <router-link v-if="priv.bid_list.add&&text.show_copy" :to="{path:'/bidRelevance',query:{bid_code:text.code,code:text.custom_code}}">
             关联
           </router-link>
+          <!-- <a @click="reback" v-if="text.status!=1&&text.status!=3&&text.status!=26&&priv.bid_list.add">撤回</a> -->
         </template>
       </a-table>
       <a-pagination showQuickJumper :total="total" @change="paginationChange" />
@@ -131,7 +132,8 @@ import {
   bid_list, // 招标列表
   submit_bid, // 提交
   refuse_bid, // 驳回
-  del_bid // 删除
+  del_bid, // 删除
+  reback_bid // 撤回
 } from '@admin/api/bids'
 import {
   get_bid_fail // 流标详情
@@ -168,7 +170,8 @@ export default {
         {value:'22',label:'合同确认中'},
         {value:'23',label:'合同已导入'},
         {value:'24',label:'合同生效中'},
-        {value:'25',label:'合同已结束'}, */
+        {value:'25',label:'合同已结束'},
+        {value:'26',label:'已撤回'}, */
       ],
       bid_type:'',
       bid_type_list:[
@@ -272,6 +275,8 @@ export default {
         //   return '合同生效中'
         // case '25':
         //   return '合同已结束'
+        // case '26':
+        //   return '已撤回'
         default:
           return '未知状态'
       }
@@ -348,6 +353,21 @@ export default {
         title: '确认删除此招标项目？',
         onOk() {
           del_bid(id).then(res=>{
+            self.$message.success(res.msg)
+            self.bid_list_method();
+          }).catch(error=>{
+            self.$message.error(error)
+          })
+        },
+        onCancel() {},
+      });
+    },
+    reback(id){
+      var self = this;
+      this.$confirm({
+        title: '确认撤回此招标项目？',
+        onOk() {
+          reback_bid(id).then(res=>{
             self.$message.success(res.msg)
             self.bid_list_method();
           }).catch(error=>{

@@ -148,25 +148,6 @@
               <a @click="del_line(index)">删除</a>
             </template>
           </a-table>
-          <!-- <a-tree-select
-            style="width:55%;"
-            showSearch
-            allowClear
-            @change="areaChange"
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-            :treeData="com_price_region"
-            placeholder="请选择配送区域"
-            treeNodeFilterProp="title"
-            dropdownMatchSelectWidth
-            v-decorator="[
-              'region_id',
-              {
-                rules: [{ required: true, message: '请选择配送区域' }],
-                initialValue:formData.region_id
-              }
-            ]"
-          />
-          <a-textarea class="mt mb" readOnly v-model="region_area" :rows="4" /> -->
         </a-col>
         <a-col :span='3' :offset='1'>
           <a-button type='primary' @click="add_line">添加行</a-button>
@@ -272,6 +253,7 @@
     </section>
     <a-modal
       width="80%"
+      style="top:30px;"
       title="添加商品"
       :visible="ModalVisible"
       @ok="()=>this.setModalVisible(false)"
@@ -307,26 +289,24 @@
       />
       <a-input placeholder="模糊查询：编号/名称/简称" @keyup.13="get_stock_by_con_method" style="width:20%;" class="ml mr pl" v-model="kw_code"></a-input>
       <a-button type="primary" @click="get_stock_by_con_method">搜索</a-button>
+        <!-- :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" -->
       <a-table
         class="mt"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+        :rowSelection="stockRowSelection"
         :columns="columns"
         :dataSource="stock_data"
         rowKey="stock_id"
         :customRow="rowClick"
-        :pagination="false"
+        :pagination="pagination_shipping"
       >
-        <!-- <template slot="brand_name" slot-scope="text">
-          <span>{{text}}</span>
-        </template> -->
       </a-table>
-      <a-pagination
+      <!-- <a-pagination
         style='text-align:center'
         class="mt"
         showQuickJumper
         :total="+total_count"
         @change="paginationChange"
-      />
+      /> -->
     </a-modal>
     <a-modal
       width="40%"
@@ -464,7 +444,6 @@ export default {
         {
           title:'品牌',
           dataIndex:'brand_name',
-          // scopedSlots:{ customRender:'brand_name' },
           width:'6%'
         },
         {
@@ -563,6 +542,58 @@ export default {
       type:Object
     }
   },
+  computed:{
+    stockRowSelection(){
+      const { selectedRowKeys } = this;
+      return {
+        selectedRowKeys,
+        onChange: this.onSelectChange,
+        hideDefaultSelections: true,
+        selections: [
+          {
+            key: 'all-data',
+            text: '选择全部',
+            onSelect: () => {
+              var data = [...this.formData.stock_list];
+              this.stock_data.forEach(elem=>{
+                if (this.selectedRowKeys.indexOf(elem.stock_id) == -1) {
+                  data.push(elem);
+                } else {
+                  this.selectedRowKeys.remove(elem.stock_id);
+                }
+              })
+              this.selectedRowKeys = this.stock_data.prodData('stock_id')
+              var list = this.selectedRowKeys.merge(data, "stock_id");
+              list.forEach(elem => {
+                var number = 0;
+                var area_stock_number = [];
+                this.formData.area_list.forEach((elem2,index2)=>{
+                  area_stock_number.push({
+                    area_key:elem2.area_key,
+                    number:elem.area_stock_number&&elem.area_stock_number.length>index2?elem.area_stock_number[index2].number:''  
+                  })
+                  if(elem.area_stock_number&&elem.area_stock_number.length>index2){
+                    number+=Number(elem.area_stock_number[index2].number)
+                  }
+                })
+                elem.number = number;
+                elem.area_stock_number = area_stock_number;
+              });
+              this.formData.stock_list = list;
+            },
+          },
+          {
+            key: 'cancel-all-data',
+            text: '取消全部',
+            onSelect: () => {
+              this.selectedRowKeys = [];
+              this.formData.stock_list = [];
+            }
+          }
+        ],
+      }
+    }
+  },
   created() {
     this.father.selectedKeys = ['/Bid/bid_list'];
     this.custom_code = this.$route.query.code;
@@ -603,6 +634,9 @@ export default {
               width:'6%'
             })
           }
+          formData.stock_list.forEach(elem=>{
+            this.selectedRowKeys.push(elem.stock_id)
+          })
           this.formData = formData;
         })
         .catch(error => {
@@ -825,6 +859,7 @@ export default {
       var data = {
         com_id:this.form.getFieldsValue(['com_id']).com_id,
         page: this.page,
+        page_size: 1000,
         cat_id: this.formData.cat_id,
         sub_cat_id: this.sub_cat_id,
         kw_code: this.kw_code
@@ -859,7 +894,6 @@ export default {
       });
       this.get_stock_by_con_method();
       var stock_list = this.formData.stock_list;
-      // this.formData.stock_list.forEach(elem=>this.selectedRowKeys.push(elem.stock_id));
       this.ModalVisible = true;
     },
     setModalVisible(ModalVisible) {
@@ -966,7 +1000,6 @@ export default {
             values.stock_list = this.formData.stock_list;
             values.area_list = this.formData.area_list;
             values.status = submitKey||1;
-            // values.id = this.formData.id;
             values.from_bid_code = this.bid_code;
           }
           save_bid(values)

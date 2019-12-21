@@ -4,23 +4,23 @@
       <a-table class="table" :dataSource="judge_elect" :columns="columns" rowKey="supply_id" :pagination='false'>
         <template slot="area_key" slot-scope="text,record">
           <!-- 多选 -->
-          <!-- <a-select style="width: 100px"
+          <a-select style="width: 100px"
             mode="multiple"
             @focus="select_change(record.supply_id)"
             :disabled="status>=16"
             v-model="record.area_key"
           >
             <a-select-option v-for="item of area_list" :disabled='item.disabled' :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
-          </a-select> -->
+          </a-select>
           <!-- 单选 -->
-          <a-select style="width: 100px"
+          <!-- <a-select style="width: 100px"
             allowClear
             @mouseenter="mousechange(record.supply_id)"
             :disabled="status>=16"
             v-model="record.area_key"
           >
             <a-select-option v-for="item of area_list" :disabled='item.disabled' :key='item.id' :value="item.area_key">{{item.area_name}}</a-select-option>
-          </a-select>
+          </a-select> -->
         </template>
       </a-table>
     </section>
@@ -102,7 +102,7 @@ export default {
       get_judge_elect_supply(this.bid_code)
       .then(res => {
         var judge_elect = res.data.supply_list||[];
-        // judge_elect.forEach(elem=>elem.area_key=elem.area_key||[]);  // 多选
+        judge_elect.forEach(elem=>elem.area_key=elem.area_key||[]);  // 多选
         this.judge_elect = judge_elect
       })
       .catch(error => this.$message.error(error));

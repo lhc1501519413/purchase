@@ -149,25 +149,6 @@
               <a @click="del_line(index)">删除</a>
             </template>
           </a-table>
-          <!-- <a-tree-select
-            style="width:55%;"
-            showSearch
-            allowClear
-            @change="areaChange"
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-            :treeData="com_price_region"
-            placeholder="请选择配送区域"
-            treeNodeFilterProp="title"
-            dropdownMatchSelectWidth
-            v-decorator="[
-              'region_id',
-              {
-                rules: [{ required: true, message: '请选择配送区域' }],
-                initialValue:formData.region_id
-              }
-            ]"
-          />
-          <a-textarea class="mt mb" readOnly v-model="region_area" :rows="4" /> -->
         </a-col>
         <a-col :span='3' :offset='1'>
           <a-button type='primary' @click="add_line">添加行</a-button>
@@ -272,6 +253,7 @@
     </section>
     <a-modal
       width="80%"
+      style="top:30px;"
       title="添加商品"
       :visible="ModalVisible"
       @ok="()=>this.setModalVisible(false)"
@@ -307,26 +289,24 @@
       />
       <a-input placeholder="模糊查询：编号/名称/简称" @keyup.13="get_stock_by_con_method" style="width:20%;" class="ml mr pl" v-model="kw_code"></a-input>
       <a-button type="primary" @click="get_stock_by_con_method">搜索</a-button>
+        <!-- :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" -->
       <a-table
         class="mt"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+        :rowSelection="stockRowSelection"
         :columns="columns"
         :dataSource="stock_data"
         rowKey="stock_id"
         :customRow="rowClick"
-        :pagination="false"
+        :pagination="pagination_shipping"
       >
-        <!-- <template slot="brand_name" slot-scope="text">
-          <span>{{text}}</span>
-        </template> -->
       </a-table>
-      <a-pagination
+      <!-- <a-pagination
         style='text-align:center'
         class="mt"
         showQuickJumper
         :total="+total_count"
         @change="paginationChange"
-      />
+      /> -->
     </a-modal>
     <a-modal
       width="40%"
@@ -360,8 +340,6 @@
 <script>
 import {
   get_user_com_list, // 获取当前账户有效公司列表
-  // get_com_price_region, // 获取公司价格执行区域列表
-  // get_shipping_region, // 获取公司价格配送区域列表
   get_all_shipping_region // 获取全部公司价格配送区域列表
 } from "@common/js/comUsedApi";
 import { 
@@ -462,7 +440,6 @@ export default {
         {
           title:'品牌',
           dataIndex:'brand_name',
-          // scopedSlots:{ customRender:'brand_name' },
           width:'6%'
         },
         {
@@ -493,7 +470,6 @@ export default {
       ],
       user_com_list: [], // 用户公司列表
       bid_type_list: [], // 采购方式列表
-      // region_area: "", // 配送区域
       columns_area:[
         {
           title:'序号',
@@ -543,8 +519,6 @@ export default {
         }
       ], // 分区table列数组
       shipping_selectedRowKeys:[], // 区域已选择列表
-      // disabledKeys:["1", "42", "94", "97", "98"],
-      // com_price_region: [], // 价格执行区域
       all_rule_type: [], // 成交规则
       cat_list: [], // 大类列表
       sub_cat_list: [], // 小类列表
@@ -565,6 +539,58 @@ export default {
       type:Object
     }
   },
+  computed:{
+    stockRowSelection(){
+      const { selectedRowKeys } = this;
+      return {
+        selectedRowKeys,
+        onChange: this.onSelectChange,
+        hideDefaultSelections: true,
+        selections: [
+          {
+            key: 'all-data',
+            text: '选择全部',
+            onSelect: () => {
+              var data = [...this.formData.stock_list];
+              this.stock_data.forEach(elem=>{
+                if (this.selectedRowKeys.indexOf(elem.stock_id) == -1) {
+                  data.push(elem);
+                } else {
+                  this.selectedRowKeys.remove(elem.stock_id);
+                }
+              })
+              this.selectedRowKeys = this.stock_data.prodData('stock_id')
+              var list = this.selectedRowKeys.merge(data, "stock_id");
+              list.forEach(elem => {
+                var number = 0;
+                var area_stock_number = [];
+                this.formData.area_list.forEach((elem2,index2)=>{
+                  area_stock_number.push({
+                    area_key:elem2.area_key,
+                    number:elem.area_stock_number&&elem.area_stock_number.length>index2?elem.area_stock_number[index2].number:''  
+                  })
+                  if(elem.area_stock_number&&elem.area_stock_number.length>index2){
+                    number+=Number(elem.area_stock_number[index2].number)
+                  }
+                })
+                elem.number = number;
+                elem.area_stock_number = area_stock_number;
+              });
+              this.formData.stock_list = list;
+            },
+          },
+          {
+            key: 'cancel-all-data',
+            text: '取消全部',
+            onSelect: () => {
+              this.selectedRowKeys = [];
+              this.formData.stock_list = [];
+            }
+          }
+        ],
+      }
+    }
+  },
   created() {
     this.father.selectedKeys = ['/Bid/bid_list'];
     this.code = this.$route.query.code;
@@ -576,16 +602,6 @@ export default {
     get_bid_info_method(id) { // 修改项目时获取信息
       get_bid_info(id)
         .then(res => {
-          // get_com_price_region(res.data.com_id).then(res2 => {
-          //   var data = res2.data || [];
-          //   this.com_price_region = this.$common.treeSelectFormat(data);
-          // }).catch();
-          // var list = res.data.shipping_region_list;
-          // var region_area='';
-          // list.forEach(elem => {
-          //   region_area +=elem.name+'，';
-          // });
-          // this.region_area = region_area.slice(0,-1);
           this.com_id = res.data.com_id;
           this.get_all_shipping_region()
           var formData = res.data||[];
@@ -596,9 +612,6 @@ export default {
             })
           })
           this.shipping_selectedRowKeys=shipping_selectedRowKeys;
-          // formData.stock_list.forEach(elem=>{
-          //   elem.is_exam = +elem.is_exam;
-          // })
           this.columns_stock_list[6].children = [];
           formData.area_list.forEach(elem=>{
             this.columns_stock_list[6].children.push({
@@ -658,13 +671,6 @@ export default {
       this.formData.area_list = [];
       this.com_id = e;
       this.get_all_shipping_region();
-      // this.region_area = "";
-      // this.com_price_region =[];
-      // this.form.setFieldsValue({ ["region_id"]: '' });
-      // get_com_price_region(e).then(res => {
-      //   var data = res.data || [];
-      //   this.com_price_region = this.$common.treeSelectFormat(data);
-      // }).catch();
     },
     get_all_shipping_region(){
       var keyword = this.keyword;
@@ -689,16 +695,6 @@ export default {
         })
         .catch();
     },
-    /* areaChange(e) {
-      get_shipping_region(e).then(res => {
-        let result = res.data||[];
-        let region_area = "";
-        result.forEach(elem => {
-          region_area += elem.name + "，";
-        });
-        this.region_area = region_area.slice(0, -1);
-      });
-    }, */
     add_line(){
       if(!this.form.getFieldsValue(['com_id']).com_id){
         this.$message.warn('请先选择采购单位');
@@ -750,17 +746,8 @@ export default {
       }
     },
     add_area(index){
-      // var other_region_list = [];
-      // this.formData.area_list.forEach((elem,i)=>{
-      //   if(index==i)return;
-      //   other_region_list = [...other_region_list,...elem.region_list];
-      // })
-      // let all_shipping_region_copy = JSON.parse(JSON.stringify(this.all_shipping_region_copy));
-      // var arr2 = all_shipping_region_copy.uniqueObj(other_region_list,'id');
-      // this.all_shipping_region = arr2;
       this.region_list_index = index;
       this.get_all_shipping_region();
-      // this.ModalVisibleArea = true;
     },
     del_line(index){
       this.formData.area_list[index].region_list.forEach(elem=>{
@@ -850,14 +837,6 @@ export default {
       var region_list = this.shipping_selectedRowKeys.merge(data,'id');
       this.formData.area_list[this.region_list_index].region_list = region_list;
     },
-    // shippingGetCheckboxProps(record){
-    //   var self = this;
-    //   return{
-    //     props: {
-    //       disabled: self.disabledKeys.indexOf(record.id)!=-1
-    //     },
-    //   }
-    // },
     cat_change(e) {
       this.formData.cat_id  = e;
       this.sub_cat_id = "";
@@ -867,7 +846,6 @@ export default {
         var data = res.data||[];
         this.sub_cat_list = [...[{value:'0',title:'全部'}],...this.$common.treeSelectFormat(data)];
       });
-      
     },
     sub_cat_change(e) {
       this.sub_cat_id = e;
@@ -878,6 +856,7 @@ export default {
       var data = {
         com_id:this.form.getFieldsValue(['com_id']).com_id,
         page: this.page,
+        page_size: 1000,
         cat_id: this.formData.cat_id,
         sub_cat_id: this.sub_cat_id,
         kw_code: this.kw_code
@@ -912,7 +891,6 @@ export default {
       });
       this.get_stock_by_con_method();
       var stock_list = this.formData.stock_list;
-      // this.formData.stock_list.forEach(elem=>this.selectedRowKeys.push(elem.stock_id));
       this.ModalVisible = true;
     },
     setModalVisible(ModalVisible) {
@@ -1017,17 +995,6 @@ export default {
             this.$message.warn("请添加商品");
             return;
           } else {
-            // let stock_list = this.formData.stock_list;
-            // let key = false;
-            // stock_list.forEach(elem => {
-            //   if (!elem.number) {
-            //     key = true;
-            //   }
-            // });
-            // if (key) {
-            //   this.$message.warn("商品数量不能为空");
-            //   return;
-            // }
             values.stock_list = this.formData.stock_list;
             values.area_list = this.formData.area_list;
             values.status = submitKey||1;

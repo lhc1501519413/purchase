@@ -8,7 +8,10 @@
         <a-button @click="$router.replace({path:'/Bid/open_bid',query:{bid_code}})">返回</a-button>
         <a-button type="primary" @click="refresh">刷新</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
-        <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
+        <!-- <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button> -->
+        <!-- <a-button v-if="current==8" type="primary" v-print="'#judge_result_table'">打印得分汇总v-print</a-button> -->
+        <a-button v-if="current==8" type="primary" @click="print_bid_result">打印得分汇总click</a-button>
+        <a-button v-if="current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
         <a-button v-if="judge_info.status==13&&current==8" type="primary" @click="submit">提交</a-button>
         <a-button v-if="judge_info.status==15&&current==9" type="primary" @click="submit">提交</a-button>
         <a-button type="primary" v-if="current==0||current==4||current==5||current==6||current==8" @click="next">下一步</a-button>
@@ -128,6 +131,9 @@ export default {
     },
     compute_bid_price(){
       this.$refs.child.compute_bid_price();
+    },
+    print_bid_result(){ /* 打印 */
+      this.$refs.child.print_bid_result();
     },
     next() {
       this.$refs.child.next();

@@ -255,6 +255,13 @@ Object.defineProperties(Array.prototype, {
       return this.filter(elem => !!elem === true);
     }
   },
+  prodData: { // 获取数组对象中的key值，返回由其组成的数组
+    value:function(key){
+      return this.map((item)=>{
+        return item[key]; 
+      })
+    }
+  }
 });
 Object.defineProperty(Object.prototype,'indexOfObjValue',{
   value:function(keyName,value){
