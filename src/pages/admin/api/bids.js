@@ -14,6 +14,14 @@ export function get_bid_info(id) {
     params: { c: 'Bid', a: 'get_bid_info', token: localStorage.getItem('token'),id },
   })
 }
+/* 获取商品预估数量 */
+export function get_pre_stock_num(data) {
+  return request({
+    method: 'POST',
+    params: { c: 'Bid', a: 'get_pre_stock_num', token: localStorage.getItem('token') },
+    data,
+  })
+}
 /* 招标详情 */
 export function get_bid_info_by_code(code) {
   return request({

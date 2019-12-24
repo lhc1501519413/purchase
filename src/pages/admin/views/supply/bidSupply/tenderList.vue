@@ -22,13 +22,13 @@
             <router-link v-if="priv.tender_list.edit&&text.bid_status==15&&text.add_chance&&text.bid_status!=20&&text.bid_status!=21" :to="{path:'/addSPurchaseDoc',query:{code:text.bid_code}}">
               制作
             </router-link>
-            <router-link v-if="priv.tender_list.view" :to="{path:'/sbidDetail',query:{id:text.bid_id}}">
+            <router-link v-if="priv.tender_list.view" :to="{path:'/tbidDetail',query:{code:text.bid_code}}">
               查看项目
             </router-link>
           </div>
           <div v-if="priv.tender_list.view&&text.status==8">
             <a @click="reback_tender(text.bid_code)" v-if="priv.tender_list.edit&&text.add_chance">撤回</a>
-            <router-link :to="{path:'/tbidDetail',query:{bid_code:text.bid_code}}">
+            <router-link :to="{path:'/tbidDetail',query:{code:text.bid_code}}">
               查看项目
             </router-link>
             <router-link :to="{path:'/tenderDoc',query:{code:text.bid_code}}">

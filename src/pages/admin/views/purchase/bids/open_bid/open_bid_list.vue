@@ -83,7 +83,7 @@
             </a>
             <!-- <a disabled v-if="priv.open_bid_list.view&&(record.status==20||record.status==21)">开标评标</a> -->
             <router-link
-              v-if="priv.open_bid_list.view&&record.status==21"
+              v-if="priv.open_bid_list.view&&record.is_scrap"
               :to="{path:'/Bid/scrap',query:{bid_code:record.code}}"
             >废标信息</router-link>
         </template>

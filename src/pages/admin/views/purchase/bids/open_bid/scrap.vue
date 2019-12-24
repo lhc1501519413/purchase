@@ -34,39 +34,46 @@
       @cancel="ModalVisible = false"
     >
       <h3 slot="title">废标记录</h3>
-      <div v-for="(item,index) of scrap_list" :key="index" class="p-10">
-        <h3>
-          <span>
-            废标记录（{{index+1}}）
-          </span>
-          <span class="ml-20">
-            发起时间：{{item.create_time}}
-          </span>
-        </h3>
-        <a-row class="mb-10 mt-10">
-          <a-col :span="10" :offset="1">供应商名称：{{item.supply_name}}</a-col>
-          <a-col :span="10" :offset="1">状态：{{item.status|status}}</a-col>
-        </a-row>
-        <a-row class="mb-10">
-          <a-col :span="10" :offset="1">废标节点：{{item.step_name}}</a-col>
-        </a-row>
-        <a-row class="mb-10">
-          <a-col :span="22" :offset="1">关于参与基准值单位设定：废标单位不参与基准值计算</a-col>
-        </a-row>
-        <a-row class="mb-10">
-          <a-col :span="22" :offset="1">废标原因：{{item.reason}}</a-col>
-        </a-row>
-        <a-table
-          :dataSource="item.record_list"
-          :columns="columns2"
-          :pagination="false"
-          rowKey="user_id"
-        >
-        <template slot="status" slot-scope='value'>
-          {{value==1?'同意':'不同意'}}
-        </template>
-        </a-table>
+      <div class="text-right">
+        <a-button type='primary' @click="print_scrap">打印废标记录</a-button>
       </div>
+      <ul id="scrap-record">
+        <li v-for="(item,index) of scrap_list" :key="index" class="p-10">
+          <h3>
+            <span>
+              废标记录（{{index+1}}）
+            </span>
+            <span class="ml-20">
+              发起时间：{{item.create_time}}
+            </span>
+          </h3>
+          <a-row class="mb-10 mt-10">
+            <a-col :span="22" :offset="1">供应商名称：{{item.supply_name}}</a-col>
+          </a-row>
+          <a-row class="mb-10">
+            <a-col :span="22" :offset="1">状态：{{item.status|status}}</a-col>
+          </a-row>
+          <a-row class="mb-10">
+            <a-col :span="22" :offset="1">废标节点：{{item.step_name}}</a-col>
+          </a-row>
+          <a-row class="mb-10">
+            <a-col :span="22" :offset="1">关于参与基准值单位设定：废标单位不参与基准值计算</a-col>
+          </a-row>
+          <a-row class="mb-10">
+            <a-col :span="22" :offset="1">废标原因：{{item.reason}}</a-col>
+          </a-row>
+          <a-table
+            :dataSource="item.record_list"
+            :columns="columns2"
+            :pagination="false"
+            rowKey="user_id"
+          >
+          <template slot="status" slot-scope='value'>
+            {{value==1?'同意':'不同意'}}
+          </template>
+          </a-table>
+        </li>
+      </ul>
     </a-modal>
   </div>
 </template>
@@ -75,6 +82,7 @@ import {
   scrap_supply_list, // 废标供应商列表
   get_scrap_list, // 获取废标记录
 } from "@admin/api/open_bid";
+import { getLodop } from '@common/js/lodop';
 export default {
   props: {
     father: {
@@ -167,7 +175,19 @@ export default {
           this.scrap_list = res.data || [];
         })
         .catch(error => this.$message.error(error));
-    }
+    },
+    print_scrap(){
+      var LODOP=getLodop();
+      LODOP.PRINT_INIT();
+      var strFormHtml = document.querySelector('#scrap-record').outerHTML;
+      var strBodyStyle=`
+      <style>
+      table,td,th { border: 1 solid #000000;border-collapse:collapse;text-align: center }
+      ul{list-style: none;}.ant-row{margin-bottom:10px}
+      </style>`;
+      LODOP.ADD_PRINT_HTM('15mm','10mm',"RightMargin:9mm","BottomMargin:9mm",strFormHtml+strBodyStyle);
+      LODOP.PREVIEW();
+    },
   }
 };
 </script>

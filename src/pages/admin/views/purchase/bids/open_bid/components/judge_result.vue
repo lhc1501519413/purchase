@@ -136,6 +136,8 @@ import {
   get_bid_pre_price_info, // 获取中标预执行价详情
   save_judge_supply_elect, // 保存得分汇总列表
 } from "@admin/api/open_bid";
+import { getLodop } from '@common/js/lodop';
+import { download_excel,ExportExcel } from '@common/js/excel';
 export default {
   props: {
     father: {
@@ -360,7 +362,26 @@ export default {
       }
     },
     print_bid_result(){
-      this.$print(this.$refs.print)
+      var checkbox = document.querySelectorAll("#judge_result_table input[type='checkbox']");
+      var checkedList = this.judge_result.reduce((prev,elem,index)=>{
+        if(elem.is_elect==1)return [...prev,index]
+        else return prev
+      },[])
+      checkbox.forEach((elem,index)=>{
+        if(checkedList.indexOf(index)!=-1)elem.setAttribute("checked",true);
+      })
+      var LODOP=getLodop();
+      LODOP.PRINT_INIT();
+      var strFormHtml = document.querySelector('#judge_result_table table').outerHTML;
+      var strBodyStyle=`
+      <style>
+      table,td,th { border: 1 solid #000000;border-collapse:collapse;text-align: center }
+      </style>`;
+      LODOP.ADD_PRINT_TABLE('15mm','10mm',"RightMargin:9mm","BottomMargin:9mm",strFormHtml+strBodyStyle);
+      LODOP.PREVIEW();
+    },
+    download_bid_result(){
+      ExportExcel(this.columns,this.judge_result,this.father.judge_info.title+'得分汇总'+new Date().Format('YYYYMMDD'));
     }
   }
 };

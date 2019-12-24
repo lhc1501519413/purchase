@@ -125,30 +125,33 @@
       >
       <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
-        <h4>项目基本信息</h4>
-        <a-row class="mb-10">
-          <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
-          <a-col :span="4">{{formData.custom_code}}</a-col>
-          <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
-          <a-col :span="4">{{formData.title}}</a-col>
-        </a-row>
-        <a-row class="mb-10">
-          <a-col :span="5" class="text-right" :offset="1">采购单位：</a-col>
-          <a-col :span="4">{{formData.com_name}}</a-col>
-          <a-col :span="5" class="text-right" :offset="1">采购方式：</a-col>
-          <a-col :span="4">{{formData.bid_type_name}}</a-col>
-        </a-row>
-        <a-form-item label="流标原因" v-bind="formItemLayout">
-          <a-textarea
-            style="width:65%"
-            :rows="4"
-            placeholder="请输入流标原因"
-            v-decorator="[
-              'reason',
-              { rules: [{ required: true, message: '请输入流标原因' }],initialValue:formData.reason}
-            ]"
-          ></a-textarea>
-        </a-form-item>
+        <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button>
+        <div id="scrap-record">
+          <h4>项目基本信息</h4>
+          <a-row class="mb-10">
+            <a-col :span="5" class="text-right" :offset="1">项目编号：</a-col>
+            <a-col :span="4">{{formData.custom_code}}</a-col>
+            <a-col :span="5" class="text-right" :offset="1">项目名称：</a-col>
+            <a-col :span="4">{{formData.title}}</a-col>
+          </a-row>
+          <a-row class="mb-10">
+            <a-col :span="5" class="text-right" :offset="1">采购单位：</a-col>
+            <a-col :span="4">{{formData.com_name}}</a-col>
+            <a-col :span="5" class="text-right" :offset="1">采购方式：</a-col>
+            <a-col :span="4">{{formData.bid_type_name}}</a-col>
+          </a-row>
+          <a-form-item label="流标原因：" v-bind="formItemLayout">
+            <a-textarea
+              style="width:65%"
+              :rows="4"
+              placeholder="请输入流标原因"
+              v-decorator="[
+                'reason',
+                { rules: [{ required: true, message: '请输入流标原因' }],initialValue:formData.reason}
+              ]"
+            ></a-textarea>
+          </a-form-item>
+        </div>
         <a-form-item label="附件" v-bind="formItemLayout">
           <a-upload
             :showUploadList="false"
@@ -195,6 +198,7 @@ import {
   save_bid_fail, // 流标
   get_bid_purchase_info // 获取采购文件全部详情
 } from "@admin/api/bids";
+import { getLodop } from '@common/js/lodop';
 export default {
   components: {
     "search-condition": () => import("@admin/components/searchCondition")
@@ -421,7 +425,28 @@ export default {
       if (index !== undefined) {
         this.file_list.splice(index, 1);
       }
-    }
+    },
+    print_scrap(){
+      var LODOP=getLodop();
+      LODOP.PRINT_INIT();
+      var strFormHtml = document.querySelector('#scrap-record').outerHTML;
+      var value = document.getElementById('reason').value;
+      strFormHtml = strFormHtml.replace(/<textarea.*>.*<\/textarea>/ig,`<span>${value}</span>`)
+      strFormHtml = strFormHtml.replace(/流标原因/ig,`流标原因：`)
+      var strBodyStyle=`
+      <style>
+      table,td,th { border: 1 solid #000000;border-collapse:collapse;text-align: center }
+      ul{list-style: none;}
+      .ant-row{margin-bottom:10px}
+      .ant-col-5{text-align:right}
+      .ant-col-6,.ant-col-offset-1{margin-left:10mm}
+      textarea{border:0}
+      textarea::-webkit-scrollbar{width:0px !important;}
+      </style>`;
+      // .ant-col-5,.ant-col-4,.ant-col-6,.ant-col-18{display:inline-block}
+      LODOP.ADD_PRINT_HTM('15mm','10mm',"RightMargin:9mm","BottomMargin:9mm",strFormHtml+strBodyStyle);
+      LODOP.PREVIEW();
+    },
   }
 };
 </script>
@@ -482,6 +507,10 @@ export default {
 </style>
 <style lang="scss">
 .failure-modal {
+  .btn{
+    @extend .absolute;
+    right: 50px;
+  }
   h4 {
     border-left: 4px solid $primary2;
     @extend .pl-10;

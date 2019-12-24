@@ -126,7 +126,7 @@ export default {
   },
   created() {
     this.father.selectedKeys = ["/Sbid/tender_list"];
-    get_notice_info_by_code({ bid_code: this.$route.query.bid_code })
+    get_notice_info_by_code({ bid_code: this.$route.query.code })
       .then(res => {
         this.formData = res.data||{};
         this.area_list = res.data.area_list||[];

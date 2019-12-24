@@ -30,10 +30,13 @@ Vue.directive('focus', {
     el.focus()
   }
 });
-import Print from '@common/js/print';
-Vue.use(Print) // 注册
+// import Print from '@common/js/print';
+// Vue.use(Print) // 注册
 // import Print from 'vue-print-nb';
 // Vue.use(Print);  // 打印插件
+import functions from '@common/js/functions';
+Vue.use(functions);//将全局函数当做插件来进行注册
+
 var vm = new Vue({
   el: '#app',
   router,

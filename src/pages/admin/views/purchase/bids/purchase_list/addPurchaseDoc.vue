@@ -568,6 +568,7 @@
             <div class="header">
               <h4>资质评分要求</h4>
               <div>
+                <span class="mr-10">总分{{total_score}}</span>
                 <a-button type="primary" class="mb-10 mr-10" @click="handleAddGrade">添加行</a-button>
                 <a-button type="primary" @click="save_bid_quality_grade">保存</a-button>
               </div>
@@ -952,6 +953,14 @@ export default {
         lineHeight: "30px"
       }
     };
+  },
+  computed:{
+    total_score(){
+      var total_score = this.formData.quality_grade_info&&this.formData.quality_grade_info.reduce((prev,elem)=>{
+        return prev+= +elem.max_score;
+      },0)
+      return total_score
+    }
   },
   created() {
     this.bid_id = this.$route.query.id;

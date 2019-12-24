@@ -643,7 +643,7 @@ export default {
             elem.new_price = elem.secret_price == "" ? "" : "***"
           });
         this.secret = formData.bid_info.secret;
-        this.secretKey = this.secretKey || formData.bid_info.secret;
+        this.secretKey = formData.bid_info.secret || this.secretKey ;
         if (formData.bid_info.secret) {
           encryption({
             serverName: "{0DADE507-64D6-4306-956A-2ED144FF0ED1}",

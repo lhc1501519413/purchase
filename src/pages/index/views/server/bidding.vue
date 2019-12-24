@@ -1,7 +1,7 @@
 <template>
     <div id="bidding">
         <P class="center first_title">采购方招标操作指南</P>
-        <p class="text-indent line-height">采购方通过选择【用户登录】输入账号及密码登陆平台，电机右上角的【我的工作台】进入后台操作界面。选择【招标管理】下的对应功能进行操作。</p>
+        <p class="text-indent line-height">采购方通过选择【用户登录】输入账号及密码登陆平台，点击右上角的【我的工作台】进入后台操作界面。选择【招标管理】下的对应功能进行操作{{global.host}}。</p>
         <p class="first_title bold" >1、项目管理</p>
         <p class="text-indent second_title">1) 新增项目</p>
         <p class="text-indent line-height">在【项目管理】页面可发起新的项目招标，在状态列表中，可查看项目进展的状态。</p>

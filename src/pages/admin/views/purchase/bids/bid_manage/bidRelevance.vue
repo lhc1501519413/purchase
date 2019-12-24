@@ -227,8 +227,9 @@
             />万元
           </a-form-item>
         </a-col>
-        <a-col :span="3">
-          <a-button type="primary" @click="add_stock">添加商品</a-button>
+        <a-col :span="6">
+          <a-button type="primary" class="ml-10" @click="add_stock">添加商品</a-button>
+          <a-button type="primary" class="ml-10" @click="add_pre_stock">添加预估采购数量</a-button>
         </a-col>
       </a-row>
       <a-table
@@ -352,6 +353,7 @@ import {
 import {
   save_bid, // 保存
   get_bid_info_by_code, // 获取详情
+  get_pre_stock_num // 获取商品预估数量
 } from "@admin/api/bids";
 
 var columns = [
@@ -871,6 +873,51 @@ export default {
         })
         .catch();
     },
+    add_pre_stock(){
+      if(!this.form.getFieldsValue(['com_id']).com_id){
+        this.$message.warn('请先选择采购单位');
+        return;
+      }
+      if(JSON.stringify(this.formData.area_list)==='[]'){
+        this.$message.warn('请添加片区')
+        return;
+      }
+      if(this.formData.area_list.some(elem=>elem.region_list.length==0)){
+        this.$message.warn('请选择配送区域')
+        return;
+      }
+      if(!this.form.getFieldsValue(['cat_id']).cat_id){
+        this.$message.warn('请先选择采购类别');
+        return;
+      }
+      if(!this.form.getFieldsValue(['shipping_days']).shipping_days){
+        this.$message.warn('请输入预计配送时间');
+        return;
+      }
+      if(!this.formData.stock_list||!this.formData.stock_list.length){
+        this.$message.warn('请选择商品');
+        return;
+      }
+      var formData = {
+        shipping_days:this.form.getFieldsValue(['shipping_days']).shipping_days,
+        area_list:this.formData.area_list,
+        stock_list:this.formData.stock_list
+      }
+      get_pre_stock_num(formData).then(res=>{
+        var stock_list = res.data.stock_list;
+        this.formData.stock_list.forEach(elem=>{
+          stock_list.forEach(elem2=>{
+            if(elem.stock_id===elem2.stock_id){
+              elem.number=elem2.number;
+              elem.area_stock_number.forEach(elem3=>{
+                elem2.area_stock_number.forEach(elem4=>elem3.number = +elem3.number||elem4.number)
+              })
+            }
+          })
+        })
+        this.$forceUpdate();
+      }).catch(error=>this.$message.error(error))
+    },
     add_stock() { // 打开商品列表弹窗
       if(!this.form.getFieldsValue(['com_id']).com_id){
         this.$message.warn('请先选择采购单位');
@@ -885,7 +932,7 @@ export default {
         return;
       }
       if(!this.form.getFieldsValue(['cat_id']).cat_id){
-        this.$message.warn('请先选择大类');
+        this.$message.warn('请先选择类别');
         return;
       }
       all_category(this.formData.cat_id).then(res => {
