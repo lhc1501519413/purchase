@@ -12,6 +12,11 @@
     .title {
       color: #202020;
       font-size: 16px;
+      .help{
+        font-size: 12px;
+        @extend .relative;
+        top: 5px;
+      }
     }
   }
 

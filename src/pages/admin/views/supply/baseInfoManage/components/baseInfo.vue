@@ -335,7 +335,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="11">
-        <a-form-item label="供应类别" v-bind="formItemLayout">
+        <a-form-item label="供应类别" v-bind="formItemLayout" :help="edit_read?'':'请选择真实的供应类别，供应类别和招标项目相关'">
           <span v-show="edit_read">{{formData.cat_names}}</span>
           <!-- <a-tree-select
           v-show="!edit_read"

@@ -125,7 +125,7 @@
       >
       <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
-        <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button>
+        <!-- <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button> -->
         <div id="scrap-record">
           <h4>项目基本信息</h4>
           <a-row class="mb-10">
@@ -442,8 +442,8 @@ export default {
       .ant-col-6,.ant-col-offset-1{margin-left:10mm}
       textarea{border:0}
       textarea::-webkit-scrollbar{width:0px !important;}
+      .ant-col-5,.ant-col-4,.ant-col-6,.ant-col-18{display:inline-block}
       </style>`;
-      // .ant-col-5,.ant-col-4,.ant-col-6,.ant-col-18{display:inline-block}
       LODOP.ADD_PRINT_HTM('15mm','10mm',"RightMargin:9mm","BottomMargin:9mm",strFormHtml+strBodyStyle);
       LODOP.PREVIEW();
     },

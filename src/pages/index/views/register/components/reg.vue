@@ -113,9 +113,9 @@
       </a-col>
       <a-col :span="7"></a-col>
     </a-row>
-    <a-row class="last-row">
+    <a-row>
       <a-col :span="9"></a-col>
-      <a-col :span="3" align="right">
+      <a-col :span="3" class="text-right">
         <a-form-item style="margin:0;">
           <a-button type="primary" html-type="submit">注册</a-button>
         </a-form-item>
@@ -124,6 +124,13 @@
         <button type="button" @click="go_login" class="custom-button go-login">已注册？去登录</button>
       </a-col>
       <a-col :span="9"></a-col>
+    </a-row>
+    <a-row>
+      <a-col :span="11"></a-col>
+      <a-col :span="6">
+        注册流程请查阅<a :href="global.host+'/#/check_in_guide'" target="_blank">入驻指南</a>
+      </a-col>
+      <a-col :span="7"></a-col>
     </a-row>
   </a-form>
 </template>

@@ -4,7 +4,7 @@ import global from '@common/js/global';
 const service = axios.create({
   baseURL: global.baseUrl, // 固定 url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 8000 // request timeout
+  timeout: 20000 // request timeout
 })
 service.interceptors.request.use(
   config => {

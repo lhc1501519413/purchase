@@ -1,16 +1,14 @@
 <template>
-  <div class="container">
-    <span class="fileinput-button">
-      <slot>上传</slot>
-      <input
-        class="pointer"
-        type="file"
-        :multiple="multiple"
-        :accept="accept"
-        @change="choose_file"
-      />
-    </span>
-  </div>
+  <span class="fileinput-button">
+    <slot>上传</slot>
+    <input
+      class="pointer"
+      type="file"
+      :multiple="multiple"
+      :accept="accept"
+      @change="choose_file"
+    />
+  </span>
 </template>
 
 <script>
@@ -34,12 +32,13 @@ export default {
 .fileinput-button {
   position: relative;
   display: inline-block;
-  overflow: hidden;
-}
-.fileinput-button input {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  opacity: 0;
+  input {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

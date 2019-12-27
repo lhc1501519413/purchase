@@ -111,39 +111,43 @@
               <h4>资格审查要求</h4>
               <a-button type="primary" @click="save_bid_quality">保存</a-button>
             </div>
-            <a-table
+            <a-spin 
+              :spinning="spinning" 
               v-if="formData.quality_info&&formData.quality_info.length>0"
-              :pagination="pagination_quality_info"
-              bordered
-              :dataSource="formData.quality_info"
-              :columns="columns_quality_info"
-              rowKey="id"
-            >
-              <span slot="nameTitle">
-                <img class="img_point" :src="point" alt="必填" />
-                审查内容
-              </span>
-              <template slot="operation" slot-scope="text, record, index">
-                <upload
-                  @choose-file="quality_grade_change($event,index)"
-                  accept="image/png, image/jpg, image/jpeg, application/pdf"
+              >
+              <a-table
+                :pagination="pagination_quality_info"
+                bordered
+                :dataSource="formData.quality_info"
+                :columns="columns_quality_info"
+                rowKey="id"
                 >
-                  <svg-icon icon-class="icon_table_add"></svg-icon>
-                </upload>
-                <ul>
-                  <li
-                    class="mt-10"
-                    @click.stop="del_quality_info_file($event,index)"
-                    v-for="(item,index2) of record.file_list"
-                    :key="index2"
+                <span slot="nameTitle">
+                  <img class="img_point" :src="point" alt="必填" />
+                  审查内容
+                </span>
+                <template slot="operation" slot-scope="text, record, index">
+                  <upload
+                    @choose-file="quality_grade_change($event,index)"
+                    accept="image/png, image/jpg, image/jpeg, application/pdf"
                   >
-                    <svg-icon class="wenjian" icon-class="wenjian" />
-                    <span class="ml-10 mr-10" style="width:10px;">{{item.file_name}}</span>
-                    <img :src="del_icon" alt="删除" class="wenjian" :data-key="index2" />
-                  </li>
-                </ul>
-              </template>
-            </a-table>
+                    <svg-icon icon-class="icon_table_add"></svg-icon>
+                  </upload>
+                  <ul>
+                    <li
+                      class="mt-10"
+                      @click.stop="del_quality_info_file($event,index)"
+                      v-for="(item,index2) of record.file_list"
+                      :key="index2"
+                    >
+                      <svg-icon class="wenjian" icon-class="wenjian" />
+                      <span class="ml-10 mr-10" style="width:10px;">{{item.file_name}}</span>
+                      <img :src="del_icon" alt="删除" class="wenjian" :data-key="index2" />
+                    </li>
+                  </ul>
+                </template>
+              </a-table>
+            </a-spin>
             <div class="ml-20" v-else>本次招标资格审查已在供应商入驻环节完成</div>
           </div>
         </a-tab-pane>
@@ -162,50 +166,52 @@
               <h4>资质评分要求</h4>
               <a-button type="primary" @click="save_bid_quality_grade">保存</a-button>
             </div>
-            <a-table
-              :pagination="pagination_quality_grade"
-              bordered
-              :dataSource="formData.quality_grade_info"
-              :columns="columns_quality_grade"
-              rowKey="id"
-            >
-              <span slot="nameTitle">
-                <img class="img_point" :src="point" alt="必填" />
-                评分项目
-              </span>
-              <span slot="judge_standardTitle">
-                <img class="img_point" :src="point" alt="必填" />
-                评分标准
-              </span>
-              <span slot="gistTitle">
-                <img class="img_point" :src="point" alt="必填" />
-                判定依据
-              </span>
-              <span slot="max_scoreTitle">
-                <img class="img_point" :src="point" alt="必填" />
-                最高得分
-              </span>
-              <template slot="operation" slot-scope="text, record, index">
-                <upload
-                  @choose-file="quality_grade_change($event,index)"
-                  accept="image/png, image/jpg, image/jpeg, application/pdf"
+            <a-spin :spinning="spinning">
+              <a-table
+                :pagination="pagination_quality_grade"
+                bordered
+                :dataSource="formData.quality_grade_info"
+                :columns="columns_quality_grade"
+                rowKey="id"
                 >
-                  <svg-icon icon-class="icon_table_add"></svg-icon>
-                </upload>
-                <ul>
-                  <li
-                    class="mt-10"
-                    @click.stop="del_quality_grade_file($event,index)"
-                    v-for="(item,index2) of record.file_list"
-                    :key="index2"
+                <span slot="nameTitle">
+                  <img class="img_point" :src="point" alt="必填" />
+                  评分项目
+                </span>
+                <span slot="judge_standardTitle">
+                  <img class="img_point" :src="point" alt="必填" />
+                  评分标准
+                </span>
+                <span slot="gistTitle">
+                  <img class="img_point" :src="point" alt="必填" />
+                  判定依据
+                </span>
+                <span slot="max_scoreTitle">
+                  <img class="img_point" :src="point" alt="必填" />
+                  最高得分
+                </span>
+                <template slot="operation" slot-scope="text, record, index">
+                  <upload
+                    @choose-file="quality_grade_change($event,index)"
+                    accept="image/png, image/jpg, image/jpeg, application/pdf"
                   >
-                    <svg-icon class="wenjian" icon-class="wenjian" />
-                    <span class="ml-10 mr-10">{{item.file_name}}</span>
-                    <img :src="del_icon" alt="删除" class="wenjian" :data-key="index2" />
-                  </li>
-                </ul>
-              </template>
-            </a-table>
+                    <svg-icon icon-class="icon_table_add"></svg-icon>
+                  </upload>
+                  <ul>
+                    <li
+                      class="mt-10"
+                      @click.stop="del_quality_grade_file($event,index)"
+                      v-for="(item,index2) of record.file_list"
+                      :key="index2"
+                    >
+                      <svg-icon class="wenjian" icon-class="wenjian" />
+                      <span class="ml-10 mr-10">{{item.file_name}}</span>
+                      <img :src="del_icon" alt="删除" class="wenjian" :data-key="index2" />
+                    </li>
+                  </ul>
+                </template>
+              </a-table>
+            </a-spin>
           </div>
         </a-tab-pane>
         <a-tab-pane key="4">
@@ -228,57 +234,59 @@
             <a-button
               type="primary"
               class="absolute"
-              style="top:0;right:0;"
+              style="top:0;right:0;z-index:11;"
               @click.stop="saveFile"
             >保存</a-button>
-            <div>
-              <h4>商务技术文件</h4>
-              <upload
-                class="ml-10"
-                @choose-file="quality_grade_change($event,'fileList')"
-                accept="image/png, image/jpg, image/jpeg, application/pdf"
-              >
-                <a-button>
-                  <a-icon type="upload" />上传
-                </a-button>
-              </upload>
-              <ul class="ml-10">
-                <li
-                  @click.stop="del"
-                  class="mt-10"
-                  v-for="(item,index) of formData.tender_file.file_list"
-                  :key="index"
+            <a-spin :spinning="spinning">
+              <div>
+                <h4>商务技术文件</h4>
+                <upload
+                  class="ml-10"
+                  @choose-file="quality_grade_change($event,'fileList')"
+                  accept="image/png, image/jpg, image/jpeg, application/pdf"
                 >
-                  <svg-icon class="wenjian" icon-class="wenjian" />
-                  <span>{{item.file_name}}</span>
-                  <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
-                </li>
-              </ul>
-            </div>
-            <div class="mt-10">
-              <h4>价格文件</h4>
-              <upload
-                class="ml-10"
-                @choose-file="quality_grade_change($event,'priceFile')"
-                accept="image/png, image/jpg, image/jpeg, application/pdf"
-              >
-                <a-button>
-                  <a-icon type="upload" />上传
-                </a-button>
-              </upload>
-              <ul class="ml-10">
-                <li
-                  @click.stop="del2"
-                  class="mt-10"
-                  v-for="(item,index) of formData.tender_file.price_file_list"
-                  :key="index"
+                  <a-button>
+                    <a-icon type="upload" />上传
+                  </a-button>
+                </upload>
+                <ul class="ml-10">
+                  <li
+                    @click.stop="del"
+                    class="mt-10"
+                    v-for="(item,index) of formData.tender_file.file_list"
+                    :key="index"
+                  >
+                    <svg-icon class="wenjian" icon-class="wenjian" />
+                    <span>{{item.file_name}}</span>
+                    <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+                  </li>
+                </ul>
+              </div>
+              <div class="mt-10">
+                <h4>价格文件</h4>
+                <upload
+                  class="ml-10"
+                  @choose-file="quality_grade_change($event,'priceFile')"
+                  accept="image/png, image/jpg, image/jpeg, application/pdf"
                 >
-                  <svg-icon class="wenjian" icon-class="wenjian" />
-                  <span>{{item.file_name}}</span>
-                  <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
-                </li>
-              </ul>
-            </div>
+                  <a-button>
+                    <a-icon type="upload" />上传
+                  </a-button>
+                </upload>
+                <ul class="ml-10">
+                  <li
+                    @click.stop="del2"
+                    class="mt-10"
+                    v-for="(item,index) of formData.tender_file.price_file_list"
+                    :key="index"
+                  >
+                    <svg-icon class="wenjian" icon-class="wenjian" />
+                    <span>{{item.file_name}}</span>
+                    <img :src="del_icon" alt="删除" class="wenjian" :data-key="index" />
+                  </li>
+                </ul>
+              </div>
+            </a-spin>
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -292,7 +300,7 @@
       @ok="signModalVisible = false"
       @cancel="signModalVisible = false"
       :footer="null"
-    >
+      >
       <h3 slot="title">签章</h3>
       <a-alert message="注意事项：" type="warning" showIcon>
         <div slot="description">
@@ -541,6 +549,7 @@ export default {
           return `共${length}条数据`;
         }
       },
+      spinning: false,
       columns_quality_grade: [
         {
           title: "序号",
@@ -746,9 +755,11 @@ export default {
                       default:
                         break;
                     }
+                    self.spinning = false;
                   })
                   .catch(error => {
                     self.$message.error(error);
+                    self.spinning = false;
                   });
                 break;
               case "getEncryptKey":
@@ -807,6 +818,10 @@ export default {
       });
     },
     callback(name) {
+      if(this.spinning){
+        this.$message.info('正在上传文件，请勿操作');
+        return;
+      }
       this.activeKey = name;
     },
     back() {
@@ -926,24 +941,34 @@ export default {
     quality_grade_change(event, index) {
       // 添加资质评分要求文件
       var self = this;
-      this.tabIndex = index;
+      self.tabIndex = index;
       var files = event.target.files;
       self.file_obj.name = files[0].name + ".tgw";
+      if(
+        files[0].type !== "image/png" &&
+        files[0].type !== "image/jpg" &&
+        files[0].type !== "image/jpeg" &&
+        files[0].type !== "application/pdf"
+      ){
+        self.$message.error("您只可以上传JPG,JPEG,PNG,PDF格式的文件");
+        return;
+      }
       if (
         (files[0].type === "image/png" ||
           files[0].type === "image/jpg" ||
           files[0].type === "image/jpeg") &&
-        files[0].size / 1024 / 1024 > 0.8
+        files[0].size / 1024 / 1024 > 2
       ) {
-        this.$message.error("图片大小必须小于800KB!");
+        self.$message.error("图片大小必须小于2MB!");
         return;
       } else if (
         files[0].type === "application/pdf" &&
-        files[0].size / 1024 / 1024 > 8
+        files[0].size / 1024 / 1024 > 40
       ) {
-        this.$message.error("文件大小必须小于 8MB!");
+        self.$message.error("文件大小必须小于 40MB!");
         return;
       }
+      self.spinning = true;
       let reader = new FileReader();
       let obj = {
         c: "encryptFile",
@@ -951,7 +976,7 @@ export default {
         m: {
           id:
             new Date().Format("YYYYMMDDhhmmssS") +
-            this.$common.getUnix(parseInt(Math.random() * 1000)),
+            self.$common.getUnix(parseInt(Math.random() * 1000)),
           file: "",
           key: ""
         }
@@ -962,6 +987,7 @@ export default {
         self.file_obj.file = file;
         obj.m.file = file.split(",")[1];
         if (self.ws.readyState == 0 || self.ws.readyState == 3) {
+          self.spinning = false;
           self.$info({
             title: "温馨提示",
             content: "加密程序连接失败，请先开启加密程序，再刷新此页面",
@@ -999,30 +1025,6 @@ export default {
         .catch(error => {
           this.$message.error(error);
         });
-    },
-    customRequest(data) {
-      const formData = new FormData();
-      formData.append("file", data.file);
-      POST({ c: "Upload", a: "upload_one" }, formData)
-        .then(res => {
-          let img_obj = {};
-          img_obj.file_name = res.data.name;
-          img_obj.file_path = res.data.savepath;
-          this.formData.tender_file.file_list.push(img_obj);
-        })
-        .catch();
-    },
-    customRequest2(data) {
-      const formData = new FormData();
-      formData.append("file", data.file);
-      POST({ c: "Upload", a: "upload_one" }, formData)
-        .then(res => {
-          let img_obj = {};
-          img_obj.file_name = res.data.name;
-          img_obj.file_path = res.data.savepath;
-          this.formData.tender_file.price_file_list.push(img_obj);
-        })
-        .catch();
     },
     del(e) {
       let index = e.target.dataset.key;

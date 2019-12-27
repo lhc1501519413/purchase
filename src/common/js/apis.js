@@ -1,5 +1,6 @@
 /* 开放接口 */
 import request from '@utils/request'
+import requesttimeout from '@utils/requesttimeout';
 /* GET */
 export function GET(params) {
   return request({
@@ -9,7 +10,7 @@ export function GET(params) {
 }
 /* POST */
 export function POST(params, data) {
-  return request({
+  return requesttimeout({
     method: 'POST',
     params,
     data

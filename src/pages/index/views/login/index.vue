@@ -380,7 +380,7 @@ export default {
   }
   .logo2{
     width: 180px !important;
-    height: 57px !important;
+    height: 48px !important;
   }
   .send_yzm{
     height: 45px !important;

@@ -292,7 +292,7 @@ export default {
         .catch(error => this.$message.error(error));
     },
     save_judge_quality_grade_detail() {
-      var key1 = this.judge_quality_grade_list.some(elem => elem.score == "");
+      var key1 = this.judge_quality_grade_list.some(elem => elem.score === "");
       if (key1) {
         this.$message.info("供应商分数评审未完成，请评审完成后保存");
       } else {

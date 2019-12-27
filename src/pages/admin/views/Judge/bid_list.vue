@@ -126,7 +126,7 @@
       >
       <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
-        <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button>
+        <!-- <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button> -->
         <div id="scrap-record">
           <h4>项目基本信息</h4>
           <a-row class="mb-10">

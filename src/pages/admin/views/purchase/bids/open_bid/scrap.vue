@@ -34,9 +34,9 @@
       @cancel="ModalVisible = false"
     >
       <h3 slot="title">废标记录</h3>
-      <div class="text-right">
+      <!-- <div class="text-right">
         <a-button type='primary' @click="print_scrap">打印废标记录</a-button>
-      </div>
+      </div> -->
       <ul id="scrap-record">
         <li v-for="(item,index) of scrap_list" :key="index" class="p-10">
           <h3>

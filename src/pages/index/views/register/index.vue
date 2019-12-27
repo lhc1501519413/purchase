@@ -2,7 +2,7 @@
   <div id="register">
     <header>
       <router-link to='/index'>
-        <svg-icon class="svg pointer" icon-class="logo_white" />
+        <svg-icon class="svg pointer" icon-class="logo_new_white" />
       </router-link>
     </header>
     <h3>供应商入驻</h3>
@@ -34,12 +34,11 @@ export default {
 #register {
   header {
     width: 100%;
-    height: 61px;
-    padding: 8.5px 0;
+    padding: 20px 0;
     background-color: $primary1;
     .svg {
-      width: 344px;
-      height: 100%;
+      width: 218px;
+      height: 48px;
       margin-left: 17.5%;
     }
   }

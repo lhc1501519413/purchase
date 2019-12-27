@@ -89,7 +89,7 @@
         ]"
           />
         </a-form-item> -->
-        <a-form-item label="供应类别" v-bind="formItemLayout">
+        <a-form-item label="供应类别" v-bind="formItemLayout" help="请选择真实的供应类别，供应类别和招标项目相关">
           <!-- <a-tree-select
             :treeCheckable="true"
             showSearch

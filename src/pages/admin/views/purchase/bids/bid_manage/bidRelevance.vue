@@ -112,8 +112,7 @@
                 'contact_number',
                 { 
                   rules: [
-                    { required: true, message: '请输入联系方式' },
-                    {validator:(rule, value, callback) => this.vali_mobile(rule, value, callback)}
+                    { required: true, message: '请输入联系方式' }
                   ],
                   initialValue:formData.contact_number                 
                 }
@@ -200,12 +199,12 @@
         <a-col :span="6">
           <a-form-item label="预计配送时间" :label-col="{ span: 12 }" :wrapper-col="{ span: 12 }">
             <a-input
-              style="width:68px;margin-right:5px;"
+              style="width:78px;margin-right:5px;"
               placeholder="请输入"
               v-decorator="[
               'shipping_days',
               {
-                rules: [{ required: true, message: '请输入预计配送时间' }],
+                rules: [{ required: true, message: '请输入预计配送时间' },{whitespace:true},{validator:(rule, value, callback) => this.shipping_days(rule, value, callback)}],
                 initialValue:formData.shipping_days
               }
             ]"
@@ -229,28 +228,30 @@
         </a-col>
         <a-col :span="6">
           <a-button type="primary" class="ml-10" @click="add_stock">添加商品</a-button>
-          <a-button type="primary" class="ml-10" @click="add_pre_stock">添加预估采购数量</a-button>
+          <!-- <a-button type="primary" class="ml-10" @click="add_pre_stock">添加预估采购数量</a-button> -->
         </a-col>
       </a-row>
-      <a-table
-        class="mt"
-        bordered
-        :scroll="scroll"
-        :columns="columns_stock_list"
-        :dataSource="formData.stock_list"
-        rowKey="stock_id"
-        :pagination="pagination_shipping"
-      >
-        <template v-for="(item,index2) of formData.area_list" :slot="item.area_key" slot-scope="text,record,index">
-          <a-input :key='index2' 
-            :value="record.area_stock_number[index2].number"
-            @change="e => handleChange(e.target.value, index2, index)"
-          ></a-input>
-        </template>
-        <template slot="operation" slot-scope="text,record">
-          <a @click="del(record.stock_id)">删除</a>
-        </template>
-      </a-table>
+      <a-spin :spinning="spinning">
+        <a-table
+          class="mt"
+          bordered
+          :scroll="scroll"
+          :columns="columns_stock_list"
+          :dataSource="formData.stock_list"
+          rowKey="stock_id"
+          :pagination="pagination_shipping"
+        >
+          <template v-for="(item,index2) of formData.area_list" :slot="item.area_key" slot-scope="text,record,index">
+            <a-input :key='index2' 
+              :value="record.area_stock_number[index2].number"
+              @change="e => handleChange(e.target.value, index2, index)"
+            ></a-input>
+          </template>
+          <template slot="operation" slot-scope="text,record">
+            <a @click="del(record.stock_id)">删除</a>
+          </template>
+        </a-table>
+      </a-spin>
     </section>
     <a-modal
       width="80%"
@@ -536,7 +537,8 @@ export default {
       columns,
       ModalVisible: false,
       selectedRowKeys: [],
-      area_index:1
+      area_index:1,
+      spinning: false,
     };
   },
   props:{
@@ -604,6 +606,13 @@ export default {
     this.get_tree_data();
   },
   methods: {
+    shipping_days(rule, value, callback) {
+      if (value && value>1000) {
+        callback("预计配送时间不得超过1000天"); // 校验未通过
+      }else{
+        callback()
+      }
+    },
     get_bid_info_method(code) { // 修改项目时获取信息
       get_bid_info_by_code(code)
         .then(res => {
@@ -661,7 +670,6 @@ export default {
           this.bid_type_list = this.$common.treeSelectFormat(res.data);
         })
         .catch();
-      
     },
     vali_mobile(rule, value, callback) { // 验证手机号
       if (value && !/^1[3456789]\d{9}$/.test(value)) {
@@ -669,7 +677,7 @@ export default {
         callback("请填入正确格式的手机号码"); // 校验未通过
       } else {
         this.yzm_disabled = false;
-        callback(); // 校验未通过
+        callback(); // 校验通过
       }
     },
     comChange(e){
@@ -894,6 +902,10 @@ export default {
         this.$message.warn('请输入预计配送时间');
         return;
       }
+      if(this.form.getFieldsValue(['shipping_days']).shipping_days>1000){
+        this.$message.warn('预计配送时间不得超过1000天');
+        return;
+      }
       if(!this.formData.stock_list||!this.formData.stock_list.length){
         this.$message.warn('请选择商品');
         return;
@@ -903,18 +915,28 @@ export default {
         area_list:this.formData.area_list,
         stock_list:this.formData.stock_list
       }
+      this.spinning = true;
       get_pre_stock_num(formData).then(res=>{
         var stock_list = res.data.stock_list;
         this.formData.stock_list.forEach(elem=>{
           stock_list.forEach(elem2=>{
             if(elem.stock_id===elem2.stock_id){
-              elem.number=elem2.number;
               elem.area_stock_number.forEach(elem3=>{
-                elem2.area_stock_number.forEach(elem4=>elem3.number = +elem3.number||elem4.number)
+                elem2.area_stock_number.forEach(elem4=>{
+                  if(elem3.area_key === elem4.area_key){
+                    elem3.number = +elem3.number||elem4.number
+                  }
+                })
               })
             }
           })
         })
+        this.formData.stock_list.forEach(elem=>{
+          elem.number = elem.area_stock_number.reduce((priv,elem)=>{
+            return priv+= +elem.number;
+          },0)
+        })
+        this.spinning = false;
         this.$forceUpdate();
       }).catch(error=>this.$message.error(error))
     },

@@ -472,9 +472,11 @@ export default {
       left: 0;
       width: 220px;
       height: 100%;
+      padding-top: 6px;
+      padding-right: 58px;
       .svg-icon {
         width: 100%;
-        height: 50px;
+        height: 40px;
         // height: 100%;
       }
     }

@@ -392,4 +392,34 @@ export default [
       permission: true
     },
   },
+  {
+    path: '/Bidwin/win_notice_list',
+    name: '/Bidwin/win_notice_list',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bidwin/win_notice_list'),
+    meta: {
+      title: '中标通知书列表',
+      permission: true
+    },
+  },
+  {
+    path: '/add_win',
+    name: '/add_win',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bidwin/add_win'),
+    meta: {
+      title: '制作中标通知书',
+      permission: true
+    },
+  },
+  {
+    path: '/win_detail',
+    name: '/win_detail',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/purchase/bids/bidwin/win_detail'),
+    meta: {
+      title: '中标通知书详情',
+      permission: true
+    },
+  },
 ]

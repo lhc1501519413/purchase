@@ -15,6 +15,14 @@ service.interceptors.request.use(
     return Promise.reject(error)
   }
 );
+service.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    return Promise.reject('解密超时，请在60秒内完成操作')
+  }
+)
 export function encryption(data) {
   return service({
     url: '/TGCtrlApi',

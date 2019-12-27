@@ -96,12 +96,12 @@ export default {
   width: 100%;
   header {
     width: 100%;
-    padding: 10px 17.5%;
+    padding: 20px 17.5%;
     background-color: #fff;
     height: 11.5%;
     @include flex(space-between);
     .svg,img {
-      @include box(180px, 57px);
+      @include box(180px, 48px);
     }
     .search-container {
       width: 50%;

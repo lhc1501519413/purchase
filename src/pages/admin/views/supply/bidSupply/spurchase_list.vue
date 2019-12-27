@@ -139,7 +139,7 @@
                 :beforeUpload="beforeUpload"
                 v-decorator="[
                   'file_list',
-                  { rules: [{ required: true, message: '请选择附件' }],initialValue:supply_purchase_info.supply_info.file_list }
+                  { rules: [{ required: true, message: '请按采购公告附件要求上传' }],initialValue:supply_purchase_info.supply_info.file_list }
                 ]"
                 >
                 <a-button>

@@ -109,5 +109,34 @@ export default [
       permission: true
     }
   },
-  
+  {
+    path: '/Sbidwin/win_notice_list',
+    name: '/Sbidwin/win_notice_list',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/Sbidwin/win_notice_list'),
+    meta: {
+      title: '中标通知书列表',
+      permission: true
+    }
+  },
+  {
+    path: '/swin_confirm',
+    name: '/swin_confirm',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/Sbidwin/swin_confirm'),
+    meta: {
+      title: '确认合同',
+      permission: true
+    }
+  },
+  {
+    path: '/swin_detail',
+    name: '/swin_detail',
+    component: () =>
+      import( /*webpackChunkName:supply*/ '@admin/views/supply/bidSupply/Sbidwin/swin_detail'),
+    meta: {
+      title: '确认合同',
+      permission: true
+    }
+  },
 ]

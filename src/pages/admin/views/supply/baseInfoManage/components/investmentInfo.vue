@@ -2,7 +2,12 @@
   <div id="investment">
     <a-form :form="form1" @submit="handleSubmit1">
       <a-row class="first-row">
-        <div style="margin-bottom:10px;" class="title">出资情况</div>
+        <div class="title mb-10">
+          出资情况
+          <span class="help">
+            注：如果供应商是非个体工商户，必须上传公司章程（或验资报告），或合伙协议；如果供应商是个体工商户，可以上传情况说明
+          </span>
+        </div>
         <a-form-item label="附件" 
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 21 }"
