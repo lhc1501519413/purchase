@@ -16,7 +16,7 @@
         <h3>三、项目编号：{{formData.custom_code}}</h3>
         <h3>四、采购组织类型：自行采购</h3>
         <h3>五、采购方式：{{formData.bid_type_name}}</h3>
-        <h3>六、采购公告发布日期：{{formData.create_time}}</h3>
+        <h3>六、采购公告发布日期：{{formData.publish_time}}</h3>
         <h3>七、定标日期：{{formData.confirm_time}}</h3>
         <h3>八、中标单位：</h3>
         <a-table
