@@ -1,15 +1,8 @@
 <template>
   <div id="index">
     <section class="third-row">
-      <div class="left">
-        <h2>后勤物资采购云平台</h2>
-        <ul class="slogan">
-          <li>公平</li>
-          <li class="dot"></li>
-          <li>公开</li>
-          <li class="dot"></li>
-          <li>公正</li>
-        </ul>
+      <div class="_carousel">
+        <carousel></carousel>
       </div>
       <div class="announce">
         <h4 v-if="logined">Hi, {{username}} ~</h4>
@@ -208,6 +201,8 @@ import {
   get_inquiry_base_info,
   get_Pbid_notice_list, // 公告列表
 } from "@indexApi/common";
+import carousel from '@components/carousel'
+
 export default {
   props:['father'],
   data() {
@@ -249,6 +244,9 @@ export default {
   },
   created(){
     this.get_list();
+  },
+  components:{
+    carousel
   },
   computed:{
     logined(){
@@ -394,19 +392,28 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 #index {
   width: 100%;
   height: 100%;
+  border-bottom:1px solid #fff;
   .third-row {
-    @include box(100%, 230px);
-    @include flex(space-between, flex-start);
-    background: url("~@static/images/bg.png");
-    background-size: cover;
-    padding: 0 17.5%;
+    // height: ;
+    // @include box(100%, 230px);
+    // @include flex(space-between, flex-start);
+    // background: url("~@static/images/bg.png");
+    // background-size: cover;
+    // padding: 0 17.5%;
+    position: relative;
+    ._carousel{
+      width: 100%;
+      
+    }
     .announce {
       padding: 20px 0;
       position: absolute;
       right: 17.5%;
+      top:0;
       width: 180px;
       border-bottom-right-radius: 20px;
       border-bottom-left-radius: 20px;

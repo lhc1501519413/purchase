@@ -10,8 +10,7 @@
     <p class="text-indent line-height red bold">注：为了避免页面存在兼容性问题，建议使用谷歌Chrome 浏览器。</p>
     <img class="img_width" src="../../assets/images/check_in/img_1.png" alt="">
     <p class="line-height">2) 进入供应商入驻页面，首先注册账号。信息填写完成后，点击注册按钮，即完成注册。</p>
-    <p class="line-height text-indent">注：在智慧食堂管理系统（{{global.host}}）中已有的供应商也需重新注册账号，机构名称即供应商公司名称，账号需设置和智慧食堂管理系统不相同的账号，手机号码需设置和智慧食堂管理系统不相同的手机号码。</p>
-    <p class="text-indent line-height red">注：在智慧食堂管理系统（{{global.host}}）中已有的供应商也需重新注册账号，机构名称即供应商公司名称，账号需设置和智慧食堂管理系统不相同的账号，手机号码需设置和智慧食堂管理系统不相同的手机号码。</p>
+    <p class="text-indent line-height red">注：在智慧食堂管理系统 <a :href="global.host" target="_blank">{{global.host}}</a> 中已有的供应商也需重新注册账号，机构名称即供应商公司名称，账号需设置和智慧食堂管理系统不相同的账号，手机号码需设置和智慧食堂管理系统不相同的手机号码。</p>
     <img class="img_center"  style="width: 70%" src="../../assets/images/check_in/img_3.png" alt="">
     <p class="line-height">3) 在注册页面，带“*”的信息为必填项，密码设置需 8~16 位字母或数字，填写完成后点击【注册】。</p>
     <p class="line-height">4) 注册成功后，根据弹窗提示去登录，用注册的账号密码登录。</p>

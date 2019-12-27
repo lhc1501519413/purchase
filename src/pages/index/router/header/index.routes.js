@@ -125,6 +125,15 @@ export default [
           title: '投标指南', 
           permission: true 
         }
+      },
+      {
+        path:'/enter_step',
+        name:'enter_step',
+        component:()=>import('@indexViews/enter/enter_step'),
+        meta:{
+          title:'入驻流程',
+          permission:true
+        }
       }
     ]
   },

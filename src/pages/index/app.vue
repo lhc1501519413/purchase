@@ -56,9 +56,14 @@
         </span>
       </div>
     </header>
-    <a-locale-provider :locale="zh_CN">
-      <router-view :father='this'/>
-    </a-locale-provider>
+    <div ssv style="min-height:854px">
+      <a-locale-provider :locale="zh_CN">
+        <router-view :father='this'/>
+      </a-locale-provider>
+    </div>
+    <footer class="footer">
+      <p><span>版权所有 Copyright©2019.ALL Rights Reserved | 浙江校联信息科技有限公司 | 浙ICP备17015749号</span></p>
+    </footer>
   </div>
 </template>
 
@@ -174,6 +179,14 @@ export default {
     .work{
       color: $primary2;
     }
+  }
+  .footer{
+    width:100%;
+    height: 46px;
+    background-color:rgba(0,0,0,0.65);
+    color:#fff;
+    text-align: center;
+    line-height: 46px;
   }
   .ant-dropdown-menu-item{
     padding:5px 12px;

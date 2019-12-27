@@ -139,9 +139,9 @@
           </a-form-item>
         </a-form>
       </div>
-    <footer>
+    <!-- <footer>
       版权所有 Copyright©2017.ALL Rights Reserved| | 浙江校联信息科技有限公司 | 浙ICP备17015749号
-    </footer>
+    </footer> -->
     </section>
   </div>
 </template>

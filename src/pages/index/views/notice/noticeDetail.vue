@@ -268,6 +268,7 @@ export default {
 #noticeDetail {
   width: 100%;
   height: 100%;
+  margin-bottom: 60px;
   .noticeDetail {
     width: 100%;
     padding: 0 17.5%;
