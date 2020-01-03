@@ -599,7 +599,8 @@ export default {
   }
   .nav {
     box-sizing: border-box;
-    height: 100%;
+    // height: 100%;
+    height: calc(100% - 52px);
     position: fixed;
     top: 52px;
     left: 0;
