@@ -131,6 +131,7 @@ export default {
   created() {
     this.father.selectedKeys = ['/Sbidwin/win_notice_list'];
     this.status = this.$route.params.status || '0';
+    this.keyword = this.$route.query.bid_code || '';
     this.win_notice_list_method();
     this.get_tree_data();
   },

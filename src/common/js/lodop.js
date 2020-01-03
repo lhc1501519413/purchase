@@ -46,14 +46,14 @@ if (needCLodop()) {
 }
 //====获取LODOP对象的主过程：====
 export function getLodop(oOBJECT, oEMBED) {
-  var strHtmInstall = "<br><font color='#FF00FF'>打印控件未安装!点击这里<a href='install_lodop32.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
-  var strHtmUpdate = "<br><font color='#FF00FF'>打印控件需要升级!点击这里<a href='install_lodop32.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
-  var strHtm64_Install = "<br><font color='#FF00FF'>打印控件未安装!点击这里<a href='install_lodop64.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
-  var strHtm64_Update = "<br><font color='#FF00FF'>打印控件需要升级!点击这里<a href='install_lodop64.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
+  var strHtmInstall = "<br><font color='#FF00FF'>打印控件未安装!点击这里<a href='/static/exe/CLodop_Setup_for_Win32NT_https_3.093Extend.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
+  var strHtmUpdate = "<br><font color='#FF00FF'>打印控件需要升级!点击这里<a href='/static/exe/CLodop_Setup_for_Win32NT_https_3.093Extend.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
+  var strHtm64_Install = "<br><font color='#FF00FF'>打印控件未安装!点击这里<a href='/static/exe/CLodop_Setup_for_Win32NT_https_3.093Extend.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
+  var strHtm64_Update = "<br><font color='#FF00FF'>打印控件需要升级!点击这里<a href='/static/exe/CLodop_Setup_for_Win32NT_https_3.093Extend.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
   var strHtmFireFox = "<br><br><font color='#FF00FF'>（注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它）</font>";
   var strHtmChrome = "<br><br><font color='#FF00FF'>(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装）</font>";
-  var strCLodopInstall = "<br><font color='#FF00FF'>CLodop云打印服务(localhost本地)未安装启动!点击这里<a href='http://www.lodop.net/download/CLodop_Setup_for_Win32NT_https_3.046Extend.zip' download target='_self'>执行安装</a>,安装后请刷新页面。</font>";
-  var strCLodopUpdate = "<br><font color='#FF00FF'>CLodop云打印服务需升级!点击这里<a href='http://www.lodop.net/download/CLodop_Setup_for_Win32NT_https_3.046Extend.zip' download target='_self'>执行升级</a>,升级后请刷新页面。</font>";
+  // var strCLodopInstall = "<br><font color='#FF00FF'>CLodop云打印服务未安装启动!点击这里<a href='http://www.lodop.net/download/CLodop_Setup_for_Win32NT_https_3.093Extend.zip' download target='_self'>执行安装</a>,安装后请刷新页面。</font>";
+  // var strCLodopUpdate = "<br><font color='#FF00FF'>CLodop云打印服务需升级!点击这里<a href='http://www.lodop.net/download.html' download target='_blank'>执行升级</a>,升级后请刷新页面。</font>";
   var LODOP;
   try {
     var isIE =
@@ -68,16 +68,16 @@ export function getLodop(oOBJECT, oEMBED) {
         return;
       }
       if (!LODOP) {
-        if (isIE) document.write(strCLodopInstall)
-        else document.body.innerHTML = strCLodopInstall + document.body.innerHTML;
+        let myMessage = confirm('CLodop云打印服务未安装启动，是否立刻安装？');
+        if(myMessage) location.href = 'http://www.lodop.net/download/CLodop_Setup_for_Win32NT_https_3.093Extend.zip';
         return;
       } else {
         if (CLODOP.CVERSION < '3.0.4.3') {
-          if (isIE) document.write(strCLodopUpdate)
-          else document.body.innerHTML = strCLodopUpdate + document.body.innerHTML;
+          let myMessage = confirm('您的CLodop云打印服务需升级，是否立刻升级？');
+          if(myMessage) location.href = 'http://www.lodop.net/download/CLodop_Setup_for_Win32NT_https_3.093Extend.zip';
+          // if(myMessage) open('http://www.lodop.net/download.html')
+          return;
         }
-        if (oEMBED && oEMBED.parentNode) oEMBED.parentNode.removeChild(oEMBED);
-        if (oOBJECT && oOBJECT.parentNode) oOBJECT.parentNode.removeChild(oOBJECT);
       }
     } else {
       var is64IE = isIE && navigator.userAgent.indexOf('x64') >= 0;
@@ -119,8 +119,9 @@ export function getLodop(oOBJECT, oEMBED) {
       if (!needCLodop()) {
         if (is64IE) document.write(strHtm64_Update)
         else if (isIE) document.write(strHtmUpdate)
-        else
+        else{
           document.body.innerHTML = strHtmUpdate + document.body.innerHTML
+        }
       }
       return LODOP
     }

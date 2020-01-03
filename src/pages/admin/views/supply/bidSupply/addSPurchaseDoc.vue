@@ -38,7 +38,7 @@
           <h4 class="relative">
             商品信息
             <a-tooltip placement="top">
-              <template slot="title">
+              <template slot="title ml-10">
                 <span>此报价应与投标文件保持一致，若不一致则以在线报价为准。</span>
               </template>
               <a-icon type="info-circle" />
@@ -108,7 +108,15 @@
           </div>
           <div>
             <div class="header mb-10">
-              <h4>资格审查要求</h4>
+              <h4>
+                资格审查要求
+                <a-alert class="inline-block ml-10" type="warning" showIcon>
+                  <span slot="message">
+                    上传的文件为签章后的文件，未签章文件视为无效文件。点击
+                    <a @click="signModalVisible = true">去签章</a>
+                  </span>
+                </a-alert>
+              </h4>
               <a-button type="primary" @click="save_bid_quality">保存</a-button>
             </div>
             <a-spin 
@@ -132,7 +140,7 @@
                     accept="image/png, image/jpg, image/jpeg, application/pdf"
                   >
                     <svg-icon icon-class="icon_table_add"></svg-icon>
-                  </upload>
+                  </upload><span class="title ml-10">支持文件格式PDF、JPG、JPEG、PNG，文件大小应小于40M</span>
                   <ul>
                     <li
                       class="mt-10"
@@ -163,7 +171,15 @@
           </div>
           <div>
             <div class="header mb-10">
-              <h4>资质评分要求</h4>
+              <h4>
+                资质评分要求
+                <a-alert class="inline-block ml-10" type="warning" showIcon>
+                  <span slot="message">
+                    上传的文件为签章后的文件，未签章文件视为无效文件。点击
+                    <a @click="signModalVisible = true">去签章</a>
+                  </span>
+                </a-alert>
+              </h4>
               <a-button type="primary" @click="save_bid_quality_grade">保存</a-button>
             </div>
             <a-spin :spinning="spinning">
@@ -196,7 +212,7 @@
                     accept="image/png, image/jpg, image/jpeg, application/pdf"
                   >
                     <svg-icon icon-class="icon_table_add"></svg-icon>
-                  </upload>
+                  </upload><span class="title ml-10">支持文件格式PDF、JPG、JPEG、PNG，文件大小应小于40M</span>
                   <ul>
                     <li
                       class="mt-10"
@@ -226,7 +242,7 @@
           </div>
           <a-alert class="info" type="warning" showIcon>
             <span slot="message">
-              上传的投标文件为签章后的文件，未签章文件视为无效文件。点击
+              上传的文件为签章后的文件，未签章文件视为无效文件。点击
               <a @click="signModalVisible = true">去签章</a>
             </span>
           </a-alert>
@@ -248,7 +264,7 @@
                   <a-button>
                     <a-icon type="upload" />上传
                   </a-button>
-                </upload>
+                </upload><span class="title ml-10">支持文件格式PDF、JPG、JPEG、PNG，文件大小应小于40M</span>
                 <ul class="ml-10">
                   <li
                     @click.stop="del"
@@ -272,7 +288,7 @@
                   <a-button>
                     <a-icon type="upload" />上传
                   </a-button>
-                </upload>
+                </upload><span class="title ml-10">支持文件格式PDF、JPG、JPEG、PNG，文件大小应小于40M</span>
                 <ul class="ml-10">
                   <li
                     @click.stop="del2"
@@ -304,9 +320,9 @@
       <h3 slot="title">签章</h3>
       <a-alert message="注意事项：" type="warning" showIcon>
         <div slot="description">
-          <p>1、请将投标文件转换为PDF格式。</p>
-          <p>2、签章将直接签署在您的原文件上，建议您将投标文件进行备份。</p>
-          <p>3、请将您的投标文件在本机的文件路径及文件名称填写到下框中，以便于将您的文件进行本地签章。</p>
+          <p>1、请将文件转换为PDF格式。</p>
+          <p>2、签章将直接签署在您的原文件上，建议您将文件进行备份。</p>
+          <p>3、请将您的文件在本机的文件路径及文件名称填写到下框中，以便于将您的文件进行本地签章。</p>
         </div>
       </a-alert>
       <div>
@@ -322,8 +338,26 @@
         </p>
         <p class="mb-10">
           例：填写格式为
-          <span class="file-path-model">e:\pdf\投标文件.pdf</span>
+          <span class="file-path-model">e:\文件夹名称\文件名称.pdf</span>
         </p>
+      </div>
+    </a-modal>
+    <a-modal
+      class="supply-purchase-info"
+      width="50%"
+      :afterClose="afterClose"
+      :destroyOnClose="false"
+      :visible="CAModalVisible"
+      @ok="CAModalVisible = false"
+      @cancel="CAModalVisible = false"
+      :footer="null"
+    >
+      <h3 slot="title" class="text-center">请检查驱动及CA</h3>
+      <div>
+        制作投标文件请详细查阅>><a :href="global.host+'/#/tender_guide'" target="_blank">投标指南</a>
+      </div>
+      <div>
+        请先<a href="http://www.hqwzcg.com/upload/dl/key_soft.zip">下载安装驱动</a>并在电脑插入CA后，刷新或重启浏览器
       </div>
     </a-modal>
   </div>
@@ -606,6 +640,7 @@ export default {
       file_obj: {},
       tabIndex: null,
       signModalVisible: false,
+      CAModalVisible:false,
       file_path: ""
     };
   },
@@ -667,7 +702,7 @@ export default {
                   elem.new_price = this.$common.toDecimal(decryptAes(elem.secret_price, this.secret, this.secret),2);
                 });
               } else {
-                this.$message.error("请检查是否插入U盾");
+                this.CAModalVisible = true;
               }
             })
             .catch(error => {
@@ -724,10 +759,13 @@ export default {
           code = result.m.code;
           msg = result.m.msg;
           self.file_obj.file = result.m.file;
+          const formData = new FormData();
+          formData.append('file',result.m.file)
+          formData.append('name',self.file_obj.name)
           if (code == 200) {
             switch (controls) {
               case "encryptFile":
-                POST({ c: "Upload", a: "upload_one_base64" }, self.file_obj)
+                POST({ c: "Upload", a: "upload_one_base64" }, formData)
                   .then(res => {
                     let obj = {
                       file_name: res.data.name,
@@ -774,7 +812,7 @@ export default {
                       if (res.data.result != "") {
                         self.secret = res.data.result.slice(0, 16);
                       } else {
-                        self.$message.error("请检查是否插入U盾");
+                        self.CAModalVisible=true;
                       }
                     })
                     .catch(error =>
@@ -788,7 +826,7 @@ export default {
                 break;
             }
           } else {
-            self.$message.warn(msg);
+            self.CAModalVisible = true;
           }
         };
         self.ws.onclose = function() {
@@ -957,9 +995,9 @@ export default {
         (files[0].type === "image/png" ||
           files[0].type === "image/jpg" ||
           files[0].type === "image/jpeg") &&
-        files[0].size / 1024 / 1024 > 2
+        files[0].size / 1024 / 1024 > 40
       ) {
-        self.$message.error("图片大小必须小于2MB!");
+        self.$message.error("图片大小必须小于40MB!");
         return;
       } else if (
         files[0].type === "application/pdf" &&
@@ -1049,10 +1087,10 @@ export default {
       var isPicLt100KB;
       var isPdfLt2M;
       if (file.type === "image/jpeg" || file.type === "image/png") {
-        if (file.size / 1024 / 1024 < 0.8) {
+        if (file.size / 1024 / 1024 < 2) {
           isPicLt100KB = true;
         } else {
-          this.$message.error("图片大小必须小于 800KB!");
+          this.$message.error("图片大小必须小于 2MB!");
           isPicLt100KB = false;
         }
       } else if (file.type === "application/pdf") {
@@ -1115,9 +1153,15 @@ export default {
     margin-left: 20px;
     width: 55%;
   }
+  .info2{
+    display: inline-block;
+  }
   .tab-bg {
     background-color: $primary2;
     color: $white;
+  }
+  .title{
+    color:rgba(0,0,0,0.3)
   }
   h5 {
     position: relative;

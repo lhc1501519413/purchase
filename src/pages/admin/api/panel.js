@@ -6,6 +6,14 @@ export function panel() {
     params: { c: 'Message', a: 'panel', token: localStorage.getItem('token') }
   })
 }
+/* 消息删除 */
+export function del(ids) {
+  return request({
+    method: 'POST',
+    params: { c: 'Message', a: 'del', token: localStorage.getItem('token') },
+    data:{ids}
+  })
+}
 /* 标记已读 */
 export function mark_status(ids) {
   return request({

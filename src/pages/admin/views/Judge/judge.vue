@@ -145,6 +145,18 @@ export default {
           case '7':
             this.$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})
             break;
+          case '8':
+            this.$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})
+            break;
+          case '9':
+            this.$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})
+            break;
+          case '10':
+            this.$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})
+            break;
+          case '11':
+            this.$router.push({path:'/judge/judge_total_quality_grade',query:{bid_code}})
+            break;
           case '12':
             this.$router.push({path:'/judge/judge_report',query:{bid_code}})
             break;

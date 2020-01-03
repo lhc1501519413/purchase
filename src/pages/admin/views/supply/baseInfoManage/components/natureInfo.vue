@@ -36,7 +36,9 @@
     <section v-if="!formData.type">
       <h4>
         营业执照
-        <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span>
+        <span v-if="formData.effect_stale_date" class="stale-dated">即将过期</span>
+        <span v-if="formData.effect_stale_dated" class="stale-dated">已过期</span>
+        <!-- <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span> -->
       </h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
@@ -284,7 +286,10 @@
         </a-col>
         <a-col :span="12"></a-col>
       </a-row>
-      <h4>税务登记证</h4>
+      <h4>税务登记证
+        <span v-if="formData.tax_effect_stale_date" class="stale-dated">即将过期</span>
+        <span v-if="formData.tax_effect_stale_dated" class="stale-dated">已过期</span>
+      </h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
           <a-form-item label="税务登记号码" v-bind="formItemLayout">
@@ -426,7 +431,10 @@
         </a-col>
         <a-col :span="12"></a-col>
       </a-row>
-      <h4>组织机构代码证</h4>
+      <h4>组织机构代码证
+        <span v-if="formData.org_effect_stale_date" class="stale-dated">即将过期</span>
+        <span v-if="formData.org_effect_stale_dated" class="stale-dated">已过期</span>
+      </h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
           <a-form-item label="组织机构代码" v-bind="formItemLayout">
@@ -566,7 +574,10 @@
           </a-form-item>
         </a-col>
       </a-row>
-      <h4>社会保险参保证明</h4>
+      <h4>社会保险参保证明
+        <span v-if="formData.social_effect_stale_date" class="stale-dated">即将过期</span>
+        <span v-if="formData.social_effect_stale_dated" class="stale-dated">已过期</span>
+      </h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
           <a-form-item label="社会保险号码" v-bind="formItemLayout">
@@ -765,7 +776,9 @@
     <section v-else>
       <h4>
         营业执照
-        <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span>
+        <span v-if="formData.effect_stale_date" class="stale-dated">即将过期</span>
+        <span v-if="formData.effect_stale_dated" class="stale-dated">已过期</span>
+        <!-- <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span> -->
       </h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
@@ -1001,7 +1014,9 @@
       </a-row>
       <h4>
         社会保险参保证明
-        <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span>
+        <span v-if="formData.social_effect_stale_date" class="stale-dated">即将过期</span>
+        <span v-if="formData.social_effect_stale_dated" class="stale-dated">已过期</span>
+        <!-- <span style="color:#3177fd;" class="pointer" @click="show_modal">查看示例</span> -->
       </h4>
       <a-row style="margin-top:20px;">
         <a-col :span="12">
@@ -1178,6 +1193,14 @@ export default {
           social_effect_end_date: this.formData.social_effect_end_date!=null&&this.formData.social_effect_end_date.indexOf('9999')!=-1
         },
         this.get_tree_datas();
+        this.formData.effect_stale_date = res.data.effect_end_date&&new Date(res.data.effect_end_date).getTime()>new Date().getTime()&&new Date(res.data.effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+        this.formData.effect_stale_dated = res.data.effect_end_date&&new Date(res.data.effect_end_date).getTime()<new Date().getTime();
+        this.formData.tax_effect_stale_date = res.data.tax_effect_end_date&&new Date(res.data.tax_effect_end_date).getTime()>new Date().getTime()&&new Date(res.data.tax_effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+        this.formData.tax_effect_stale_dated = res.data.tax_effect_end_date&&new Date(res.data.tax_effect_end_date).getTime()<new Date().getTime();
+        this.formData.org_effect_stale_date = res.data.org_effect_end_date&&new Date(res.data.org_effect_end_date).getTime()>new Date().getTime()&&new Date(res.data.org_effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+        this.formData.org_effect_stale_dated = res.data.org_effect_end_date&&new Date(res.data.org_effect_end_date).getTime()<new Date().getTime();
+        this.formData.social_effect_stale_date = res.data.social_effect_end_date&&new Date(res.data.social_effect_end_date).getTime()>new Date().getTime()&&new Date(res.data.social_effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+        this.formData.social_effect_stale_dated = res.data.social_effect_end_date&&new Date(res.data.social_effect_end_date).getTime()<new Date().getTime();
       })
     },
     show_modal(e) {
@@ -1395,6 +1418,19 @@ export default {
 #natureInfo{
   .ant-checkbox {
     margin-left: 10px;
+  }
+  h4{
+    @extend .relative;
+    .stale-dated {
+      background: #f00;
+      color: white;
+      position: absolute;
+      top: -5px;
+      margin-left: 10px;
+      font-size: 12px !important;
+      padding: 0 5px !important;
+      border-radius: 4px;
+    }
   }
 }
 </style>

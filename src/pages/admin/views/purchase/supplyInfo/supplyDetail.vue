@@ -250,7 +250,11 @@
         rowKey="id"
         >
         <template slot="titleRender" slot-scope="value,record,index">
-          <a href="javascript:;" @click="basic_nature_open(record.id,index)">{{value}}</a>
+          <a href="javascript:;" class="relative" @click="basic_nature_open(record.id,index)">
+            {{value}}
+            <span v-if="record.stale_date" class="stale-dated">即将过期</span>
+            <span v-if="record.stale_dated" class="stale-dated">已过期</span>
+          </a>
         </template>
         <template slot="file_path" slot-scope="text, record">
           <p 
@@ -597,7 +601,15 @@
         :pagination="pagination"
         >
         <template slot="special_nature_type" slot-scope="text,record,index">
-          <a href="javascript:;" @click="special_nature_open(record.id,index)" class="nature-type">{{record.special_nature_type}}</a>
+          <a 
+            href="javascript:;" 
+            @click="special_nature_open(record.id,index)" 
+            class="nature-type relative"
+            >
+            {{record.special_nature_type}}
+            <span v-if="record.stale_date" class="stale-dated">即将过期</span>
+            <span v-if="true||record.stale_dated" class="stale-dated">已过期</span>
+          </a>
         </template>
         <template
           slot="timeLimit"
@@ -1439,6 +1451,8 @@ export default {
         obj1.found_date = result.found_date;
         obj1.effect_start_date = result.effect_start_date;
         obj1.effect_end_date = result.effect_end_date;
+        obj1.stale_date = result.effect_end_date&&new Date(result.effect_end_date).getTime()>new Date().getTime()&&new Date(result.effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+        obj1.stale_dated = result.effect_end_date&&new Date(result.effect_end_date).getTime()<new Date().getTime();
         obj1.register_fund = result.register_fund;
         obj1.money_type = result.money_type;
         obj1.business_scope = result.business_scope;
@@ -1454,6 +1468,8 @@ export default {
         obj4.social_name= result.social_name;
         obj4.social_effect_start_date= result.social_effect_start_date;
         obj4.social_effect_end_date= result.social_effect_end_date;
+        obj4.stale_date = result.social_effect_end_date&&new Date(result.social_effect_end_date).getTime()>new Date().getTime()&&new Date(result.social_effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+        obj4.stale_dated = result.social_effect_end_date&&new Date(result.social_effect_end_date).getTime()<new Date().getTime();
         obj4.social_is_effect= result.social_is_effect;
         obj4.social_active_number= result.social_active_number;
         obj4.social_expends_number= result.social_expends_number;
@@ -1470,6 +1486,8 @@ export default {
           obj2.tax_name=result.tax_name;
           obj2.tax_effect_end_date=result.tax_effect_end_date;
           obj2.tax_effect_start_date=result.tax_effect_start_date;
+          obj2.stale_date = result.tax_effect_end_date&&new Date(result.tax_effect_end_date).getTime()>new Date().getTime()&&new Date(result.tax_effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+          obj2.stale_dated = result.tax_effect_end_date&&new Date(result.tax_effect_end_date).getTime()<new Date().getTime();
           obj2.tax_is_effect=result.tax_is_effect;
           obj2.tax_cert_path=result.tax_cert_path;
           obj2.tax_remark=result.tax_remark;
@@ -1481,6 +1499,8 @@ export default {
           obj3.org_name = result.org_name;
           obj3.org_effect_end_date = result.org_effect_end_date;
           obj3.org_effect_start_date = result.org_effect_start_date;
+          obj3.stale_date = result.org_effect_end_date&&new Date(result.org_effect_end_date).getTime()>new Date().getTime()&&new Date(result.org_effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+          obj3.stale_dated = result.org_effect_end_date&&new Date(result.org_effect_end_date).getTime()<new Date().getTime();
           obj3.org_is_effect = result.org_is_effect;
           obj3.org_cert_path = result.org_cert_path;
           obj3.org_remark = result.org_remark;
@@ -1491,7 +1511,12 @@ export default {
         this.basic_nature_info = result;
       }).catch();
       get_special_nature_list(supply_id,page_size).then(res=>{
-        this.special_nature_list = res.data.list || [];
+        var special_nature_list = res.data.list || [];
+        special_nature_list.forEach(elem=>{
+          elem.stale_date = new Date(elem.effect_end_date).getTime()>new Date().getTime()&&new Date(elem.effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+          elem.stale_dated = new Date(elem.effect_end_date).getTime()<new Date().getTime()
+        })
+        this.special_nature_list = special_nature_list;
       }).catch();
       get_credit_list(supply_id,page_size).then(res=>{
         this.credit_list = res.data.list || [];
@@ -1540,6 +1565,16 @@ export default {
 #manageDetail {
   @include component;
   @include manageDetail;
+  .stale-dated {
+    background: #f00;
+    color: white;
+    position: absolute;
+    top: -16px;
+    right: -74px;
+    font-size: 12px;
+    padding: 0 5px;
+    border-radius: 4px;
+  }
 }
 </style>
 <style lang="scss">

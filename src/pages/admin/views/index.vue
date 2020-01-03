@@ -13,7 +13,7 @@
         <a href="javascript:;" class="mr-10" title="返回前台" @click="toFront">
           <svg-icon icon-class="icon_topnav_store_n" />
         </a>
-        <a-dropdown placement="bottomCenter" v-if="type!=2">
+        <a-dropdown placement="bottomCenter">
           <span class="ant-dropdown-link mr-10">
             <a-badge :count="panelCount">
               <svg-icon class="pointer" icon-class="icon_topnav_task" />
@@ -25,26 +25,26 @@
             </a-menu-item>
             <a-menu-divider />
             <!-- 采购方 -->
-            <a-menu-item v-if="formData.inquiry.pend_audit>0" key="enquiry-1" data-status="2">
+            <a-menu-item v-if="formData.inquiry&&formData.inquiry.pend_audit>0" key="enquiry-1" data-status="2">
               询价单 | 待审核 |
               <span class="color">{{formData.inquiry.pend_audit}}条</span>
             </a-menu-item>
-            <a-menu-item v-if="formData.inquiry.pend_confirm>0" key="enquiry-2" data-status="4">
+            <a-menu-item v-if="formData.inquiry&&formData.inquiry.pend_confirm>0" key="enquiry-2" data-status="4">
               询价单 | 待确认 |
               <span class="color">{{formData.inquiry.pend_confirm}}条</span>
             </a-menu-item>
-            <a-menu-item v-if="formData.contract.pend_draft>0" key="contract-1" data-status="1">
-              合同管理 | 待起草 |
+            <a-menu-item v-if="formData.contract&&formData.contract.pend_draft>0" key="contract-1" data-status="1">
+              【询价】合同管理 | 待起草 |
               <span class="color">{{formData.contract.pend_draft}}条</span>
             </a-menu-item>
-            <a-menu-item v-if="formData.contract.pend_confirm>0" key="contract-2" data-status="4">
-              合同管理 | 待确认 |
+            <a-menu-item v-if="formData.contract&&formData.contract.pend_confirm>0" key="contract-2" data-status="4">
+              【询价】合同管理 | 待确认 |
               <span class="color">{{formData.contract.pend_confirm}}条</span>
             </a-menu-item>
-            <a-menu-item v-if="formData.contract.re_back>0" key="contract-3" data-status="3">
+            <!-- <a-menu-item v-if="formData.contract.re_back>0" key="contract-3" data-status="3">
               合同管理 | 供应商已退回 |
               <span class="color">{{formData.contract.re_back}}条</span>
-            </a-menu-item>
+            </a-menu-item> -->
             <a-menu-item
               v-if="formData.supply && formData.supply.pend_audit>0"
               key="supplyManage-1"
@@ -53,9 +53,73 @@
               供应商审核 | 待审核 |
               <span class="color">{{formData.supply.pend_audit}}条</span>
             </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_contract && formData.bid_contract.pend_draft>0"
+              key="/Contract/get_bid_contract_list-1"
+              data-status="1"
+            >
+              【招标】合同管理 | 待起草 |
+              <span class="color">{{formData.bid_contract.pend_draft}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_contract && formData.bid_contract.pend_confirm>0"
+              key="/Contract/get_bid_contract_list-4"
+              data-status="4"
+            >
+              【招标】合同管理 | 待确认 |
+              <span class="color">{{formData.bid_contract.pend_confirm}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid && formData.bid.pend_audit>0"
+              key="/Bid/bid_list-2"
+              data-status="2"
+            >
+              【招标】项目管理 | 待审核 |
+              <span class="color">{{formData.bid.pend_audit}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_purchase && formData.bid_purchase.pend_create>0"
+              key="/Bid/purchase_list-8"
+              data-status="8"
+            >
+              采购文件制作 | 待制作 |
+              <span class="color">{{formData.bid_purchase.pend_create}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_purchase && formData.bid_purchase.pend_audit>0"
+              key="/Bid/purchase_list-9"
+              data-status="9"
+            >
+              采购文件制作 | 待审核 |
+              <span class="color">{{formData.bid_purchase.pend_audit}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_ask_purchase && formData.bid_ask_purchase.pend_audit>0"
+              key="/Bid/ask_purchase_list-1"
+              data-status="0"
+            >
+              获取采购文件管理 | 待审核 |
+              <span class="color">{{formData.bid_ask_purchase.pend_audit}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_open && formData.bid_open.pend_open>0"
+              key="/Bid/open_bid_list-1"
+              data-status="0"
+            >
+              开标评标 | 待开标 |
+              <span class="color">{{formData.bid_open.pend_open}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_win_notice && formData.bid_win_notice.pend_draft>0"
+              key="/Bidwin/win_notice_list-1"
+              data-status="0"
+            >
+              中标通知书 | 待制作 |
+              <span class="color">{{formData.bid_win_notice.pend_draft}}条</span>
+            </a-menu-item>
             <!-- 供应商 -->
             <a-menu-item
-              v-if="formData.inquiry.pend_report>0"
+              v-if="formData.inquiry&&formData.inquiry.pend_report>0"
               key="enquirySupply-1"
               data-status="1"
             >
@@ -63,18 +127,67 @@
               <span class="color">{{formData.inquiry.pend_report}}条</span>
             </a-menu-item>
             <a-menu-item
-              v-if="formData.contract.pend_supply_confirm>0"
+              v-if="formData.contract&&formData.contract.pend_supply_confirm>0"
               key="contractSupply-1"
               data-status="2"
             >
-              合同管理 | 待确认 |
+              【询价】合同管理 | 待确认 |
               <span class="color">{{formData.contract.pend_supply_confirm}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_contract&&formData.bid_contract.pend_supply_confirm>0"
+              key="/Scontract/get_bid_scontract_list-1"
+              data-status="2"
+            >
+              【招标】合同管理 | 待确认 |
+              <span class="color">{{formData.bid_contract.pend_supply_confirm}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_win_notice&&formData.bid_win_notice.pend_supply_confirm>0"
+              key="/Sbidwin/win_notice_list-4"
+              data-status="4"
+            >
+              中标通知书 | 待确认 |
+              <span class="color">{{formData.bid_win_notice.pend_supply_confirm}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_tender&&formData.bid_tender.pend_create>0"
+              key="/Sbid/tender_list-5"
+              data-status="5"
+            >
+              投标文件 | 待制作 |
+              <span class="color">{{formData.bid_tender.pend_create}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_open&&formData.bid_open.pend_decrypt>0"
+              key="/Sbid/open_bid_list-9"
+              data-status="9"
+            >
+              开标管理 | 待解密 |
+              <span class="color">{{formData.bid_open.pend_decrypt}}条</span>
+            </a-menu-item>
+            <!-- 专家方 -->
+            <a-menu-item
+              v-if="formData.bid_judge&&formData.bid_judge.pend_sign>0"
+              key="/Judge/bid_list-1"
+              data-status="1"
+            >
+              项目评审 | 待签到 |
+              <span class="color">{{formData.bid_judge.pend_sign}}条</span>
+            </a-menu-item>
+            <a-menu-item
+              v-if="formData.bid_judge&&formData.bid_judge.pend_judge>0"
+              key="/Judge/bid_list-2"
+              data-status="2"
+            >
+              项目评审 | 待评审 |
+              <span class="color">{{formData.bid_judge.pend_judge}}条</span>
             </a-menu-item>
             <a-menu-item disabled v-if="panelCount==0">
               <img class="m-10" :src="messageSlot" alt="暂无信息" />
             </a-menu-item>
             <a-menu-divider />
-            <a-menu-item :key="com_info?'panel-1':'panelSupply-1'" class="text-center color">所有任务</a-menu-item>
+            <a-menu-item :key="com_info==1?'panel-1':com_info==0?'panelSupply-1':'panelJudge-1'" class="text-center color">所有任务</a-menu-item>
           </a-menu>
         </a-dropdown>
         <a-dropdown placement="bottomCenter" v-if="type!=2">
@@ -142,6 +255,10 @@
         <span v-show="!collapsed">我的面板</span>
       </a-menu-item>
       <a-menu-item v-if="type==0" key="panelSupply">
+        <svg-icon icon-class="icon_sidenav_home_h" />
+        <span v-show="!collapsed">我的面板</span>
+      </a-menu-item>
+      <a-menu-item v-if="type==2" key="panelJudge">
         <svg-icon icon-class="icon_sidenav_home_h" />
         <span v-show="!collapsed">我的面板</span>
       </a-menu-item>
@@ -244,7 +361,7 @@ export default {
           return "询价撤回通知";
           break;
         case "3":
-          return "合同签订完成通知";
+          return "询价合同签订完成通知";
           break;
         case "5":
           return "资料审核完成通知";
@@ -254,48 +371,6 @@ export default {
           break;
         default:
           return "送货消息提醒";
-          break;
-      }
-    },
-    type_code(value) {
-      switch (value) {
-        case "1":
-          return "询价单编号：";
-          break;
-        case "2":
-          return "询价单编号：";
-          break;
-        case "3":
-          return "合同编号：";
-          break;
-        case "5":
-          return "注册单号：";
-          break;
-        case "6":
-          return "注册单号：";
-          break;
-        default:
-          return "注册单号：";
-          break;
-      }
-    },
-    status(value) {
-      switch (value) {
-        case "6":
-          return "注册单号：";
-          break;
-        default:
-          return "注册单号：";
-          break;
-      }
-    },
-    route(value) {
-      switch (value) {
-        case "6":
-          return "注册单号：";
-          break;
-        default:
-          return "注册单号：";
           break;
       }
     }
@@ -442,7 +517,20 @@ export default {
       });
     },
     toMessage(e) {
-      var route = this.com_info ? "message" : "messageSupply";
+      var route;
+      switch (this.com_info) {
+        case 0:
+          route = "message";
+          break;
+        case 1:
+          route = "messageSupply";
+          break;
+        case 2:
+          route = "messageJudge";
+          break;
+        default:
+          break;
+      }
       var text = this.messageList[e.key];
       this.$router.push({ name: route, params: { text } });
       if (this.$route.name === route) this.reload();

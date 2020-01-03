@@ -230,7 +230,7 @@
         </a-col>
         <a-col :span="6">
           <a-button type="primary" class="ml-10" @click="add_stock">添加商品</a-button>
-          <!-- <a-button type="primary" class="ml-10" @click="add_pre_stock">添加预估采购数量</a-button> -->
+          <a-button type="primary" class="ml-10" @click="add_pre_stock">添加预估采购数量</a-button>
         </a-col>
       </a-row>
       <a-spin :spinning="spinning">

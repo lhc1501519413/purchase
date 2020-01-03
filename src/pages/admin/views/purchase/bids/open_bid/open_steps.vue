@@ -9,7 +9,6 @@
         <a-button type="primary" @click="refresh">刷新</a-button>
         <a-button v-if="judge_info.status==10&&current==6" @click="open_report_file">开启报价文件</a-button>
         <a-button v-if="(judge_info.status==13||judge_info.status==14)&&current==8" type="primary" @click="compute_bid_price">计算中标价格</a-button>
-        <a-button @click="compute_bid_price">计算中标价格</a-button>
         <a-button v-if="current==8" type="primary" @click="download_bid_result">下载得分汇总</a-button>
         <!-- <a-button v-if="current==8" type="primary" @click="print_bid_result">打印得分汇总</a-button> -->
         <a-button v-if="judge_info.status==14&&current==8" type="primary" @click="submit">提交</a-button><!-- 提交供应商关于价格意见改为提交得分汇总列表 -->
@@ -132,16 +131,25 @@ export default {
           case '7':
             this.$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})
             break;
+          case '8':
+            this.$router.push({path:'/Bid/judge_total_quality_grade',query:{bid_code}})
+            break;
           case '9':
             this.$router.push({path:'/Bid/business_result',query:{bid_code}})
             break;
           case '10':
             this.$router.push({path:'/Bid/supply_report',query:{bid_code}})
             break;
+          case '11':
+            this.$router.push({path:'/Bid/supply_report',query:{bid_code}})
+            break;
           case '12':
             this.$router.push({path:'/Bid/judge_report',query:{bid_code}})
             break;
           case '13':
+            this.$router.push({path:'/Bid/judge_result',query:{bid_code}})
+            break;
+          case '14':
             this.$router.push({path:'/Bid/judge_result',query:{bid_code}})
             break;
           case '15':

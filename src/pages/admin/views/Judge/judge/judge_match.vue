@@ -292,10 +292,10 @@ export default {
       var isPicLt100KB;
       var isPdfLt2M;
       if (file.type === "image/jpeg" || file.type === "image/png") {
-        if (file.size / 1024 / 1024 < 0.8) {
+        if (file.size / 1024 / 1024 < 2) {
           isPicLt100KB = true;
         } else {
-          this.$message.error("图片大小必须小于 800KB!");
+          this.$message.error("图片大小必须小于 2MB!");
           isPicLt100KB = false;
         }
       } else if (file.type === "application/pdf") {

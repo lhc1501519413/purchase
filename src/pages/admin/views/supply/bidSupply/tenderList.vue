@@ -105,7 +105,7 @@ export default {
         },
         {
           title: '投标截止时间',
-          dataIndex: 'end_time',
+          dataIndex: 'open_time',
           width:'15%'
         },
         {

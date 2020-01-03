@@ -1,5 +1,15 @@
 export default [
   {
+    path: '/panelJudge',
+    name: 'panelJudge',
+    component: () =>
+      import( /*webpackChunkName:purchase*/ '@admin/views/Judge/panel/panelJudge'),
+    meta: {
+      title: '我的面板',
+      permission: true
+    }
+  },
+  {
     path: '/Judge/bid_list',
     name: '/Judge/bid_list',
     component: () =>

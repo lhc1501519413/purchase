@@ -85,12 +85,8 @@ import {
   save_win_notice, // 编辑中标通知书
   submit_win_notice, // 提交中标通知书
 } from '@admin/api/bidswinSupply';
-import upload from "@admin/components/upload";
 import { POST } from "@common/js/apis";
 export default {
-  components: {
-    upload
-  },
   props:{
     father:{
       type:Object

@@ -177,7 +177,7 @@ export default {
           .then(res => {
             open(
               this.global.host +
-                "/admin.html#/Sbid/spurchase_list?bid_code=" +
+                "/admin.html#/Sbid/spurchase_list?code=" +
                 this.formData.custom_code
             );
           })

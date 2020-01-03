@@ -15,7 +15,7 @@
         <h3>三、项目编号：{{formData.custom_code}}</h3>
         <h3>四、采购组织类型：自行采购</h3>
         <h3>五、采购方式：{{formData.bid_type_name}}</h3>
-        <h3>六、采购公告发布日期：{{formData.create_time}}</h3>
+        <h3>六、采购公告发布日期：{{formData.publish_time}}</h3>
         <h3>七、流标日期：{{formData.create_time}}</h3>
         <h3>八、流标原因</h3>
         <div class="text-indent-35 mb-10">

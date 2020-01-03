@@ -21,6 +21,8 @@
           <span @click="show_edit_read(record.id,true)" class="nature-type">
             {{record.special_nature_type}}
           </span>
+          <span v-if="record.stale_date" class="stale-dated">即将过期</span>
+          <span v-if="record.stale_dated" class="stale-dated">已过期</span>
         </div>
       </template>
       <template
@@ -323,6 +325,9 @@ export default {
           elem.effect_start_date = elem.effect_start_date;
           elem.effect_end_date = !elem.effect_end_date?elem.effect_end_date:elem.effect_end_date.indexOf('9999')==-1?elem.effect_end_date:'长期';
           elem.key = index;
+          if(elem.effect_end_date=='长期') return;
+          elem.stale_date = new Date(elem.effect_end_date).getTime()>new Date().getTime()&&new Date(elem.effect_end_date).getTime()-new Date().getTime()<=60*24*3600*1000;
+          elem.stale_dated = new Date(elem.effect_end_date).getTime()<new Date().getTime()
         });
         this.total = +res.data.total_count;
         this.special_nature_list = result;
@@ -449,4 +454,14 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "~@admin/assets/scss/baseInfoManage/specialNatureInfo";
+  .stale-dated {
+    background: #f00;
+    color: white;
+    position: absolute;
+    top: -16px;
+    right: 0;
+    font-size: 12px;
+    padding: 0 5px;
+    border-radius: 4px;
+  }
 </style>

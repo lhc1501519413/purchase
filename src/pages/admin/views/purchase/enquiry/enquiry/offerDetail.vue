@@ -371,9 +371,9 @@ export default {
       if (!isKey) {
         this.$message.error("您只可以上传JPG，PNG，PDF格式的文件");
       }
-      const isLt2M = file.size / 1024 / 1024 < 20;
+      const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        this.$message.error("图片大小必须小于 20MB!");
+        this.$message.error("图片大小必须小于 2MB!");
       }
       return isKey && isLt2M;
     },

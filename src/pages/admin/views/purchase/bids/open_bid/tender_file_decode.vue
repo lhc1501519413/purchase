@@ -45,7 +45,7 @@
       >
       <h3 class="text-center" slot="title">流标</h3>
       <a-form :form="form" @submit="handleSubmit">
-        <!-- <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button> -->
+        <a-button type='primary' class="btn" @click="print_scrap">打印流标信息</a-button>
         <div id="scrap-record">
           <h4>项目基本信息</h4>
           <a-row class="mb-10">
@@ -306,10 +306,10 @@ export default {
       var isPicLt100KB;
       var isPdfLt2M;
       if (file.type === "image/jpeg" || file.type === "image/png") {
-        if (file.size / 1024 / 1024 < 0.8) {
+        if (file.size / 1024 / 1024 < 2) {
           isPicLt100KB = true;
         } else {
-          this.$message.error("图片大小必须小于 800KB!");
+          this.$message.error("图片大小必须小于 2MB!");
           isPicLt100KB = false;
         }
       } else if (file.type === "application/pdf") {
@@ -330,20 +330,39 @@ export default {
     },
     print_scrap(){
       var LODOP=getLodop();
+      if(!LODOP) return;
       LODOP.PRINT_INIT();
       var strFormHtml = document.querySelector('#scrap-record').outerHTML;
       var value = document.getElementById('reason').value;
-      strFormHtml = strFormHtml.replace(/<textarea.*>.*<\/textarea>/ig,`<span>${value}</span>`)
+      strFormHtml = strFormHtml.replace(/<textarea.*>.*<\/textarea>/ig,`<span class='textarea'>${value}</span>`)
       strFormHtml = strFormHtml.replace(/流标原因/ig,`流标原因：`)
+      strFormHtml = strReplace(strFormHtml,'class',/.*ant-col-4.*>.*<\/div>/ig,'<br/>')
+      function strReplace(str,key,reg,value){
+        var arr = str.split(key);
+        var arr2 = arr.map(elem=>{
+          return elem = elem.replace(reg, function (e) {
+            let index  = e.indexOf('</div></div>');
+            if(index!=-1){
+              let string1 = e.slice(0,index)
+              let string2 = e.slice(index)
+              return string1 + value + string2
+            }else{
+              return e + value
+            }
+          })
+        })
+        var str2 = arr2.join(key)
+        return str2
+      }
       var strBodyStyle=`
       <style>
       table,td,th { border: 1 solid #000000;border-collapse:collapse;text-align: center }
       ul{list-style: none;}
-      .ant-row{margin-bottom:10px}
       .ant-col-5{text-align:right}
       .ant-col-6,.ant-col-offset-1{margin-left:10mm}
-      textarea{border:0}
-      textarea::-webkit-scrollbar{width:0px !important;}
+      .textarea{border:0;word-wrap:break-word;display:inline-block;overflow-wrap:break-word}
+      .ant-form-item-label{white-space: nowrap;}
+      .ant-form-item{display:flex;align-items:flex-start;justify-content: flex-start;}
       .ant-col-5,.ant-col-4,.ant-col-6,.ant-col-18{display:inline-block}
       </style>`;
       LODOP.ADD_PRINT_HTM('15mm','10mm',"RightMargin:9mm","BottomMargin:9mm",strFormHtml+strBodyStyle);

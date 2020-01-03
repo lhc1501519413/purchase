@@ -299,9 +299,9 @@ export default {
         (files[0].type === "image/png" ||
           files[0].type === "image/jpg" ||
           files[0].type === "image/jpeg") &&
-        files[0].size / 1024 / 1024 > 0.8
+        files[0].size / 1024 / 1024 > 2
       ) {
-        this.$message.error("图片大小必须小于800KB!");
+        this.$message.error("图片大小必须小于2MB!");
         return;
       } else if (
         files[0].type === "application/pdf" &&
@@ -337,7 +337,7 @@ export default {
           files[0].type === "image/jpeg") &&
         files[0].size / 1024 / 1024 > 0.8
       ) {
-        this.$message.error("图片大小必须小于800KB!");
+        this.$message.error("图片大小必须小于2MB!");
         return;
       } else if (
         files[0].type === "application/pdf" &&
